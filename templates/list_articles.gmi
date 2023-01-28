@@ -4,5 +4,6 @@
 
 ## Articles
 
-{% for article in articles %}=> {{ article.url }} {{ article.date.canonical }} {{ article.article_title }}
+{% for article in articles -%}
+=> {{ article.url }} {{ article.date.canonical }} {{ article.title }}
 {% endfor %}

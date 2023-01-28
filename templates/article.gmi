@@ -1,4 +1,4 @@
-# {{ article_title }}
+# {{ title }}
 
 * Date : {{ date.canonical }}
 * Auteur : {{ date.canonical }}

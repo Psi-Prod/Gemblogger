@@ -1,10 +1,7 @@
 ---
 date: 2021-04-18
-article_title: Implementing a minimalist mathematical statement prover with Java
-article_description:
-  The world of Proof Assistants is quite related to complicated
-  functional programming languages. But it is possible, quite
-  simply, to write a minimalist proof assistant in Java.
+title: A second article
+description: The second blogpost!
 authors:
   - Tim
 tags:
@@ -13,7 +10,5 @@ tags:
   - Proof
   - Pseudo-sarcasm
 ---
-
-# The second article
 
 ...

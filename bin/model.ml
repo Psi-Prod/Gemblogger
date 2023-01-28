@@ -18,11 +18,9 @@ end
 
 module Article = struct
   type t = {
-    article_title : string;
-    article_description : string;
-    tags : string list;
+    title : string;
     date : Date.t;
-    title : string option;
+    tags : string list;
     description : string option;
     authors : Author.t list;
   }
@@ -32,19 +30,17 @@ module Article = struct
 
   let to_rss_item url article =
     Rss.(
-      Item.make ~title:article.article_title ~link:url ~pub_date:article.date
-        ~description:article.article_description ~guid:(Guid.link url) ())
+      Item.make ~title:article.title ~link:url ~pub_date:article.date
+        ~description:(Option.value ~default:"" article.description)
+        ~guid:(Guid.link url) ())
 
-  let make article_title article_description tags date title description authors
-      =
+  let make title date description authors tags =
     {
-      article_title;
-      article_description;
-      tags = List.map String.lowercase_ascii tags;
-      date;
       title;
+      date;
       description;
       authors;
+      tags = List.map String.lowercase_ascii tags;
     }
 
   let from_string (module V : Metadata.VALIDABLE) = function
@@ -55,32 +51,25 @@ module Article = struct
         >>= V.object_and (fun assoc ->
                 let open Validate.Applicative in
                 make
-                <$> V.(required_assoc string) "article_title" assoc
-                <*> V.(required_assoc string) "article_description" assoc
-                <*> V.(optional_assoc_or ~default:[] (list_of string))
-                      "tags" assoc
+                <$> V.(required_assoc string) "title" assoc
                 <*> V.required_assoc
                       (Metadata.Date.from (module V))
                       "date" assoc
-                <*> V.(optional_assoc string) "title" assoc
                 <*> V.(optional_assoc string) "description" assoc
                 <*> V.(required_assoc (list_of (Author.from (module V))))
-                      "authors" assoc)
+                      "authors" assoc
+                <*> V.(optional_assoc_or ~default:[] (list_of string))
+                      "tags" assoc)
 
   let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
-      {
-        article_title;
-        article_description;
-        tags;
-        date;
-        title;
-        description;
-        authors;
-      } =
+      { title; date; description; authors; tags } =
+    let description =
+      Option.fold description ~none:[] ~some:(fun d ->
+          [ ("description", D.string d) ])
+    in
     D.
       [
-        ("article_title", string article_title);
-        ("article_description", string article_description);
+        ("title", string title);
         ("tags", list (List.map string tags));
         ("date", object_ $ Metadata.Date.inject (module D) date);
         ( "authors",
@@ -88,7 +77,7 @@ module Article = struct
             (List.map (fun a -> object_ $ Author.inject (module D) a) authors)
         );
       ]
-    @ Metadata.Page.inject (module D) (Metadata.Page.make title description)
+    @ description
 
   let compare_by_date a b = Date.compare a.date b.date
 end

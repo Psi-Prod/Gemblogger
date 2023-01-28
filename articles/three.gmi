@@ -1,10 +1,7 @@
 ---
 date: 2021-11-14
-article_title: Some highlights of how this blog is generated
-article_description:
-  Being a Java Champion means communicating. To communicate, you need
-  communication channels. What better way to talk about silly things than
-  with a stark blog? In this article, we'll show you how this blog works.
+title: A third article
+description: The third blogpost!
 authors:
   - Tim
 tags:
@@ -13,7 +10,5 @@ tags:
   - Preface
   - Blog
 ---
-
-# The third article
 
 ...
