@@ -5,14 +5,24 @@ module Template = Yocaml_jingoo
 let target = "_build/"
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
-let list_template = template "list_articles"
+let gemlog_template = template "gemlog"
+let[@warning "-32"] tags_index_template = template "tags"
+let[@warning "-32"] tags_index = "tags.gmi" |> into target
 let article_target file = Model.article_path file |> into target
 let binary_update = Build.watch Sys.argv.(0)
-let index_gmi = "index.gmi" |> into "pages"
-let index = "index.gmi" |> into target
+let gemlog = "gemlog.gmi" |> into target
 let rss_feed = "feed.xml" |> into target
 let tag_file tag = Model.tag_path tag |> into target
 let tag_template = template "tag"
+
+let process_pages =
+  process_files [ "pages" ] File.is_gemtext (fun file ->
+      let target = basename file |> into target in
+      let open Build in
+      create_file target
+        (binary_update
+        >>> Yocaml_yaml.read_file_with_metadata (module Metadata.Page) file
+        >>^ Stdlib.snd))
 
 let process_articles =
   process_files [ "articles" ] File.is_gemtext (fun article_file ->
@@ -25,11 +35,6 @@ let process_articles =
               article_file
         >>> Template.apply_as_template (module Model.Article) article_template
         >>^ Stdlib.snd))
-
-let merge_with_page ((meta, content), articles) =
-  let title = Metadata.Page.title meta in
-  let description = Metadata.Page.description meta in
-  (Model.Articles.make ?title ?description articles, content)
 
 let generate_feed =
   let open Build in
@@ -53,14 +58,23 @@ let generate_tags =
            >>^ Stdlib.snd))
     (return ()) tags
 
-let generate_index =
+(* let generate_index_tags =
+   let open Build in
+   let* deps, tags = Collection.Tags.compute (module Metaformat) "articles" in
+   let tags_string = List.map (fun (i, s) -> (i, List.length s)) tags in
+   let mk_meta tag articles () = (Model.Tag.make tag articles tags_string, "") in
+   create_file tags_index
+     (init deps >>> binary_update >>^ mk_meta tag []
+     >>> Template.apply_as_template (module Model.Tag) tags_index
+     >>^ Stdlib.snd) *)
+
+let generate_articles_index =
   let open Build in
   let* articles_arrow =
     Collection.Articles.get_all (module Metaformat) "articles"
   in
-  create_file index
-    (binary_update
-    >>> Metaformat.read_file_with_metadata (module Metadata.Page) index_gmi
-    >>> articles_arrow >>^ merge_with_page
-    >>> Template.apply_as_template (module Model.Articles) list_template
+  create_file gemlog
+    (binary_update >>> articles_arrow
+    >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
+    >>> Template.apply_as_template (module Model.Articles) gemlog_template
     >>^ Stdlib.snd)

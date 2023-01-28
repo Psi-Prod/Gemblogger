@@ -1,6 +1,8 @@
-# Welcome
+# My capsule
 
-This is a presentation.
+Welcome to my Gemini capsule.
 
-=> /tags
+## Links
+
+=> /gemlog.gmi Gemlog
 => /feed.xml RSS feed

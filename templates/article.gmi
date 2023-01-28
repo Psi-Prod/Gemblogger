@@ -1,8 +1,14 @@
+{%- autoescape false -%}
+
 # {{ title }}
 
+{%- set nb_authors = length (authors) %}
+
 * Date : {{ date.canonical }}
-* Auteur : {{ date.canonical }}
+* {% if nb_authors > 1 %}Auteurs{% else %}Auteur{% endif %} : {% for author in authors %}{{ author.name }}, {% endfor %}
 * Tags : {% for tag in tags %}{{ tag }}, {% endfor %}
+
+{%- endautoescape -%}
 
 {%- autoescape false -%}
 {{ body }}

@@ -1,3 +1,1 @@
-open Yocaml
-
-let is_gemtext = with_extension "gmi"
+let is_gemtext = Yocaml.with_extension "gmi"

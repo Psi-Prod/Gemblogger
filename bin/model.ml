@@ -83,19 +83,10 @@ module Article = struct
 end
 
 module Articles = struct
-  type t = {
-    articles : (Article.t * string) list;
-    title : string option;
-    description : string option;
-  }
+  type t = (Article.t * string) list
 
-  let make ?title ?description articles = { articles; title; description }
-  let title p = p.title
-  let description p = p.description
-  let articles p = p.articles
-  let set_articles new_articles p = { p with articles = new_articles }
-  let set_title new_title p = { p with title = new_title }
-  let set_description new_desc p = { p with description = new_desc }
+  let make description = description
+  let articles a = a
 
   let sort ?(decreasing = true) articles =
     List.sort
@@ -105,11 +96,11 @@ module Articles = struct
         if decreasing then ~-r else r)
       articles
 
-  let sort_articles_by_date ?(decreasing = true) p =
-    { p with articles = sort ~decreasing p.articles }
+  let sort_articles_by_date ?(decreasing = true) articles =
+    sort ~decreasing articles
 
   let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
-      { articles; title; description } =
+      articles =
     ( "articles",
       D.list
         (List.map
@@ -117,7 +108,7 @@ module Articles = struct
              D.object_
                (("url", D.string url) :: Article.inject (module D) article))
            articles) )
-    :: (Metadata.Page.inject (module D) $ Metadata.Page.make title description)
+    :: (Metadata.Page.inject (module D) $ Metadata.Page.make None None)
 end
 
 let article_object (type a) (module D : Key_value.DESCRIBABLE with type t = a)
@@ -129,15 +120,12 @@ module Tag = struct
     tag : string;
     tags : (string * int) list;
     articles : (Article.t * string) list;
-    title : string option;
-    description : string option;
   }
 
-  let make ?title ?description tag articles tags =
-    { tag; tags; articles = Articles.sort articles; title; description }
+  let make tag articles tags = { tag; tags; articles = Articles.sort articles }
 
   let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
-      { tag; tags; articles; title; description } =
+      { tag; tags; articles } =
     ("tag", D.string tag)
     :: ("articles", D.list (List.map (article_object (module D)) articles))
     :: ( "tags",
@@ -151,5 +139,5 @@ module Tag = struct
                     ("number", D.integer n);
                   ])
               tags) )
-    :: (Metadata.Page.inject (module D) $ Metadata.Page.make title description)
+    :: (Metadata.Page.inject (module D) $ Metadata.Page.make None None)
 end
