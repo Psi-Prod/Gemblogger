@@ -11,5 +11,5 @@
 {% endautoescape %}
 
 {%- for article in articles -%}
-=> {{ article.url }} {{ article.date.canonical }} {{ article.title }}
+=> /{{ article.url }} {{ article.date.canonical }} {{ article.title }}
 {% endfor %}

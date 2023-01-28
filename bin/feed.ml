@@ -1,6 +1,6 @@
 open Yocaml
 
-let domain = "gemini://heyplzlookat.me"
+let domain = "gemini://domain"
 let feed_url = into domain "feed.xml"
 
 let articles_to_items articles =
@@ -9,7 +9,7 @@ let articles_to_items articles =
     articles
 
 let make ((), articles) =
-  Yocaml.Rss.Channel.make ~title:"Heyplzlookatme's gemlog" ~link:domain
-    ~feed_link:feed_url ~description:"Home for heyplzlookat.me."
-    ~generator:"YOCaml" ~webmaster:"tim.arnouts@protonmail.com"
+  Yocaml.Rss.Channel.make ~title:"My gemlog" ~link:domain ~feed_link:feed_url
+    ~description:"My home on gemini space." ~generator:"YOCaml"
+    ~webmaster:"mail@mailbox.com"
     (articles_to_items articles)

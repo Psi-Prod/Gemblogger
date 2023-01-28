@@ -36,6 +36,17 @@ let process_articles =
         >>> Template.apply_as_template (module Model.Article) article_template
         >>^ Stdlib.snd))
 
+let generate_gemlog =
+  let open Build in
+  let* articles_arrow =
+    Collection.Articles.get_all (module Metaformat) "articles"
+  in
+  create_file gemlog
+    (binary_update >>> articles_arrow
+    >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
+    >>> Template.apply_as_template (module Model.Articles) gemlog_template
+    >>^ Stdlib.snd)
+
 let generate_feed =
   let open Build in
   let* articles_arrow =
@@ -67,14 +78,3 @@ let generate_tags =
      (init deps >>> binary_update >>^ mk_meta tag []
      >>> Template.apply_as_template (module Model.Tag) tags_index
      >>^ Stdlib.snd) *)
-
-let generate_articles_index =
-  let open Build in
-  let* articles_arrow =
-    Collection.Articles.get_all (module Metaformat) "articles"
-  in
-  create_file gemlog
-    (binary_update >>> articles_arrow
-    >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
-    >>> Template.apply_as_template (module Model.Articles) gemlog_template
-    >>^ Stdlib.snd)

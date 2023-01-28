@@ -2,8 +2,8 @@ let program =
   let open Yocaml in
   let* () = Task.process_articles in
   let* () = Task.process_pages in
+  let* () = Task.generate_gemlog in
   let* () = Task.generate_feed in
-  let* () = Task.generate_articles_index in
   (* let* () = Task.generate_tags in *)
   Task.generate_tags
 

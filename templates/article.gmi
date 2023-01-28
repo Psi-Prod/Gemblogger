@@ -7,6 +7,7 @@
 * Date : {{ date.canonical }}
 * {% if nb_authors > 1 %}Auteurs{% else %}Auteur{% endif %} : {% for author in authors %}{{ author.name }}, {% endfor %}
 * Tags : {% for tag in tags %}{{ tag }}, {% endfor %}
+{% if description %}> {{ description }}{% endif %}
 
 {%- endautoescape -%}
 
