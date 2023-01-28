@@ -1,0 +1,8 @@
+{%- autoescape false -%}
+{{ body }}
+{% endautoescape -%}
+
+## Articles
+
+{% for article in articles %}=> {{ article.url }} {{ article.date.canonical }} {{ article.article_title }}
+{% endfor %}

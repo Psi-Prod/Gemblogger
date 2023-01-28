@@ -29,6 +29,4 @@ setup.log
 # Local OPAM switch
 _opam/
 
-# WordPress artifacts
-_site/
-
+*.pem

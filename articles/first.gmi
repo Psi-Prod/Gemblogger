@@ -1,0 +1,19 @@
+---
+date: 2021-08-08
+article_title: Type-dependent instances in Java
+article_description:
+  While studying Java (to become a real Java-Champion) I came across
+  a feature I didn't know about, "type-dependent instances".
+  Incredible!
+authors:
+  - Tim
+tags:
+  - Java
+  - Types
+  - Indexation
+  - Sarcasm
+---
+
+# The first article
+
+...

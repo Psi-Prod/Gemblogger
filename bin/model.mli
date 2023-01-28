@@ -18,13 +18,13 @@ end
 module Tag : sig
   type t
 
-  val make
-    :  ?title:string
-    -> ?description:string
-    -> string
-    -> (Article.t * string) list
-    -> (string * int) list
-    -> t
+  val make :
+    ?title:string ->
+    ?description:string ->
+    string ->
+    (Article.t * string) list ->
+    (string * int) list ->
+    t
 
   include Metadata.INJECTABLE with type t := t
 end
@@ -32,16 +32,11 @@ end
 module Articles : sig
   type t
 
-  val make
-    :  ?title:string
-    -> ?description:string
-    -> (Article.t * string) list
-    -> t
+  val make :
+    ?title:string -> ?description:string -> (Article.t * string) list -> t
 
-  val sort
-    :  ?decreasing:bool
-    -> (Article.t * string) list
-    -> (Article.t * string) list
+  val sort :
+    ?decreasing:bool -> (Article.t * string) list -> (Article.t * string) list
 
   val sort_articles_by_date : ?decreasing:bool -> t -> t
   val articles : t -> (Article.t * string) list

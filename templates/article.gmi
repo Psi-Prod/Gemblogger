@@ -1,0 +1,9 @@
+# {{ article_title }}
+
+* Date : {{ date.canonical }}
+* Auteur : {{ date.canonical }}
+* Tags : {% for tag in tags %}{{ tag }}, {% endfor %}
+
+{%- autoescape false -%}
+{{ body }}
+{% endautoescape -%}

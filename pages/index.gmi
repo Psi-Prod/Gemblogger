@@ -1,0 +1,11 @@
+---
+title: Index
+description: The famous root of the website
+---
+
+# Welcome
+
+This is a presentation.
+
+=> /tags
+=> /feed.xml RSS feed

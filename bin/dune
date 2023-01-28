@@ -2,10 +2,10 @@
  (name gemblogger)
  (libraries
   logs
-  cmdliner
+  mehari
+  mehari-lwt-unix
   preface
   yocaml
   yocaml_yaml
-  yocaml_markdown
   yocaml_unix
   yocaml_jingoo))
