@@ -1,9 +1,12 @@
 (executable
- (name gemblogger)
+ (name capsule)
  (libraries
+  eio
+  eio_main
   logs
   mehari
-  mehari-lwt-unix
+  mehari-eio
+  mirage-crypto-rng-eio
   preface
   yocaml
   yocaml_yaml
