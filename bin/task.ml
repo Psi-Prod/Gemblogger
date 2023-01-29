@@ -5,6 +5,7 @@ module Template = Yocaml_jingoo
 let target = "_build/"
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
+let layout_template = template "layout"
 let gemlog_template = template "gemlog"
 let[@warning "-32"] tags_index_template = template "tags"
 let[@warning "-32"] tags_index = "tags.gmi" |> into target
@@ -15,13 +16,19 @@ let rss_feed = "feed.xml" |> into target
 let tag_file tag = Model.tag_path tag |> into target
 let tag_template = template "tag"
 
+let move_index =
+  process_files [ "pages" ] File.is_index (Build.copy_file ~into:target)
+
 let process_pages =
-  process_files [ "pages" ] File.is_gemtext (fun file ->
+  process_files [ "pages" ]
+    Preface.Predicate.(File.is_gemtext && !File.is_index)
+    (fun file ->
       let target = basename file |> into target in
       let open Build in
       create_file target
         (binary_update
         >>> Yocaml_yaml.read_file_with_metadata (module Metadata.Page) file
+        >>> Template.apply_as_template (module Metadata.Page) layout_template
         >>^ Stdlib.snd))
 
 let process_articles =
@@ -34,6 +41,7 @@ let process_articles =
               (module Model.Article)
               article_file
         >>> Template.apply_as_template (module Model.Article) article_template
+        >>> Template.apply_as_template (module Model.Article) layout_template
         >>^ Stdlib.snd))
 
 let generate_gemlog =
@@ -45,6 +53,7 @@ let generate_gemlog =
     (binary_update >>> articles_arrow
     >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
     >>> Template.apply_as_template (module Model.Articles) gemlog_template
+    >>> Template.apply_as_template (module Model.Articles) layout_template
     >>^ Stdlib.snd)
 
 let generate_feed =
@@ -66,6 +75,7 @@ let generate_tags =
       >> create_file (tag_file tag)
            (init deps >>> binary_update >>^ mk_meta tag articles
            >>> Template.apply_as_template (module Model.Tag) tag_template
+           >>> Template.apply_as_template (module Model.Tag) layout_template
            >>^ Stdlib.snd))
     (return ()) tags
 
