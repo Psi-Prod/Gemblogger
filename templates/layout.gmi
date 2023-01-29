@@ -1,5 +1,4 @@
 {%- autoescape false -%}
 {{ body }}
 {% endautoescape -%}
-
 => / Back to home

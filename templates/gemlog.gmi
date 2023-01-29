@@ -6,4 +6,4 @@
 => {{ article.url }} {{ article.date.canonical }} {{ article.title }}
 {% endfor %}
 
-{% endautoescape -%}
+{%- endautoescape -%}
