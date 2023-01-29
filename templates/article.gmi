@@ -5,12 +5,20 @@
 {%- set nb_authors = length (authors) %}
 
 * Date : {{ date.canonical }}
-* {% if nb_authors > 1 %}Auteurs{% else %}Auteur{% endif %} : {% for author in authors %}{{ author.name }}, {% endfor %}
-* Tags : {% for tag in tags %}{{ tag }}, {% endfor %}
+* {% if nb_authors > 1 %}Auteurs{% else %}Auteur{% endif %} : {% for author in authors -%}
+  {{ author.name }}
+  {%- if not loop.last %}, {% endif %}
+{%- endfor %}
+* Tags : {% for tag in tags -%}
+  {{ tag }}
+  {%- if not loop.last %}, {% endif %}
+{%- endfor %}
 {% if description %}> {{ description }}{% endif %}
 
 {%- endautoescape -%}
 
 {%- autoescape false -%}
+
 {{ body }}
-{% endautoescape -%}
+
+{%- endautoescape -%}

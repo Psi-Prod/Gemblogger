@@ -4,7 +4,8 @@
 
 {%- set nb_tags = length (articles) -%}
 
-{% autoescape false %}
+{% autoescape false -%}
+
 # {{ tag }} ({{ nb_tags }}
 {%- if nb_tags > 1 %} entries{%- else %} entry{%- endif %})
 
