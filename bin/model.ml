@@ -85,7 +85,7 @@ end
 module Articles = struct
   type t = (Article.t * string) list
 
-  let make description = description
+  let make a = a
   let articles a = a
 
   let sort ?(decreasing = true) articles =
@@ -139,5 +139,26 @@ module Tag = struct
                     ("number", D.integer n);
                   ])
               tags) )
+    :: (Metadata.Page.inject (module D) $ Metadata.Page.make None None)
+end
+
+module Tags = struct
+  type t = (string * int) list
+
+  let make = List.map (fun (tag, articles) -> (tag, List.length articles))
+
+  let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
+      tags =
+    ( "tags",
+      D.list
+        (List.map
+           (fun (tag, n) ->
+             D.object_
+               [
+                 ("name", D.string tag);
+                 ("link", D.string (tag_path tag));
+                 ("number", D.integer n);
+               ])
+           tags) )
     :: (Metadata.Page.inject (module D) $ Metadata.Page.make None None)
 end

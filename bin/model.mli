@@ -36,3 +36,11 @@ module Articles : sig
 
   include Metadata.INJECTABLE with type t := t
 end
+
+module Tags : sig
+  type t
+
+  val make : (string * (Article.t * string) list) list -> t
+
+  include Metadata.INJECTABLE with type t := t
+end

@@ -7,8 +7,8 @@ let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
 let layout_template = template "layout"
 let gemlog_template = template "gemlog"
-let[@warning "-32"] tags_index_template = template "tags"
-let[@warning "-32"] tags_index = "tags.gmi" |> into target
+let tags_index_template = template "tags"
+let tags_index = "browse-tag.gmi" |> into target
 let article_target file = Model.article_path file |> into target
 let binary_update = Build.watch Sys.argv.(0)
 let gemlog = "gemlog.gmi" |> into target
@@ -79,12 +79,11 @@ let generate_tags =
            >>^ Stdlib.snd))
     (return ()) tags
 
-(* let generate_index_tags =
-   let open Build in
-   let* deps, tags = Collection.Tags.compute (module Metaformat) "articles" in
-   let tags_string = List.map (fun (i, s) -> (i, List.length s)) tags in
-   let mk_meta tag articles () = (Model.Tag.make tag articles tags_string, "") in
-   create_file tags_index
-     (init deps >>> binary_update >>^ mk_meta tag []
-     >>> Template.apply_as_template (module Model.Tag) tags_index
-     >>^ Stdlib.snd) *)
+let generate_tags_index =
+  let open Build in
+  let* deps, tags = Collection.Tags.compute (module Metaformat) "articles" in
+  create_file tags_index
+    (init deps >>> binary_update
+    >>^ (fun () -> (Model.Tags.make tags, ""))
+    >>> Template.apply_as_template (module Model.Tags) tags_index_template
+    >>^ Stdlib.snd)

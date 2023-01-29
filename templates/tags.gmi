@@ -1,5 +1,5 @@
-# Browse blogposts by tags
+# Browse text by tags
 
-{%- for tag in tags -%}
+{% for tag in tags -%}
 => /{{ tag.link  }} {{ tag.name }} {{ tag.number }}
 {% endfor %}

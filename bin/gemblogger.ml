@@ -5,8 +5,8 @@ let program =
   let* () = Task.process_pages in
   let* () = Task.generate_gemlog in
   let* () = Task.generate_feed in
-  (* let* () = Task.generate_tags in *)
-  Task.generate_tags
+  let* () = Task.generate_tags in
+  Task.generate_tags_index
 
 let build () = Yocaml_unix.execute program
 

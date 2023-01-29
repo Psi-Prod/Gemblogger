@@ -4,5 +4,6 @@ Welcome to my Gemini capsule!
 
 ## Links
 
-=> /gemlog.gmi Gemlog
+=> /gemlog.gmi My gemlog
+=> /browse-tag.gmi Browse my texts by tag
 => /feed.xml RSS feed
