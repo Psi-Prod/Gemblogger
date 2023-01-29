@@ -1,0 +1,73 @@
+---
+title: "Gemini : retour d'expérience"
+date: 2022-12-05
+authors:
+  - Tim
+  - Léo
+tags:
+  - gemini
+---
+
+> Après avoir utilisé et implémenté le protocole Gemini comme des crasseux (côté client : Indigobi et côté serveur : Mehari), on a relevé plusieurs voies d'améliorations. On ne traîne pas vraiment avec la "communauté" Gemini, on relèvera donc essentiellement les points techniques dans ce billet.
+
+## Contenu
+
+### Gemtext
+
+Tim :
+> La philosophie du format définit par Gemini, le Gemtext, est parfaite. La promesse d'avoir seulement à parser les 3 premiers caractères pour connaître le "type" de ligne est tenue et l'on peut très bien se passer de regex. Le seul petit bémol est l'absence de balise _inline_ pour souligner des termes techniques ou encore des morceaux de code. Ces derniers manquent cruellement lorsqu'on écrit des articles avec un peu de code, mais ne sont de toute façon pas fidèle à la philosophie "des 3 premiers caractères". Ce défaut est comblé par le fait que ce soit désormais une sorte de convention parmi les auteurs d'utiliser des `doubles backquotes`.
+
+### Codes ANSI
+
+Léo :
+> Ayant traîné un peu sur iich.space à l'époque où le serveur était encore debout (merci kiwifarms), on a rapidement été confronté au problème de la coloration du texte qui n'est pas du tout standardisée (aucune mention dans la spécification).
+> La plupart des clients ont une TUI donc ça passe à peu près, d'autres comme Lagrange ont implémenté eux-mêmes la détection des codes ANSI (modulo un avertissement en haut de page à propos du support encore incomplet) mais c'est loin d'être le cas de tous les clients graphiques.
+>
+> Le parsing des codes ANSI rajoute une couche de complexité qui, à mon sens, n'est pas compatible avec la philosophie du project Gemini : seuls les 3 premiers caractères de chaque ligne devraient permettre de reconnaître le type de ligne.
+> Avec ces codes, non seulement l'affichage est particulièrement illisible en cas d'absence de détection et surtout nécessite évidemment de parcourir entièrement les lignes.
+>
+> De notre côté, la bibliothèque d'interface TUI en OCaml que nous utilisons (Notty) ne supporte pas les caractères de contrôle et préfère imposer sa propre interface (des combinateurs), ce qui n'est pas plus mal tout compte fait.
+=> https://pqwy.github.io/notty/doc/notty/Notty/A/index.html
+> Ainsi, sk (l'ex-admin de Gemini channel) s'est inspiré d'autres capsules (j'imagine Astrobotany) pour choisir à l'aide d'un certificat client s'il on veut afficher ces codes ou non.
+> Malgré tout, cela reste une zone d'ombre importante dans la spécification.
+
+## CGI
+
+Tim :
+> La norme CGI (Common Gateway Interface) a pour but de normaliser l'appel de script externe afin de déléguer la génération du header et du body de la réponse via une impression sur la sortie standard. Malheureusement, cette norme a été conçue principalement pour fonctionner avec le protocole HTTP. Nous sommes ainsi contraints par soucis de compatibilité de laisser quelques "meta-variable" avec une valeur vide étant donné qu'elles n'ont pas de sens dans le contexte du protocole Gemini. Ceci n'aurait pas encore été trop dérangeant si en plus de cela la norme CGI n'incitait pas le serveur à définir des variables d'environnement accessibles au script dans des formats non spécifiés par le RFC. Chaque implémentation serveur Gemini supporte donc CGI à sa sauce, en résulte une grosse tambouille informe.
+>
+> Une liste de "meta-variable" préconisées présente dans la spécification de Gemini ou même un document indiquant les meilleures pratiques n'auraient pas été de refus, même si le support de CGI semble plutôt être une fonctionnalité de niche au cas d'usage peu nombreux.
+
+## schway oldbie web xd
+
+Léo :
+> Ça a marché malgré tout, j'arrive à ressentir un peu ce qu'on a perdu aujourd'hui sur le web : les sites (capsules pardon) rigolos et trucs intéressants, tout ça avec des pages qui se chargent rapidement. Résumé aussi court que stupide d'un web HTTP idéalisé mais vous avez saisi l'idée.
+> Je vais pas recopier le web manifesto que les autres ont déjà écrit 500 fois sur neocities mais sachez que je suis content, étant trop jeune pour avoir profité de la vieille époque (je suis né pile à la fin, quelle horreur) (années 2000).
+
+## Images
+
+Léo :
+> Seulement on ressent vite le besoin d'images inlinées, les pages HTML permettaient une expression artistique visuelle relativement sympa contrairement au plain text qu'offrait Gopher ou Gemini (ok y'a l'ASCII art mais vous comprenez).
+> J'ai pas encore testé mais il aurait été sympa que le support du Shift_JIS soit également standardisé parce que c'est beaucoup moins sympa sans, ça faisait aussi partie du charme des vieux BBS japonais.
+> Après, se plaindre qu'il n'y a pas d'images inlinées dans un protocole "orienté texte" c'est attardé désolé je recommencerais plus.
+
+## Indicateur de taille dans le header / streams
+
+Léo :
+> À priori la création de streams TCP "continus" (je sais pas comment on dit correctement) est autorisé ou du moins non spécifié (encore !) dans la spécification et certains clients les supportent, où le chargement de la page est infini.
+> Cela implique qu'on ne met pas de timeout côté client !
+> Dans la FAQ sur le site
+=> gemini://gemini.circumlunar.space/docs/best-practices.gmi
+> solderpunk nous le mentionne mais n'explique pas ce choix de ne pas pouvoir spécifier la taille du fichier dans le header.
+> On a droit à 1024 octets de metadata (MIME, charset, etc) donc pouvoir inclure la taille du fichier ainsi qu'un checksum ça coûte pas grand chose, ils seraient évidemment optionnels (le header permet déjà d'inclure un paramètre `lang` qui est disponible pour les fichiers Gemini).
+> Avec un paramètre `content-size` ou quelque chose du genre côté client on pourrait faire comprendre explicitement à l'utilisateur que la connexion n'a pas planté mais que c'est juste un flux continu de donnée.
+
+## Conclusion
+
+Léo :
+> Gemini est pour moi évidemment une superbe opportunité de retrouver un espace en ligne plus ou moins libre comme il était imaginé au début, au moins (source : mon père).
+> Seulement on voit que malgré ses trois ans d'existence ça commence à ramer côté spécification et c'est fort dommage.
+> Après si on se motivait à (au moins) envoyer un mail à solderpunk ça serait un peu moins hypocrite xd
+
+Tim :
+> C'est vraiment bien Gemini pour écrire du texte libre.

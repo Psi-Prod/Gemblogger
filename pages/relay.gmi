@@ -1,0 +1,35 @@
+```relay page's banner
+          __ __
+        ,;::\::\
+      ,'/' `/'`/
+  _\,: '.,-'.-':.
+ -./"'  :    :  :\/,
+  ::.  ,:____;__; :-
+  :"  ( .`-*'o*',);
+   \.. ` `---'`' /
+    `:._..-   _.'
+    ,;  .     `.
+   /"'| |       \
+  ::. ) :        :
+  |" (   \       |
+  :.(_,  :       ;
+   \'`-'_/      /
+    `...   , _,'
+     |,|  : |
+     |`|  | |
+     |,|  | |
+ ,--.;`|  | '..--.
+/;' "' ;  '..--. ))
+\:.___(___   ) ))'
+       SSt`-'-''
+```
+
+# Relay
+
+A few links to blog posts (mostly in french).
+
+=> https://caml.inria.fr/pub/old_caml_site/ocaml/numerical.html
+=> https://lukesmith.xyz/articles/matrix-vs-xmpp/
+=> https://xvw.github.io/capsule/pages/oop-refl.html#les-mthodes-gardes
+=> https://blog.osau.re/articles/gadt_and_state_machine.html
+=> http://gallium.inria.fr/blog/format6/

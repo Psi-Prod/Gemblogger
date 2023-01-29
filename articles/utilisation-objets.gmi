@@ -1,0 +1,111 @@
+---
+title: Un exemple d'utilisation des objets en OCaml
+date: 2022-12-02
+authors:
+  - Tim
+tags:
+  - ocaml
+  - objets
+  - poo
+  - js_of_ocaml
+---
+
+On dit souvent que la programmation orientée objet est une fonctionnalité de niche en OCaml et qu'elle n'arrive pas à la cheville de l'expressivité du système de module. Et c'est plutôt vrai, les utilisations des objets et des classes sont rares et peu idiomatiques, le système de module évitant d'avoir à manipuler des longues et complexes chaînes d'héritage. C'est en bricolant avec js_of_ocaml (un compilateur de bytecode OCaml produisant du JavaScript) que j'ai trouvé un cas d'usage que je trouve intéressant.
+
+Avec js_of_ocaml, je suis souvent amené à muter des variables dans des _closures_ et donc à entretenir des états. La façon la plus simple de manipuler des états mutables en OCaml est d'utiliser des références dont la définition de type dans la librairie standard est la suivante :
+
+```ocaml
+type 'a ref = { mutable content : 'a }
+```
+
+(Fun fact : les références n'existent pas stricto sensu en OCaml, mais les champs de record mutables eux oui)
+
+Mais voilà, lorsqu'on se retrouve avec plusieurs états mutables on obtient un code moche truffé de `ref`s où l'on est obligé d'utiliser les horribles opérateurs associés `!` et `:=` (immondices) pour y accéder.
+
+Une solution simple pour pallier à ce problème est l'utilisation d'objets. Certes, la mutation est toujours présente, mais elle a le mérite d'être dissimulée à l'intérieur d'objets et non plus dans l'espace global du programme, ce qui rend les choses, je trouve, plus facile à appréhender (en plus d'être un des objectifs de ce paradigme).
+
+# Exemple
+
+Prenons l'exemple simple d'un compteur à incrémenter :
+
+(J'utilise par ailleurs la bibliothèque `tyxml` qui permet la construction de HTML directement depuis OCaml et qui s'interface bien avec `js_of_ocaml`)
+
+```ocaml
+open Js_of_ocaml
+
+class score =
+  object (self)
+    val mutable score = 0
+
+    val label = Tyxml_js.Html.(div ~a:[] [ txt "0" ])
+    method label = Tyxml_js.To_dom.of_div label
+
+    val button = Tyxml_js.Html.(button [ txt "Sex" ])
+    method button = Tyxml_js.To_dom.of_button button
+
+    initializer
+    self#button##.onclick :=
+      Dom_html.handler (fun _ ->
+          score <- score + 1;
+          self#refresh;
+          Js._false)
+
+    method refresh = self#button##.innerText := Js.string (Int.to_string score)
+  end
+```
+
+Compteur qui s'utilise de la manière suivante :
+
+```ocaml
+open Js_of_ocaml
+
+let onload _ =
+  let main = Dom_html.getElementById "main" in
+  let score = new score in
+  Dom.appendChild main score#label;
+  Dom.appendChild main score#button;
+  Js._false
+
+let () = Dom_html.(window##.onload := handler onload)
+```
+
+Et voilà, tout est encapsulé dans un objet et je ne suis plus contraint de trimballer des références partout.
+
+Si vous voulez tester vous-même, voici la _stanza_ dune pour compiler l'exemple :
+
+```
+(executable
+ (name example)
+ (modes js)
+ (preprocess
+  (pps js_of_ocaml-ppx))
+ (libraries js_of_ocaml-tyxml))
+
+(rule
+ (targets main.js)
+ (deps example.bc.js)
+ (action
+  (copy example.bc.js main.js)))
+```
+
+Et qui nécessite le code HTML suivant :
+```html
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="main.js"></script>
+</head>
+
+<body>
+    <main id="main">
+    </main>
+</body>
+
+</html>
+```
+
+# Liens utiles
+
+=> https://opam.ocaml.org/packages/tyxml/ La bibliothèque `tyxml`
+=> https://ocsigen.org/js_of_ocaml/latest/manual/overview `js_of_ocaml`

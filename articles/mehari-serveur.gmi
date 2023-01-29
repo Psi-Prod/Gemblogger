@@ -1,0 +1,241 @@
+---
+title: Comment faire un serveur TLS en OCaml qui soit compatible Mirage (dans Mehari)"
+date: 2023-01-11
+authors:
+  - Léo
+tags:
+- devlog
+- ocaml
+- profane
+- mirage
+- serveur
+- tls
+- mehari
+---
+
+⚠️ TW : Article très moche avec de nombreuses profanités, malgré tout publié
+
+Le principal problème est la stack TCP/IP puisqu'on ne peut pas utiliser la librairie "Unix" (présente dans la librairie standard) sinon ce n'est pas compatible Mirage.
+On peut donc aller la chercher dans le type de module `Tcpip.Stack.V4V6` (celui que Tim a choisi dans `server_impl`)
+on y trouve :
+```ocaml
+val listen_tcp :
+  ?keepalive:Tcp.Keepalive.t ->
+  t ->
+  port:int ->
+  ( TCP.flow -> unit Lwt.t ) ->
+  unit
+```
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip/Stack/module-type-V4V6/index.html (Tcpip) V4V6
+
+Mais elle est dépréciée je ne sais pas pourquoi.
+Donc on cherche mieux et on tombe sur ça :
+```ocaml
+val listen :
+  t ->
+  port:int ->
+  ?keepalive:Tcp.Keepalive.t ->
+  ( flow -> unit Lwt.t ) ->
+  unit
+```
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip/Stack/module-type-V4V6/TCP/index.html (Tcpip) V4V6.TCP
+
+Ok super elle n'est pas dépréciée mais maintenant il faut une valeur de type `t` !!
+Où trouver ça ???
+Il n'y a aucune fonction pour créer un `t`...
+
+...Sauf que si, détrompez-vous.
+Il y a `tcpip.stack-direct` et `tcpip.stack-socket` qui sont deux implémentations du truc de ce que j'ai compris (lisez le readme sinon, je sais pas).
+Tim a séparé en deux Mehari :
+* Une partie (`mehari`) compatible Mirage qui est pure et ne fait pas de syscall
+* Et une autre partie (`mehari.unix`) et c'est cette dernière qui utilise `Tcpip_stack_socket.V4V6` quand on fait `Mehari.Make` (qui a donc le type `Tcpip.Stack.V4V6`).
+J'ai choisi la première implémentation de `tcpip` qui venait de base (`socket`) mais elle s'est finalement avérée être un bon choix puisqu'on l'utilise uniquement dans `mehari.unix` et que `direct` est un bordel que je n'ai pas envie d'aborder.
+
+Si on regarde dans le module `V4V6` on y trouve :
+```ocaml
+val connect : Udpv4v6_socket.t -> Tcpv4v6_socket.t -> t Lwt.t
+```
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip_stack_socket/V4V6/index.html (Tcpip) Tcpip_stack_socket.V4V6
+
+Ce n'est pas ce qu'il nous faut (pas besoin d'`Udpv4v6_socket.t`) et il nous faut trouver comment créer un `Tcpv4v6_socket.t` de toute façon.
+On regarde également du côté de `TCP` (même type de module) et ici se trouve notre bonheur :
+```ocaml
+val listen :
+  t ->
+  port:int ->
+  ?keepalive:Tcp.Keepalive.t ->
+  ( flow -> unit Lwt.t ) ->
+  unit
+```
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip/Stack/module-type-V4V6/TCP/index.html (Tcpip) Tcpip_stack_socket.V4V6.TCP
+
+Mais elle n'est pas incluse dans le type de module, j'ai donc été renvoyé à la triste réalité qu'on ne peut pas l'utiliser en dehors de `mehari.unix`.
+
+Comment faire donc ?
+Après un soir à se lamenter devant Tim que je n'arrive à rien il a donc posé la question à Dinosaure (illustre membre de la communauté Mirage OS) sur le Discord OCaml (on a essayé de faire notre meilleur anglais possible pour l'impressioner) :
+
+> Le condor du plateau — 17/11/2022 18:56
+> hi, I use mirage Tcpip to listen on a socket so I am using Tcpip.Stack.V4V6.TCP.listen
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip/Stack/module-type-V4V6/index.html#val-listen
+> For this usage, I have to pass a value of type Tcpip.Stack.V4V6.TCP.t and a callback of type TLS.FLOW.flow -> unit Lwt.t but I don't understand how can I get a value of type Tcpip.Stack.V4V6.t.
+> I must specify that I work on a library and not on a unikernel
+> from what I understand I can obtain a stack value at the construction of the unikernel like here
+=> https://github.com/mirage/mirage-tcpip/blob/4bae5497c5ef76c1dc3532bb0e4d6ad466051c50/examples/unikernel/config.ml#L7
+> but I still don't know how to get it in another context than unikernel
+
+> dinosaure — 18/11/2022 11:50
+> you can have an example here: https://github.com/roburio/http-mirage-client/blob/d2de9c59824a621959a4dbaceca24bedb26ca374/test/test.ml#L116 🙂
+
+Super !
+Mais on a toujours le même problème, on peut pas l'utiliser dans `mehari`.
+Condor va donc gentiment lui répondre :
+
+> Le condor du plateau — 18/11/2022 12:36
+> thank you for your reply, however  the connect function seems to be hidden by the signature that I apply here to the Stack module:
+>
+> module Make (Stack : Tcpip.Stack.V4V6) = struct
+>  ...
+> end
+>
+> include Lib.Make (Tcpip_stack_socket.V4V6)
+>
+> if it was not clear, I use the this module type because I try to make a mirage library compatible while having a default implementation 🙂
+(Notez l'utilisation de l'emote de faquin) (pas Dinosaure je parle de Tim)
+
+On en reparle donc en message privé avant que Dinosaure ne réponde et là on se rend compte de notre bêtise : si tous les unikernels Mirage passaient leur stack via `main $ stack` et pas directement dans la fonction c'est qu'il y avait une raison...
+
+> Le condor du plateau — 18/11/2022 12:46
+> so I just have to make an entry point and then adapt it in the default implementation of the library
+> I was doing it wrong, thank you 🥹
+(Lire : "éjacule-moi dessus")
+
+> dinosaure — 18/11/2022 12:56
+> the reason behind is: the connect function (for any device) depends on the implementation (and should not be exposed by the interface)
+> then, the mirage tool knows how to "connect" a device and compose implementations, values which come from the connect and your unikernel 🙂
+> I just would like to notice that Hannes wrote an article about Albatross, our tool to deploy unikernels easily:
+=> https://hannes.nqsb.io/Posts/Albatross
+Merci Dinosaure pour cette explication.
+
+Donc on va suivre son exemple et override les fonctions `run` et `run_lwt` dans `mehari.unix`.
+Je mets par défaut `Ipaddr.V4.Prefix.loopback` pour l'adresse IPv4 et là encore des problèmes surviennent :
+```
+Fatal error: exception Unix.Unix_error(Unix.EADDRNOTAVAIL, "bind", "")
+```
+Étrange étant donné qu'on utilise l'adresse loopback.
+Je me retrouve plongé dans la même situation : plusieurs soirs de tristesse et d'impuissance.
+Mais cette fois j'eu la présence d'esprit de vérifier si c'était la bonne adresse :
+```
+127.0.0.0/8
+```
+"Tiens tiens tiens"
+Il manque un 1 !
+J'essaie donc de remplacer par `127.0.0.1/8` (avec `Ipaddr.V4.Prefix.of_string_exn` parce que flemme de propager le `result`).
+Là oui ça marche youpi !
+Sauf qu'il y a _encore_ un problème, notre fonction `serve` qui est la main loop du seveur n'est pas exécutée.
+Donc pareil je demande à Tim de poser la question sur le Discord :
+
+> Le condor du plateau — 22/11/2022 22:46
+> Hi, I keep hacking with Tcpip and I have a new problem.
+> The callback doesn't seem to run in the following snippet:
+>
+> let callback _ = Lwt_io.printl "Executed"
+> Stack.TCP.listen stack serve;
+> ...
+>
+> I'm using this function :
+=> https://mirage.github.io/mirage-tcpip/tcpip/Tcpip/Stack/module-type-V4V6/TCP/index.html#val-listen
+
+Vous remarquerez que l'on s'est trompé de nom de fonction et il manque un `in` donc on aura droit à un message d'étonnement de la part de "anmonteiro" (autre illustre membre de la communauté (réalisation d'un serveur HTTP en OCaml !)).
+Étant de véritables singes, on ne corrigera l'erreur que trop tard après humiliation.
+
+"mseri" (illustre membre de la communauté OCaml également) nous aura proposé une piste un peu plus tôt :
+
+> mseri — 22/11/2022 23:44
+> Have you tried to flush before listening?
+
+> Le condor du plateau — 22/11/2022 23:48
+> how can I do that?
+
+Pas de réponse à ce jour.
+
+C'est là que Dinosaure vint à notre rescousse et proposa deux pistes :
+
+> dinosaure — 23/11/2022 15:35
+> it's probably related to this issue (which is fixed):
+=> https://github.com/mirage/mirage-tcpip/issues/438
+> I would like to say that you should to listen ... ; Lwt.return_unit instead of listen ... |> Lwt.return first
+> if it does not solve your issue, I will probably try to go deeper and reproduce your case 🙂
+
+Pour la première option, avec un peu d'espoir notre version de `tcpip` n'était peut-être tout simplement que trop peu récente, mais après vérification cette issue date d'il y a presque 2 ans.
+
+Pour la deuxième option :
+
+> Le condor du plateau — 23/11/2022 15:44
+> I just tried this fix but it doesn't solve the issue 😔
+
+> dinosaure — 23/11/2022 15:56
+> hmmhmm
+> ok, I will try to reproduce
+
+Quoi !? Dinosaure va cloner (ou _a_ cloné !) notre code (que dis-je, notre torchon) sur sa machine personnelle et le compiler.
+Malgré les difficultés, on y a vu une petite victoire.
+
+Après une semaine d'attente impatiente, Dinosaure est sorti de sa longue réflexion pour répondre à Tim :
+
+> dinosaure — 2022/11/29 13:54
+> I finally found why your `listen` does not work. With `mirage-tcpip`, you must allocate a `Stack.t` (not only a `Stack.TCP.t`) and call the `Stack.listen` then. `Stack.TCP.listen` just adds internally a notification to `listen` but it does not really `listen()`
+> I made a little example for you here:
+=> https://paste.osau.re/Ytm?hl=ocaml#eyJhbGciOiJBMTI4Q0JDIiwiZXh0Ijp0cnVlLCJrIjoiREN6bVhZMm5jQTBQdXFCMGdTNktzUSIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0=
+
+Bien évidemment, son petit exemple est parfait.
+On remplace tout comme il faut, et là encore un problème : le client envoie un "hello" mais le serveur, au lieu d'envoyer le sien, envoie un paquet FIN et la connexion se termine là-dessus.
+C'est relativement problématique, mais comme à notre habitude :
+
+> Le condor du plateau — 2022/11/30 22:42
+> Hi, I want to upgrade the TCP flow to a TLS flow with `TLS.server_of_flow`
+=> https://docs.mirage.io/tls-mirage/Tls_mirage/Make/index.html#val-server_of_flow
+> but when running the server, while the client successfully send a client hello the server shutdowns the connection with FIN
+
+> dinosaure — 2022/12/01 16:13
+> Can you show where you use `server_of_flow`?
+
+> Le condor du plateau — 2022/12/01 16:15
+=> https://github.com/Psi-Prod/Mehari/blob/wip-merge/mehari/server_impl.ml#L43
+> just here
+
+Pas de réponse jusqu'à aujourd'hui.
+Alors que cela fait environ une semaine d'attente, Tim décide d'ouvrir une issue chez mirage/mirage-tcp-ip (qui n'est pas le bon repo mdr) avec un titre à peine anglais :
+=> https://github.com/mirage/mirage-tcpip/issues/500
+hannesm répond alors que `server_of_flow` est sensé fonctionner (comme sur tout les autres repo) mais ne comprends pas `match%lwt` (ou n'a pas compris pourquoi on l'a mis là, au choix). Tim s'empresse de lui répondre pour au final ne rien recevoir encore 2 semaines après. Dur...
+
+=> https://discuss.ocaml.org/t/first-release-candidate-for-ocaml-5-0-0/ Le 6 décembre, la release candidate d'OCaml 5 sort !
+Avec elle on peut utiliser la librairie Eio que Tim va utiliser pour écrire une nouvelle implémentation, puisque `mehari.mirage` est toujours en panne.
+Mehari change donc de forme et devient :
+* La partie (`mehari`) comme avant sans côté mirage
+* Une autre partie (`mehari_mirage`) compatible Mirage
+* Une autre partie (`mmehari_lwt_unix`) qui utilise `mehari.mirage` (`mehari.unix` d'avant)
+* Et une dernière (`mehari_eio`) qui comme son nom l'indique utilise `eio`.
+
+Avant d'arriver à la vraie solution, en cherchant un peu une des causes "habituelles" (même s'il faut chercher pour se taper un tel truc) est que le serveur ne trouve pas d'algorithme qu'il supporte dans la liste fournie par le "client hello" et FIN directement. Seulement ça n'arrive uniquement (j'imagine) quand on utilise un client SSL ou TLSv1 donc bon.
+
+Le 21 décembre, vers 4h et demi du matin, je comprends enfin comment activer le mode de débug avec `ocaml-tls` !
+Grande nouvelle puisqu'à la première connection :
+> 2022-12-21 04:29:36 +01:00: WRN [tcpv4v6-socket] error The default generator is not yet initialized.
+> To initialize the RNG with a default generator, and set up entropy collection and periodic reseeding as a background task, do the following:
+> If you are using MirageOS, use the random device in config.ml: `let main = Mirage.foreign "Unikernel.Main" (random @-> job)`, and `let () = register "my_unikernel" [main $ default_random]`.
+> If you are using Lwt, execute `Mirage_crypto_rng_lwt.initialize ()` at startup.
+> If you are using Async, execute `Mirage_crypto_eng_async.initialize (module Mirage_crypto_rng.Fortuna)` at startup.
+> If you are using Eio, execute in one of the fibers `Mirage_crypto_rng_eio.run (module Fortuna) env` (`env` from `Eio_main.run`).
+> Otherwise, there is no periodic reseeding. For an initial seed from getrandom(), execute `Mirage_crypto_rng_unix.initialize ()`. You can use `Mirage_crypto_rng.accumulate` and `Mirage_crypto_rng.reseed` to reseed the RNG manually.
+On a juste à ajouter
+```ocaml
+Mirage_crypto_rng_lwt.initialize ()
+```
+chez `mehari_unix` et le tour est joué, tout fonctionne correctement (ou presque).
+Solution qui marche mais très décevante, sachant l'attente que ça a généré.
+
+```
+FIN
+ de
+ OCaml
+```
