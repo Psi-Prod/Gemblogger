@@ -1,5 +1,9 @@
 ## Gemlog
 
+{%- autoescape false %}
+
 {% for article in articles -%}
 => {{ article.url }} {{ article.date.canonical }} {{ article.title }}
 {% endfor %}
+
+{% endautoescape -%}
