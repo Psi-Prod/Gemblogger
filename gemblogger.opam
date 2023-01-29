@@ -10,6 +10,10 @@ bug-reports: "https://github.com/Psi-Prod/Gemblogger/issues"
 depends: [
   "dune" {>= "2.9" & >= "3.0"}
   "ocaml" {>= "4.14"}
+  "logs" {>= "0.7.0"}
+  "mehari" {>= "0.1"}
+  "mehari-lwt-unix" {>= "0.1"}
+  "preface" {>= "1.0.0"}
   "odoc" {with-doc}
 ]
 build: [
