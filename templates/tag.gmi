@@ -1,16 +1,20 @@
-{%- for tag in tags -%}
-=> /{{ tag.link  }} {{ tag.name }} {{ tag.number }}
-{% endfor %}
+{% autoescape false -%}
 
 {%- set nb_tags = length (articles) -%}
-
-{% autoescape false -%}
 
 # {{ tag }} ({{ nb_tags }}
 {%- if nb_tags > 1 %} entries{%- else %} entry{%- endif %})
 
-{% endautoescape %}
-
-{%- for article in articles -%}
+{% for article in articles -%}
 => /{{ article.url }} {{ article.date.canonical }} {{ article.title }}
-{% endfor %}
+{%- if not loop.last %}
+{% endif %}
+{%- endfor %}
+
+## All tags
+
+{% for tag in tags -%}
+=> /{{ tag.link  }} {{ tag.name }} {{ tag.number }}
+{% endfor -%}
+
+{%- endautoescape -%}
