@@ -2,7 +2,7 @@ open Yocaml
 module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
-let target = "_build/"
+let target = "_site/"
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
 let layout_template = template "layout"
@@ -53,7 +53,6 @@ let generate_gemlog =
     (binary_update >>> articles_arrow
     >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
     >>> Template.apply_as_template (module Model.Articles) gemlog_template
-    >>> Template.apply_as_template (module Model.Articles) layout_template
     >>^ Stdlib.snd)
 
 let generate_feed =

@@ -19,6 +19,6 @@ let () =
   Mehari_lwt_unix.router
     [
       Mehari_lwt_unix.route ~typ:`Regex "/(.*)"
-        (Mehari_lwt_unix.static "_build/");
+        (Mehari_lwt_unix.static "_site/");
     ]
   |> Mehari_lwt_unix.run
