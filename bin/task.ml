@@ -57,6 +57,7 @@ let generate_gemlog =
     (binary_update >>> articles_arrow
     >>^ (fun ((), articles) -> (Model.Articles.make articles, ""))
     >>> Template.apply_as_template (module Model.Articles) gemlog_template
+    >>> Template.apply_as_template (module Model.Articles) layout_template
     >>^ Stdlib.snd)
 
 let generate_feed =

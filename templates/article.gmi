@@ -13,12 +13,17 @@
   {{ tag }}
   {%- if not loop.last %}, {% endif %}
 {%- endfor %}
-{% if description %}> {{ description }}{% endif %}
+
+{%- if description %}
+> {{ description }}
+{%- endif %}
 
 {%- endautoescape -%}
 
 {%- autoescape false -%}
 
 {{ body }}
+=> /gemlog.gmi Back to gemlog index
 
 {%- endautoescape -%}
+
