@@ -1,5 +1,6 @@
 let program =
   let open Yocaml in
+  let* () = Task.move_images in
   let* () = Task.move_index in
   let* () = Task.process_articles in
   let* () = Task.process_pages in
