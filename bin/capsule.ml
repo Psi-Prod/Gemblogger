@@ -1,14 +1,14 @@
 let build_dir = "_site"
 
-let article_or_not_found ~cwd article f =
+let article_or_not_found ~fs article f =
   let article_url = Yocaml.add_extension article "gmi" in
-  let dir = Eio.Path.(cwd / build_dir / "articles") in
+  let dir = Eio.Path.(fs / build_dir / "articles") in
   let articles = Eio.Path.read_dir dir in
   if List.mem article_url articles then f (dir, article_url)
   else Mehari.(response not_found) ""
 
-let post_comment store cwd req =
-  article_or_not_found ~cwd (Mehari.param req 1) (fun (_, article_url) ->
+let post_comment store fs req =
+  article_or_not_found ~fs (Mehari.param req 1) (fun (_, article_url) ->
       match Mehari.query req with
       | None -> Mehari.(response input) "Votre commentaire"
       | Some content ->
@@ -62,8 +62,8 @@ let commentary_template (c : Comment.t) =
     newline;
   ]
 
-let serve_article store cwd req =
-  article_or_not_found ~cwd (Mehari.param req 1) (fun (dir, article_url) ->
+let serve_article store fs req =
+  article_or_not_found ~fs (Mehari.param req 1) (fun (dir, article_url) ->
       let content = Eio.Path.(load (dir / article_url)) in
       let body =
         match
@@ -124,24 +124,23 @@ let program =
 
 let build () = Yocaml_unix.execute program
 
-let router store cwd =
+let router store fs =
   let regex_route = Mehari_eio.route ~typ:`Regex in
   Mehari_eio.router
     [
       Mehari_eio.route "/misc.gmi" serve_misc;
       regex_route {|/articles/([a-zA-Z0-9_-]+).gmi/comment|}
-        (post_comment store cwd);
-      regex_route {|/articles/([a-zA-Z0-9_-]+).gmi|} (serve_article store cwd);
-      regex_route "/(.*)" (Mehari_eio.static Eio.Path.(cwd / build_dir));
+        (post_comment store fs);
+      regex_route {|/articles/([a-zA-Z0-9_-]+).gmi|} (serve_article store fs);
+      regex_route "/(.*)" (Mehari_eio.static Eio.Path.(fs / build_dir));
     ]
 
-let main ~net ~cwd =
+let main ~net ~fs =
   let config = Irmin_git.config "_store" in
   let repo = Lwt_eio.run_lwt (fun () -> Database.Store.Repo.v config) in
   let store = Lwt_eio.run_lwt (fun () -> Database.Store.main repo) in
-  router store cwd |> Mehari_eio.logger
-  |> Mehari_eio.run net
-       ~certchains:Eio.Path.[ (cwd / "cert.pem", cwd / "key.pem") ]
+  router store fs |> Mehari_eio.logger
+  |> Mehari_eio.run net ~certchains:[ Config.certs fs ]
 
 let () =
   Logs.set_level (Some Info);
@@ -149,4 +148,4 @@ let () =
   Eio_main.run (fun env ->
       build ();
       Lwt_eio.with_event_loop ~clock:env#clock (fun _ ->
-          main ~net:env#net ~cwd:env#cwd))
+          main ~net:env#net ~fs:env#fs))
