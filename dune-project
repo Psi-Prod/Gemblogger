@@ -27,13 +27,19 @@
    (>= 0.6))
   (eio_main
    (>= 0.6))
+  (irmin
+   (>= 3.5.1))
+  (irmin-git
+   (>= 3.5.1))
+  (irmin-git
+   (>= 3.5.1))
   (logs
    (>= 0.7.0))
   (mehari
    (>= 0.1))
   (mehari-eio
    (>= 0.1))
-  (mirage-crypto-rng-eio
-   (>= 0.10.7))
   (preface
+   (>= 1.0.0))
+  (ptime
    (>= 1.0.0))))

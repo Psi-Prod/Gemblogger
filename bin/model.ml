@@ -29,10 +29,9 @@ module Article = struct
   let tags { tags; _ } = tags
 
   let to_rss_item url article =
-    Rss.(
-      Item.make ~title:article.title ~link:url ~pub_date:article.date
-        ~description:(Option.value ~default:"" article.description)
-        ~guid:(Guid.link url) ())
+    Rss.Item.make ~title:article.title ~link:url ~pub_date:article.date
+      ~description:(Option.value ~default:"" article.description)
+      ~guid:(Rss.Guid.link url) ()
 
   let make title date description authors tags =
     {
@@ -147,8 +146,7 @@ module Tags = struct
 
   let make = List.map (fun (tag, articles) -> (tag, List.length articles))
 
-  let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
-      tags =
+  let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a) tags =
     ( "tags",
       D.list
         (List.map

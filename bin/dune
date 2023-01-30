@@ -3,11 +3,15 @@
  (libraries
   eio
   eio_main
-  logs
+  irmin
+  irmin-git
+  irmin-git.unix
   mehari
   mehari-eio
-  mirage-crypto-rng-eio
-  preface
+  logs
+  lwt_eio
+  ptime
+  ptime.clock
   yocaml
   yocaml_yaml
   yocaml_unix

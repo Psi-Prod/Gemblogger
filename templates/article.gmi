@@ -26,4 +26,3 @@
 => /gemlog.gmi Back to gemlog index
 
 {%- endautoescape -%}
-
