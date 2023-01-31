@@ -32,3 +32,5 @@ _opam/
 *.pem
 
 _site/
+_store/
+bin/config.ml
