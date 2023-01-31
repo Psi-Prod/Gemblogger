@@ -43,7 +43,7 @@ let no_commentay ~article_url =
   let open Mehari.Gemtext in
   [
     newline;
-    heading `H1 "Commentaires";
+    heading `H1 "Commentaires (0)";
     newline;
     text "Pas encore de commentaires";
     newline;
