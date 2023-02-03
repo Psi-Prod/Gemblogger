@@ -29,7 +29,7 @@
 
 => https://github.com/Psi-Prod Github
 => https://docs.heyplzlookat.me Documentation of our softwares
-=> https://heyplzlookat.me French imageboard
+=> https://ib.heyplzlookat.me French imageboard
 
 ## Contact us
 
