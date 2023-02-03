@@ -34,3 +34,6 @@ _opam/
 _site/
 _store/
 bin/config.ml
+
+# MacOS
+.DS_Store
