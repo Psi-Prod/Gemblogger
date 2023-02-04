@@ -119,6 +119,9 @@ let serve_misc _ =
   Mehari_lwt_unix.respond_body (gemtext body)
     (gemini ~charset:"utf-8" ~lang:[ "en" ] ())
 
+let redirect_gemlog _ =
+  Mehari_lwt_unix.respond Mehari.redirect_perm "/gemlog.gmi"
+
 let program =
   let open Yocaml in
   let* () = Task.move_images in
@@ -137,6 +140,7 @@ let router store =
   Mehari_lwt_unix.router
     [
       Mehari_lwt_unix.route "/misc.gmi" serve_misc;
+      Mehari_lwt_unix.route "/articles" redirect_gemlog;
       regex_route {|/articles/([a-zA-Z0-9_-]+).gmi/comment|}
         (post_comment store);
       regex_route {|/articles/([a-zA-Z0-9_-]+).gmi|} (serve_article store);
@@ -147,8 +151,8 @@ let main () =
   let config = Irmin_git.config "_store" in
   let* repo = Database.Store.Repo.v config in
   let* store = Database.Store.main repo in
-  router store |> Mehari_lwt_unix.logger
-  |> Mehari_lwt_unix.run_lwt ~certchains:Config.certs
+  let* certchains = Config.certs in
+  router store |> Mehari_lwt_unix.logger |> Mehari_lwt_unix.run_lwt ~certchains
 
 let () =
   Logs.set_level (Some Info);
