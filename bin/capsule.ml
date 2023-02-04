@@ -135,6 +135,15 @@ let program =
 
 let build () = Yocaml_unix.execute program
 
+let wrapper fname _ =
+  let mime =
+    match Filename.extension fname with
+    | "" -> None
+    | ".gmi" -> Some (Mehari.gemini ~charset:"utf-8" ~lang:[ "en" ] ())
+    | _ -> Mehari.from_filename ~charset:"utf-8" fname
+  in
+  Mehari_lwt_unix.response_document ?mime fname
+
 let router store =
   let regex_route = Mehari_lwt_unix.route ~typ:`Regex in
   Mehari_lwt_unix.router
@@ -144,7 +153,7 @@ let router store =
       regex_route {|/articles/([a-zA-Z0-9_-]+).gmi/comment|}
         (post_comment store);
       regex_route {|/articles/([a-zA-Z0-9_-]+).gmi|} (serve_article store);
-      regex_route "/(.*)" (Mehari_lwt_unix.static build_dir);
+      regex_route "/(.*)" (Mehari_lwt_unix.static ~handler:wrapper build_dir);
     ]
 
 let main () =
