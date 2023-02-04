@@ -1,15 +1,14 @@
 (executable
  (name capsule)
  (libraries
-  eio
-  eio_main
   irmin
   irmin-git
   irmin-git.unix
   mehari
-  mehari-eio
+  mehari-lwt-unix
   logs
-  lwt_eio
+  lwt
+  lwt.unix
   ptime
   ptime.clock
   yocaml

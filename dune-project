@@ -13,32 +13,27 @@
 (source
  (github Psi-Prod/Capsule))
 
+(homepage "https://github.com/Psi-Prod/Capsule")
+
 (generate_opam_files true)
 
 (package
  (name capsule)
  (synopsis "Psi-prod's gemini capsule")
+ (description "Psi-prod's gemini capsule.")
  (depends
-  (dune
-   (>= 3.0))
   (ocaml
-   (>= 5.0))
-  (eio
-   (>= 0.6))
-  (eio_main
-   (>= 0.6))
+   (>= 4.14))
   (irmin
    (>= 3.5.1))
   (irmin-git
-   (>= 3.5.1))
-  (irmin-git
-   (>= 3.5.1))
+   (>= 3.0.0))
+  (mehari
+   (>= 0.2))
+  (mehari-lwt-unix
+   (>= 0.2))
   (logs
    (>= 0.7.0))
-  (mehari
-   (>= 0.1))
-  (mehari-eio
-   (>= 0.1))
   (preface
    (>= 1.0.0))
   (ptime

@@ -1,4 +1,2 @@
-val certs :
-  Eio.Fs.dir Eio.Path.t -> Eio.Fs.dir Eio.Path.t * Eio.Fs.dir Eio.Path.t
-
-val addr : Eio.Net.Ipaddr.v4v6
+val certs : (string * string) list
+val addr : Ipaddr.V4.Prefix.t

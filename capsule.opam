@@ -2,22 +2,20 @@
 opam-version: "2.0"
 version: "1.0"
 synopsis: "Psi-prod's gemini capsule"
+description: "Psi-prod's gemini capsule."
 maintainer: ["tim.arnouts@protonmail.com" "lelolartichaut@laposte.net"]
 authors: ["Psi-prod's members"]
 license: "GPL-3.0"
 homepage: "https://github.com/Psi-Prod/Capsule"
 bug-reports: "https://github.com/Psi-Prod/Capsule/issues"
 depends: [
-  "dune" {>= "2.9" & >= "3.0"}
-  "ocaml" {>= "5.0"}
-  "eio" {>= "0.6"}
-  "eio_main" {>= "0.6"}
+  "dune" {>= "2.9"}
+  "ocaml" {>= "4.14"}
   "irmin" {>= "3.5.1"}
-  "irmin-git" {>= "3.5.1"}
-  "irmin-git" {>= "3.5.1"}
+  "irmin-git" {>= "3.0.0"}
+  "mehari" {>= "0.2"}
+  "mehari-lwt-unix" {>= "0.2"}
   "logs" {>= "0.7.0"}
-  "mehari" {>= "0.1"}
-  "mehari-eio" {>= "0.1"}
   "preface" {>= "1.0.0"}
   "ptime" {>= "1.0.0"}
   "odoc" {with-doc}
