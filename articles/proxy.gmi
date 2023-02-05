@@ -1,0 +1,53 @@
+---
+title: Nouveau proxy Gemini2HTTP/S sur heyplzlookat.me !
+date: 2023-02-06
+authors:
+  - Léo
+tags:
+- proxy
+- gemini
+- http
+---
+
+Cela fait un moment qu'on voulait le déployer, le voilà enfin !
+Ce proxy est à disponible à cette adresse :
+=> https://heyplzlookat.me/
+Stupeur, seulement l'homepage du site est affichée (très joliment nonobstant, on y reviendra). Pour pouvoir accéder à d'autres capsules Gemini, il faut modifier l'adresse de cette façon : https://heyplzlookat.me/gemini/<host>/<path>?<query>. Ça n'est certes pas très pratique et /gemini/ nous renvoie un triste "EmptyURL" sans aucun CSS, mais nous y travaillons pour vous offrir une expérience de navigation inégalable. Mais au moins ça marche ! Et surtout on peut enfin renvoyer vers le site HTTP sans avoir honte des posts douteux postés sur l'image board.
+=> https://ib.heyplzlookat.me/ (qui est maintenant disponible ici)
+
+### Graphisme et design
+
+Comme vous avez pu le remarquer vous-même le graphisme du site est très travaillé : le délicieux mélange d'un fond nuageux et de design "brutaliste", permettant de désactiver les CSS et le JS (très peu) sans souci majeur d'affichage, de la même manière que chez portal.mozz.us (sauf que nous on a un joli fond) n'agresse pas les yeux pour une navigation en douceur.
+Le choix de l'icône est encore sur la table, n'hésitez pas à en proposer en commentaire ou bien par mail (ou même sur l'imageboard !!!).
+
+### Pourquoi un proxy
+
+Ce proxy vous sera évidemment utile si vous n'avez pas envie d'installer de client Gemini en plus de votre navigateur web, de pouvoir partager des liens Gemini facilement, mais surtout de pouvoir arroser votre plante sur le réseau wifi public de votre université préférée !
+
+L'intérêt d'un proxy à nous, c'est d'abord de pouvoir afficher notre page via HTTP comme explicité plus haut, puis d'élargir l'offre qui est somme toute assez limitée puis d'utiliser notre librairie client Razzia (sortie presque imminente). Ainsi les deux technologies sont mises en pratique en allant sur la capsule via ce proxy !
+
+### Point technique
+
+Comme le serveur est codé en OCaml et donc "standalone", il faut trouver le moyen de le faire tourner avec apache. La solution est de créer un VirtualHost comme d'habitude mais d'y ajouter ProxyPass (et ProxyPassReverse) :
+```
+<VirtualHost *:80>
+  ServerName heyplzlookat.me
+  ServerAlias www.heyplzlookat.me
+
+  ProxyPass / http://127.0.0.1:8080/ # Votre adresse etc
+  ProxyPassReverse / http://127.0.0.1:8080/ # Idem
+  ProxyRequests Off # Pourquoi mettre ça sur "Off" est expliqué dans l'article plus bas
+</VirtualHost>
+```
+Pour pouvoir utiliser Proxy et cie, il faut au préalable l'activer :
+```sh
+a2enmod proxy proxy_http
+```
+=> https://perhonen.fr/blog/2015/05/un-reverse-proxy-apache-avec-mod_proxy-1713 J'ai piqué la solution ici.
+Ensuite certbot s'occupe tout seul d'adapter ça pour HTTPS.
+
+### Conclusion
+
+Nous espérons que ce site vous sera utile et tout retour est bien entendu bienvenu.
+
+NOTE: Artichaut fait le puriste en affirmant que très peu de javascript est présent sur le site mais il vous ment. C'est bien lui qui a insisté pour ajouter un script de coloration syntaxique (embourgeoisement délétère) et un parser d'ANSI code (schizophrénie)
