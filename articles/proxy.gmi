@@ -24,7 +24,7 @@ Le choix de l'icône est encore sur la table, n'hésitez pas à en proposer en c
 
 Ce proxy vous sera évidemment utile si vous n'avez pas envie d'installer de client Gemini en plus de votre navigateur web, de pouvoir partager des liens Gemini facilement, mais surtout de pouvoir arroser votre plante sur le réseau wifi public de votre université préférée !
 
-L'intérêt d'un proxy à nous, c'est d'abord de pouvoir afficher notre page via HTTP comme explicité plus haut, puis d'élargir l'offre qui est somme toute assez limitée puis d'utiliser notre librairie client Razzia (sortie presque imminente). Ainsi les deux technologies sont mises en pratique en allant sur la capsule via ce proxy !
+L'intérêt d'un proxy à nous est d'abord de servir notre page via HTTP comme explicité plus haut, d'élargir l'offre qui est somme toute assez limitée et enfin d'utiliser notre bibliothèque client Gemini Razzia (sortie presque imminente). Ainsi, les deux technologies sont mises en pratique lorsqu'on se rend sur la capsule via ce proxy !
 
 ### Point technique
 
@@ -50,4 +50,4 @@ Ensuite certbot s'occupe tout seul d'adapter ça pour HTTPS.
 
 Nous espérons que ce site vous sera utile et tout retour est bien entendu bienvenu.
 
-NOTE: Artichaut fait le puriste en affirmant que très peu de javascript est présent sur le site mais il vous ment. C'est bien lui qui a insisté pour ajouter un script de coloration syntaxique (embourgeoisement délétère) et un parser d'ANSI code (schizophrénie)
+NOTE de Tim: Artichaut fait le puriste en affirmant que très peu de javascript est présent sur le site mais il vous ment. C'est bien lui qui a insisté pour ajouter un script de coloration syntaxique (embourgeoisement délétère) et un parser d'ANSI code (schizophrénie).
