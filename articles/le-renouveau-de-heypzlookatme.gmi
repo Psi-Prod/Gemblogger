@@ -1,0 +1,40 @@
+---
+title: "Le renouveau de Heyplzlookat.me"
+date: 2022-02-08
+authors:
+  - Tim
+description: Comment est généré ce blog
+tags:
+  - gemini
+  - meta
+---
+
+Nous avons réécrit le serveur qui fait tourner ce blog ! Nous avons opté pour un mélange bâtard : un générateur de blog statique (YOcaml) et Mehari qui se contente simplement de servir le contenu généré et d'ajouter quelques fonctionnalités dynamiques comme les commentaires sous les articles ou la page misc. Le blog est ainsi construit sur une stack en Pure OCaml ©️ et nous a permis de remplacer notre ancien serveur qui était un bricolage honteux.
+
+## YOcaml
+
+J'avais déjà donné une chance à YOCaml il y a un an pour générer mon blog personnel, mais je l'avais trouvé trop dur à prendre en main. Tout est désormais plus simple depuis que je suis plus à l'aise en OCaml. En plus d'être bien documenté, YOCaml fournit de nombreux exemples et un tutoriel, ce qui le rend assez user-friendly. J'imagine cependant que l'aspect "branlette programmation fonctionnelle" peut s'avérer un peu repoussant, mais il semble assumé selon les dires xthmlboi, le créateur de YOcaml :
+
+> The objective of the project is mainly to learn how to use OCaml (and to discover its ecosystem). It is therefore likely that some parts of the code are not idiomatic and please do not hesitate to tell me or to contribute. In addition, it was an opportunity to experiment with the ergonomics of the Preface library and to provide it with slightly less academic examples.
+
+=> https://yocaml.github.io/doc/yocaml/index.html YOcaml
+
+## Gemblogger
+
+J'ai donc forké le blogger de xhtmlboi sous le nom de Gemblogger pour l'adapter à Gemini. Ainsi, d'autres utilisateurs peuvent eux-mêmes le forker pour construire leur blog personnel. J'ai de plus ajouté une page listant tous les tags répertoriés, une fonctionnalité qui faisait défaut au blogger original.
+
+=> https://github.com/xhtmlboi/blogger
+=> https://github.com/Psi-Prod/Gemblogger
+
+## Nouveautées
+
+Utiliser YOCaml nous a permis d'éviter d'empiler rustine sur rustine et implémenté proprement plus de fonctionnalités. Parmis les nouveautés notables, il y a :
+
+* Un système de tag navigable
+* Un flux RSS (enfin)
+* Un lien vers la page précédente en pied de page qui suit  préceptes énoncés ici :
+=> /articles/note-design-document-gemtext.gmi Une note sur le design de document Gemtext
+
+Il semble que les feeds Atom soient préférés au flux RSS sur le geminispace c'est pourquoi j'ai d'ores et déjà entamé des pourparlers avec xhtmlboi pour ajouter le support d'Atom à YOCaml :
+
+=> https://github.com/xhtmlboi/yocaml/issues/42
