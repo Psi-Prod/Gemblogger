@@ -1,0 +1,109 @@
+---
+title: Un GADT dans Mehari
+date: 2022-12-05
+authors:
+  - Tim
+tags:
+- ocaml
+- gadt
+- mehari
+---
+
+En travaillant sur Mehari, notre bibliothèque implémentant le protocole Gemini côté serveur, j'ai été confronté à un problème lorsque j'ai dû réfléchir à comment représenter le status d'une réponse. En effet, il est possible de joindre un _body_ à la réponse en fonction de son status  d'après la spécification. De manière générale, le message complémentaire présent dans le _header_ (le champ "META") dépend du status de la réponse. Ainsi, en cas de succès, le _header_ doit contenir le _mime type_ associé au body joint ; en cas de timeout, le nombre de secondes restantes avant une nouvelle requête ; en cas d'erreur, un message informatif, etc.
+
+## Une première approche
+
+J'ai donc d'abord procédé de la manière la plus naturelle, un simple type algébrique :
+
+```ocaml
+module Response = struct
+  type status =
+    | Input of string
+    | SensitiveInput of string
+    | Success of Mime.t * Body.t
+    | ...
+    | SlowDown of int
+    | ...
+
+  let status_of_code meta = function
+    | 10 -> Input meta
+    | 11 -> SensitiveInput meta
+    | ...
+    | 44 -> SlowDown (Int.to_string meta)
+    | ...
+
+  let int_of_code = function
+    | Input _ -> 10
+    | SensitiveInput _ -> 11
+    | ...
+
+  let respond status =
+    let code = int_of_code status in
+    let meta, body =
+      match status with
+      | Success (m, b) ->  (Mime.to_string m,Some b)
+      | SlowDown n -> (Int.to_string n, None)
+      | Input msg | SensitiveInput msg | ... msg -> (msg, None)
+    in
+    let body = Option.fold body ~none:"" ~some:Body.to_string in
+    Printf.sprintf "%i %s\r\n%s" code meta body
+end
+```
+
+Le type `status` possède donc 18 constructeurs représentant chacun des status décris dans la spécification (une implémentation rudimentaire pourrait cependant se contenter d'en fournir seulement 5 fondamentaux pour des questions de simplicité). De ce fait, il est assez laborieux de récupérer leur contenu dans un motif et je suis alors contraint de faire une longue branche "OU" dans mon _match_.
+
+## Les GADTS à la rescousse
+
+J'ai donc finalement opté pour une solution faisant appel aux GADTS en réfléchissant à simplifier tout cela :
+
+```ocaml
+module Response = struct
+  type 'a status = int * 'a typ
+
+  and _ typ =
+    | Success : Body.t -> Mime.t typ
+    | SlowDown : int -> string typ
+    | Meta : string typ
+
+let respond (type a) ((code, status) : a status) (meta : a) =
+  let meta, body =
+    match status with
+    | Success body -> (Mime.to_string meta, Some body)
+    | SlowDown n -> (Int.to_string n, None)
+    | Meta -> (meta, None)
+  in
+  let body = Option.fold body ~none:"" ~some:Body.to_string in
+  Printf.sprintf "%i %s\r\n%s" code meta body
+end
+
+module Status = struct
+  let input = (10, Meta)
+  let sensitive_input = (11, Meta)
+  let success body = (20, Success body)
+  ...
+  let slow_down n = (44, SlowDown n)
+  ...
+end
+```
+
+Ici, j'ai transformé le type `status` en un couple composé d'un entier correspondant au code associé et d'un GADT qui contient des informations plus détaillées. J'ai aussi regroupé tous les constructeurs nécessitant un `string` en argument en un seul : `Meta`.
+
+Grâce à ce changement de représentation, j'obtiens une fonction `respond` dont le type est un peu plus complexe. En effet, le type du paramètre `meta` varie en fonction du type qui habite `status`. Je peux ainsi l'utiliser comme ceci :
+
+```ocaml
+let _ = Mehari.(respond input "Enter your message")
+let _ = Mehari.(respond slow_down 4)
+let _ = Mehari.(respond not_found "Not found!")
+```
+
+En contrepartie, je dois faire une croix sur la fonction `status_of_code` de la précédente implémentation. Effectivement, il est impossible d'écrire une fonction avec le type `int -> 'a status` qui fait varier le type habitant de `status` (`'a`) en fonction d'une valeur entière. Il faudrait pour cela un système de type supportant les types dépendants, ce qui n'est pas le cas d'OCaml.
+
+## Conclusion
+
+Les GADTs sont donc très utiles lorsque l'on est face à un problème complexe qui astreint à fournir des informations plus détaillées sur les types au compilateur. Cependant, il ne faut pas pour autant tomber dans le piège de la complexification et vouloir les utiliser dans des cas qui n'en nécessite pas. À vrai dire, j'étais assez content d'avoir trouvé un cas d'usage au GADT étant très friand d'article qui les présentent comme une solution miracle à tous les problèmes de type complexe. Voulant accomplir (en moindre mesure) ce que des membres de la communauté avaient déjà écrit :
+
+=> https://blog.mads-hartmann.com/ocaml/2015/01/05/gadt-ocaml.html
+=> https://blog.osau.re/articles/gadt_and_state_machine.html
+=> https://blog.janestreet.com/why-gadts-matter-for-performance/
+=> https://github.com/ocsigen/lwt/blob/master/src/core/lwt.ml#L392 Même Lwt
+=> https://github.com/xvw/planet/blob/master/content/posts/gadt.org
