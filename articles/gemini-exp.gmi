@@ -62,6 +62,11 @@ Léo :
 > On a droit à 1024 octets de metadata (MIME, charset, etc) donc pouvoir inclure la taille du fichier ainsi qu'un checksum ça coûte pas grand chose, ils seraient évidemment optionnels (le header permet déjà d'inclure un paramètre `lang` qui est disponible pour les fichiers Gemini).
 > Avec un paramètre `content-size` ou quelque chose du genre côté client on pourrait faire comprendre explicitement à l'utilisateur que la connexion n'a pas planté mais que c'est juste un flux continu de donnée.
 
+## Pas d'ancre
+
+Tim :
+> Pour un protocole qui privéligie le contenu à la façon dont il est affiché, je trouve que c'est un peu cocasse que la manière d'utiliser l'ancre d'une URL ne soit pas spécifié (ce qu'il y après un # et qui permet de jump directement sur une partie du document). Ce manque se fait vraiment sentir quand je partage un article et que veux seulement montrer une partie spécifique. Je dois à la place compter de tête le nombre de titre jusqu'à la question désiré ou copier son titre ce qui est un peu casse-tête.
+
 ## Conclusion
 
 Léo :
@@ -70,4 +75,4 @@ Léo :
 > Après si on se motivait à (au moins) envoyer un mail à solderpunk ça serait un peu moins hypocrite xd
 
 Tim :
-> C'est vraiment bien Gemini pour écrire du texte libre.
+> C'est vraiment bien Gemini pour blogger.

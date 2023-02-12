@@ -32,7 +32,7 @@ Utiliser YOCaml nous a permis d'éviter d'empiler rustine sur rustine et implém
 
 * Un système de tag navigable
 * Un flux RSS (enfin)
-* Un lien vers la page précédente en pied de page qui suit  préceptes énoncés ici :
+* Un lien vers la page précédente en pied de page qui suit les préceptes énoncés ici :
 => /articles/note-design-document-gemtext.gmi Une note sur le design de document Gemtext
 
 Il semble que les feeds Atom soient préférés au flux RSS sur le geminispace c'est pourquoi j'ai d'ores et déjà entamé des pourparlers avec xhtmlboi pour ajouter le support d'Atom à YOCaml :

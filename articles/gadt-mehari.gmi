@@ -9,7 +9,7 @@ tags:
 - mehari
 ---
 
-En travaillant sur Mehari, notre bibliothèque implémentant le protocole Gemini côté serveur, j'ai été confronté à un problème lorsque j'ai dû réfléchir à comment représenter le status d'une réponse. En effet, il est possible de joindre un _body_ à la réponse en fonction de son status  d'après la spécification. De manière générale, le message complémentaire présent dans le _header_ (le champ "META") dépend du status de la réponse. Ainsi, en cas de succès, le _header_ doit contenir le _mime type_ associé au body joint ; en cas de timeout, le nombre de secondes restantes avant une nouvelle requête ; en cas d'erreur, un message informatif, etc.
+En travaillant sur Mehari, notre bibliothèque implémentant le protocole Gemini côté serveur, j'ai été confronté à un problème lorsque j'ai dû réfléchir à comment représenter le status d'une réponse. En effet, il est possible de joindre ou non un _body_ à la réponse en fonction de son status. De manière générale, le message complémentaire présent dans le _header_ (le champ "META") dépend du status de la réponse. Ainsi, en cas de succès, le _header_ doit contenir le _mime type_ associé au body joint ; en cas de timeout, le nombre de secondes restantes avant une nouvelle requête ; en cas d'erreur, un message informatif, etc.
 
 ## Une première approche
 
@@ -50,7 +50,7 @@ module Response = struct
 end
 ```
 
-Le type `status` possède donc 18 constructeurs représentant chacun des status décris dans la spécification (une implémentation rudimentaire pourrait cependant se contenter d'en fournir seulement 5 fondamentaux pour des questions de simplicité). De ce fait, il est assez laborieux de récupérer leur contenu dans un motif et je suis alors contraint de faire une longue branche "OU" dans mon _match_.
+Le type `status` possède donc 18 constructeurs représentant chacun des status décris dans la spécification (une implémentation rudimentaire peut cependant se contenter d'en fournir seulement 5 fondamentaux pour des questions de simplicité). De ce fait, il est assez laborieux de récupérer leur contenu dans un motif et je suis alors contraint de faire une longue branche "OU" dans mon _match_.
 
 ## Les GADTS à la rescousse
 
@@ -96,11 +96,11 @@ let _ = Mehari.(respond slow_down 4)
 let _ = Mehari.(respond not_found "Not found!")
 ```
 
-En contrepartie, je dois faire une croix sur la fonction `status_of_code` de la précédente implémentation. Effectivement, il est impossible d'écrire une fonction avec le type `int -> 'a status` qui fait varier le type habitant de `status` (`'a`) en fonction d'une valeur entière. Il faudrait pour cela un système de type supportant les types dépendants, ce qui n'est pas le cas d'OCaml.
+En contrepartie, je dois faire une croix sur la fonction `status_of_code` de la précédente implémentation. Effectivement, il est impossible d'écrire une fonction avec le type `int -> 'a status` qui fait varier le type habitant de `status` (`'a`) en fonction d'une valeur entière. Il faudrait pour cela un système de type dépendant, ce qui n'est pas le cas d'OCaml.
 
 ## Conclusion
 
-Les GADTs sont donc très utiles lorsque l'on est face à un problème complexe qui astreint à fournir des informations plus détaillées sur les types au compilateur. Cependant, il ne faut pas pour autant tomber dans le piège de la complexification et vouloir les utiliser dans des cas qui n'en nécessite pas. À vrai dire, j'étais assez content d'avoir trouvé un cas d'usage au GADT étant très friand d'article qui les présentent comme une solution miracle à tous les problèmes de type complexe. Voulant accomplir (en moindre mesure) ce que des membres de la communauté avaient déjà écrit :
+Les GADTs sont donc utiles lorsque l'on veut donner des informations de types plus détaillées au compilateur. Il ne faut cependant pas pour autant tomber dans le piège de la complexification et vouloir les utiliser dans des cas qui n'en nécessite pas. À vrai dire, j'étais assez content d'avoir trouvé un cas d'usage au GADT étant très friand d'article qui les présentent comme une solution miracle à tous les problèmes de type complexe. Voulant reproduire (en moindre mesure) ce que des membres de la communauté avaient déjà écrit :
 
 => https://blog.mads-hartmann.com/ocaml/2015/01/05/gadt-ocaml.html
 => https://blog.osau.re/articles/gadt_and_state_machine.html

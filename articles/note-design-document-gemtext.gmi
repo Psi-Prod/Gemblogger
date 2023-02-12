@@ -12,7 +12,7 @@ tags:
 
 ## Pas de titre de premier niveau insignifiant en haut de page
 
-Les navigateurs Gemini ultra-modernes qui implémentent un système d'onglet utilisent souvent une heuristique consistant à chercher le premier titre de niveau 1 et l'afficher en tant que "nom" afin de rendre identifiable l'onglet (de façon analogue au comportement de la balise `title` de la tête d'un document HTML). Ainsi, le grand savant que je suis en a tiré la maxime suivante :
+Les navigateurs Gemini ultra-modernes qui implémentent un système d'onglet utilisent souvent une heuristique consistant à chercher le premier titre de niveau 1 et l'afficher en tant que "nom" afin de rendre identifiable l'onglet (de façon analogue au comportement de la balise `title` de la tête d'un document HTML). Ainsi, le grand savant éclairé que je suis en a tiré la maxime suivante :
 
 > Il faut éviter de placer un titre de premier niveau insignifiant avant plusieurs autres et opter à la place pour un premier titre distinguable et clair
 
