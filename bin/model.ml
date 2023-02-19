@@ -29,10 +29,12 @@ module Article = struct
   let tags { tags; _ } = tags
 
   let to_rss_item url article =
-    Rss.(
-      Item.make ~title:article.title ~link:url ~pub_date:article.date
-        ~description:(Option.value ~default:"" article.description)
-        ~guid:(Guid.link url) ())
+    let open Rss in
+    Item.make ~title:article.title ~link:url ~pub_date:article.date
+      ~description:(Option.value ~default:"" article.description)
+      ~guid:(Guid.link url) ()
+      ~categories:
+        (List.map (fun c -> Category.make ~category:c ()) article.tags)
 
   let make title date description authors tags =
     {
