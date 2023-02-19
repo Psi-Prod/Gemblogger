@@ -27,7 +27,7 @@
   (irmin
    (>= 3.5.1))
   (irmin-git
-   (>= 3.0.0))
+   (>= 3.6.0))
   (mehari
    (>= 0.2))
   (mehari-lwt-unix
