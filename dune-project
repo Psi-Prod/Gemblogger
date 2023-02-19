@@ -2,33 +2,39 @@
 
 (version 1.0)
 
-(name gemblogger)
+(name capsule)
 
 (license "GPL-3.0")
 
-(authors "The gemblogger programmers")
+(authors "Psi-prod's members")
 
-(maintainers "tim.arnouts@protonmail.com")
+(maintainers "tim.arnouts@protonmail.com" "lelolartichaut@laposte.net")
 
 (source
- (github Psi-Prod/Gemblogger))
+ (github Psi-Prod/Capsule))
+
+(homepage "https://github.com/Psi-Prod/Capsule")
 
 (generate_opam_files true)
 
 (package
- (name gemblogger)
- (synopsis
-  "A Gemini capsule in pure OCaml build on top of YOCaml and Mehari")
+ (name capsule)
+ (synopsis "Psi-prod's gemini capsule")
+ (description "Psi-prod's gemini capsule.")
  (depends
-  (dune
-   (>= 3.0))
   (ocaml
    (>= 4.14))
+  (irmin
+   (>= 3.5.1))
+  (irmin-git
+   (>= 3.0.0))
+  (mehari
+   (>= 0.2))
+  (mehari-lwt-unix
+   (>= 0.2))
   (logs
    (>= 0.7.0))
-  (mehari
-   (>= 0.1))
-  (mehari-lwt-unix
-   (>= 0.1))
   (preface
+   (>= 1.0.0))
+  (ptime
    (>= 1.0.0))))

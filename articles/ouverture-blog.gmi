@@ -1,0 +1,18 @@
+---
+title: Ouverture du blog
+date: 2022-11-25
+authors:
+  - Léo
+  - Tim
+tags:
+- meta
+---
+
+Bienvenue sur notre blog ! On publiera désormais ici des articles (terme un peu trop formel) de taille variable sur tout ce que l'on trouve intéressant en essayant d'être aussi régulier que possible.
+Ils porteront principalement sur nos centres d'intérêts, c'est-à-dire la programmation, OCaml, la musique, la politique (peut-être) et sur nos projets, mais on ne s'interdit pas pour autant d'écrire sur d'autres sujets (devlog, avis personnels, etc).
+
+Notre objectif est d'avoir une ligne éditoriale, un terme encore trop professionnel, plutôt libre, en essayant d'adopter un ton informel tout en discutant de sujets sérieux.
+
+Une capsule Gemini nous paraît parfaite pour cet usage, en plus de garantir une certaine discrétion pour nous exprimer de manière plus personnelle.
+
+En espérant que vous trouverez divertissantes nos publications !

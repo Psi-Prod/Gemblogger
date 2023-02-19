@@ -1,4 +1,9 @@
-## Gemlog
+# Heyplzlookatme's Gemlog
+
+=> /feed.xml RSS feed
+=> /browse-tag.gmi Browe our text by tags
+
+## Logs
 
 {%- autoescape false %}
 

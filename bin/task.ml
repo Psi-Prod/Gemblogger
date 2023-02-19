@@ -3,6 +3,7 @@ module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
 let target = "_site/"
+let images_target = "images" |> into target
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
 let layout_template = template "layout"
@@ -15,6 +16,9 @@ let gemlog = "gemlog.gmi" |> into target
 let rss_feed = "feed.xml" |> into target
 let tag_file tag = Model.tag_path tag |> into target
 let tag_template = template "tag"
+
+let move_images =
+  process_files [ "images" ] File.is_image (Build.copy_file ~into:images_target)
 
 let move_index =
   process_files [ "pages" ] File.is_index (Build.copy_file ~into:target)

@@ -1,0 +1,27 @@
+---
+title: Une note sur le design de documents Gemtext
+date: 2023-01-31
+authors:
+  - Tim
+description: L'avis désastreux du jour
+tags:
+- design
+- gemtext
+- gemini
+---
+
+## Pas de titre de premier niveau insignifiant en haut de page
+
+Les navigateurs Gemini ultra-modernes qui implémentent un système d'onglet utilisent souvent une heuristique consistant à chercher le premier titre de niveau 1 et l'afficher en tant que "nom" afin de rendre identifiable l'onglet (de façon analogue au comportement de la balise `title` de la tête d'un document HTML). Ainsi, le grand savant éclairé que je suis en a tiré la maxime suivante :
+
+> Il faut éviter de placer un titre de premier niveau insignifiant avant plusieurs autres et opter à la place pour un premier titre distinguable et clair
+
+Peut-être que certains objecteront qu'Heyplzlookat.me lui-même dérogeait auparavant à cette maxime en dépit de toute morale en affichant un titre de premier niveau insignifiant dans la version initiale du site. Cette période sombre est désormais bien révolue et les visiteurs de Heyplzlookat.me peuvent désormais mieux identifier leurs onglets sans écumer de rage la bave aux lèvres. Joie.
+
+## Header et footer
+
+Même si le Gemtext est un format simple, c'est parfois compliqué de faire des choix de design avec si peu de balises. J'étais par exemple dubitatif sur le fait de placer un lien vers la page précédente en haut de page. C'est en utilisant un client Gemini mobile (Bourane) que je me suis rendu compte que c'est en fin de compte plus naturel d'avoir un lien vers la page précédente en pied de page. Tout d'abord parce qu'un lien en haut de page est la première chose visible à l'écran (avant même le titre) ce qui mange une partie non négligeable de la place sur mobile. Et ensuite car tous les clients n'implémentent pas d'historique navigable. Enfin, si l'utilisateur a cliqué sur une page, c'est qu'au demeurant, il est intéressé et va au moins parcourir cette dernière en diagonale jusqu'à arriver à sa fin où sera habilement placé le lien de retour en arrière.
+
+## Conclusion
+
+Reproduire les mêmes choix de design que le Web classique sur le Geminispace est une mauvaise idée.

@@ -147,9 +147,7 @@ end
 module Tags = struct
   type t = (string * int) list
 
-  let make articles =
-    List.map (fun (tag, articles) -> (tag, List.length articles)) articles
-    |> List.sort (fun (t, _) (t', _) -> String.compare t t')
+  let make = List.map (fun (tag, articles) -> (tag, List.length articles))
 
   let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a) tags =
     ( "tags",

@@ -1,0 +1,84 @@
+---
+title: Petit guide d'installation de BVE sur MacOS【2K23】
+date: 2023-01-11
+authors:
+  - Léo
+tags:
+- mac
+- wine
+- bvets
+---
+
+BVE est un simulateur de train, équivalent japonais d'OpenRails, disponible à l'adresse
+=> https://bvets.net
+À l'inverse d'OR où la grande majorité des routes et matériel roulant sont occidentaux, ici c'est quasi exclusivement japonais.
+
+Il existe déjà un guide d'installation du simulateur sous macOS :
+=> https://austinhuang.me/bve.html
+Le seul souci étant qu'il est impossible de le suivre sur un Mac ne supportant plus les exécutables 32-bits (triste, je sais), puisqu'il utilise WineBottler (et par extension Wine32).
+
+Après plusieurs jours de galère, puis un an d'abandon, puis un retour triomphal j'ai pu installer BVE 5 sur un Mac récent !
+Cela nécessite de posséder CrossOver (que je ne possède pas, en tant que pauvre étudiant boursier) ou alors d'utiliser wine32on64, disponible avec le cask de Gcenx.
+Je ne sais pas si cela fonctionne avec, mais je vois pas pourquoi ça ne serait pas le cas.
+
+## Installation
+
+* Créer une bouteille Windows 7 (pas 64-bits) ; je n'ai pas testé avec d'autres donc retours bienvenus
+* Y installer .NET 3.5 ; sur CrossOver il suffit d'utiliser leur gestionnaire de paquets, sur wine32on64 il faut sûrement aller chercher l'installateur chez Microsoft
+* Remplacer C:\windows\system32\d3dx9_43.dll par une version native ; j'ai simplement cherché le nom de la librairie sur internet et pris le premier résultat, ymmv
+* Installer Visual C++ avec l'installateur fourni, j'imagine
+* Installer BVE 5 avec l'installateur fourni (j'ai installé la version 5.8, à voir avec d'autres)
+* C'est tout ! (normalement)
+
+L'étape pour DirectX 9 a été pour moi nécessaire, parce qu'installer via le gestionnaire de paquets (avec DirectX End User Runtime Web Installer) ratait au moment d'installer MS HTML Rendering Engine (empêchant ainsi l'installation de DirectX), même dans une bouteille "compatible" style XP.
+Si aucun problème chez vous, tant mieux.
+
+Pour BVE 6, c'est .NET 4.8 qu'il faut installer dans une bouteille 64-bits.
+Pour DirectX, à priori c'est toujours d3dx9_43.dll qu'il faut remplacer mais j'ai pas encore testé.
+
+## Routes
+
+L'installation des routes se fait dans C:\users\crossover\My Documents\BveTs\Scenarios (chez moi c'est équivalent à ~/Documents/BveTs/Scenarios), les routes sont des fichiers textes et les données dans des dossiers.
+
+### 小田急小田原線【新宿～向ヶ丘遊園】
+>Odakyu ligne Odawara【Shinjuku～Mukōgaoka-Yūen】
+=> http://umikyut.ojaru.jp/bve-O.html
+
+Le dossier 小田急小田原線【新宿～向ヶ丘遊園】n'était pas reconnu sur mon ordinateur pour une raison que j'ignore, j'ai donc renommé le dossier avec un nom ASCII et changé les chemins dans les 小田急小田原線【*】.txt (les routes).
+
+Il faut aussi ne pas oublier de bien copier dans chaque train Odakyu la DLL OdakyuAts dans oer-meel/odakyu*/ATS et ATS/renewal pour la série 4000.
+
+### 東急東横線・みなとみらい線
+>Tokyu ligne Toyoko et Minato ligne Mirai
+=> https://csp2206.exblog.jp/22573868/
+
+Comme écrit dans l'article de M. Huang, il y a des problèmes type "Could not open the file" avec certains fichiers WAV dans certaines routes.
+Comme pour la route du dessus, c'est renommer le dossier 東急東横線・みなとみらい線 en un nom ASCII qui est une solution.
+Peut-être que ce souci est réparable en changeant la locale, mais encore une fois flemme de tester, à vous de voir.
+
+### 山手線
+>Ligne Yamanote
+=> https://tn-e235.jimdofree.com/bve-add-on/路線データ/山手線/
+
+S'il vous plaît si vous avez cette route stockée sur votre disque dur s'il vous plaît uploadez ça sur les interwebz et postez le lien en commentaire ou envoyez-la moi par mail je sais pas
+S'il y a bien un truc pour moi qui fais office de choc culturel avec le Japon c'est internet
+
+Edit: g trouvé
+=> https://www.reddit.com/r/trainsim/comments/r9wltt/yamanote_line_outer_circle_for_bve/
+we did it reddit xDDDDD
+
+Au final j'ai testé en changeant la locale et effectivement, il suffisait d'ajouter
+```
+"LC_ALL" = "ja_JP.SJIS"
+```
+à cxbottle.conf pour que tout fonctionne comme il le faut.
+
+## Articles & liens biens
+
+=> https://austinhuang.me/bve.html Le lien que j'ai mis là-haut
+=> https://hittokey.wordpress.com/2020/12/01/bve-train-simulator-5-6-the-big-english-guide-on-how-to-use-it-and-why/ Bon tutoriel avec liens vers des routes
+=> https://gm-marka.com/bve/ Encore des routes
+=> https://wikiwiki.jp/bvets/ Routes, matériel roulant
+=> https://www.reddit.com/r/trainsim/comments/ixx9z6/bve_trainsim_version_6_and_58_now_released/ Des routes et surtout explication de BVE 6
+
+J'ai pas encore énormément cherché d'autres liens donc si vous en avez des sympas n'hésitez pas à les partager en commentaire.

@@ -1,0 +1,77 @@
+---
+title: Comment je fais mon informatique
+date: 2023-01-05
+authors:
+  - Tim
+tags:
+- workflow
+- ocaml
+- écosystème
+---
+
+## Qu'est-ce que je fais avec mon ordinateur
+
+À l'origine, je voulais décrire ce que je faisais avec mon ordinateur mais je me suis rendu compte qu'une grosse partie de l'article concernait OCaml et que le reste était assez peu intéressant. Je vais donc détailler ici uniquement mon workflow OCaml.
+
+## L'éditeur de texte
+
+J'utilise VSCodium qui est une version de VSCode purgée de la télémétrie que Microsoft y incorpore. Je changerai peut-être un jour pour Nvim car j'ai l'impression de perdre beaucoup trop de temps à frapper sur mon clavier inutilement. Le fait que VSCode soit gourmand en mémoire ne me dérange pas plus que ça étant donné que je n'ouvre souvent qu'un navigateur à côté.
+
+J'ai installé l'extension OCaml Platform qui intègre le support du LSP OCaml et qui est très bien faite. Tous les langages de l'écosystème possèdent de la coloration syntaxique : des stanzas de Dune au langage de Menhir.
+
+Les seuls problèmes récurrents que je lui trouve est qu'elle souligne en rouge l'intégralité des implémentations de module qui ne correspondent pas au type de leur interface, ce qui rend les choses rapidement illisibles au moindre changement et qu'il faille recharger l'extension assez souvent pour qu'elle marche (ce qui se fait de façon très pratique avec VSCodium : Ctrl+Shift+P puis écrire "OCaml: Restart Language Server").
+
+=> https://open-vsx.org/extension/ocamllabs/ocaml-platform
+=> https://github.com/ocaml/ocaml-lsp
+
+## Le gestionnaire de paquet
+
+Je n'ai pas trop de problème avec Opam, le gestionnaire de paquet standard d'OCaml. La lenteur et le manque de verbosité par défaut est le seul point dérangeant à mes yeux (aucun affichage au bout de 30 seconds après le lancement de la commande `opam upgrade`, sérieusement ?)
+
+## Le build system
+
+Faisant de l'OCaml depuis 2 ans, je n'ai pas eu à choisir entre les Makefile et Oasis. Dune étant désormais largement standardisé et préconisé pour la majorité des nouveaux projets. Il est vrai qu'il est assez difficile de prendre Dune en main au début, mais passé le temps de la découverte, la documentation (qui fait plus office de référence pour chaque stanza que de tutoriel) s'avère complète.
+
+Parallèlement à ça, j'utilise occasionnellement Ocamlbuild pour éviter d'avoir à créer un répertoire entier contenant les fichiers `dune-project`, `dune` et `main.ml` pour tester un petit truc. Admettons que je veuille compiler et exécuter un fichier `main.ml` qui utilise les bibliothèques dep1 et dep2, je n'ai qu'à lancer les commandes :
+
+```bash
+$ ocamlbuild -pkg dep1 -pkg dep2 main.native
+$ ./main.native
+```
+
+## La combinaison Dune + Opam
+
+Beaucoup de néophytes sont mécontents du fait qu'Opam et Dune ne forment pas un seul et même outil (à la manière de Cabal en Haskell). De ces reproches est né Drom qui essaie tant bien que mal de fusionner ces deux outils. Je n'ai pas testé Drom car un simple Makefile avec des règles généralistes comme `make fmt` et `make deps` me suffit pour l'instant très bien.
+
+=> https://github.com/OCamlPro/drom
+
+## Le formatteur de code
+
+Je me sers d'Ocamlformat configuré avec les réglages par défaut pour formater mon code (fuck les conventions horribles de Janestreet). Le rendu est correct dans l'immense majorité des cas et j'en suis très satisfait. Il n'est pas rare de tomber sur quelques bugs lorsqu'on utilise des fonctionnalités syntaxiques d'OCaml un peu "exotiques" (variants polymorphiques, objets ...) ce qui rend un fichier informatable mais les mainteneurs sont réactifs et les corrigent rapidement. Le seul bémol notable est le fait de devoir créer obligatoirement un fichier `.ocamlformat` à la racine de chaque projet pour formater automatiquement un document, ce qui rend les choses un peu laborieuses.
+
+=> https://github.com/ocaml-ppx/ocamlformat
+
+## Le générateur de documentation
+
+Sans surprise, j'utilise Odoc qui génère de la documentation depuis les commentaires des fichiers .mli et semble avoir été largement adopté par la communauté. Malgré une syntaxe un peu hasardeuse (notamment pour les liens), Odoc est agréable à utiliser et très bien documenté. Il cible à ce jour HTML, LaTeX et les mans pages. Léo et moi avons songé à un éventuel support de Gemtext mais le fonctionnement interne d'Odoc nous a paru compliqué. À voir par la suite donc.
+
+=> https://ocaml.github.io/odoc/
+
+## La bibliothèque standard
+
+Le choix de la bibliothèque standard alternative ne fait pas consensus au sein de la communauté. La bibliothèque standard est plutôt pauvre (bien que les choses commencent à changer avec l'ajout du module `In_channel` dans OCaml 4.14 par exemple) car elle ne servait historiquement qu'à implémenter le compilateur. Je n'utilise cependant aucune des alternatives proposées par la communauté car je n'en ressens pas le besoin. Je dois confesser que se fut compliqué au début d'avoir une dizaine de dépendances pour un projet en OCaml alors que la bibliothèque standard suffirait dans un équivalent en Python, mais je me suis habitué.
+
+=> http://ocamlverse.net/content/standard_libraries.html
+
+## Le sherlocode driven development
+
+Récemment, Léo m'a parlé du site sherlocode.com qui permet de rechercher du code grâce à des regex parmi les sources de tous les paquets disponibles sur Opam. C'est vraiment un outil à avoir sous la main à mon avis car StackOverflow n'est pas d'une grande aide en cas de soucis. J'ai par exemple souvent utilisé sherlocode quand je m'intéressais à Mirage OS pour naviguer dans tous les exemples d'unikernel repartis un peu partout sur Github.
+
+=> https://sherlocode.com/
+
+## Où poser ses questions et s'informer
+
+Discuss Ocaml fait office de plateforme centralisé pour les discussions concernant OCaml et son écosystème. Ce forum est très actif et les annonces des nouvelles bibliothèques ainsi que les changelogs des versions du compilateur y sont publiées. Je pose également mes questions sur le serveur Discord d'OCaml.
+
+=> https://discuss.ocaml.org/
+=> https://discord.gg/cCYQbqN Serveur Discord OCaml

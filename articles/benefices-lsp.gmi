@@ -1,0 +1,16 @@
+---
+title: Les bénéfices des LSP
+date: 2023-02-13
+authors:
+  - Tim
+tags:
+- lsp
+---
+
+Outre les gains que les LSP (Language Server Protocol) ont apporté en matière de productivé, ils ont une fonctionnalité que je trouve maintenant indispensable.
+
+## Le "jump to"
+
+Grâce à la fonctionnalité "jump to" qui permet comme son nom l'indique de se téléporter à l'endroit où l'objet cliqué est définie, je passe maintenant un temps non-négligeable à parcourir les sources des bibliothèques que j'utilise à coup de cliques gauches mous. Ça me permet de les décortiquer, de vérifier un comportement si la documentation ne le précise pas et ce tout en restant dans mon éditeur.
+
+Je me souviens d'un article de Sam et Max (j'ai essayé de le retrouver mais j'ai échoué) qui conseillait de lire le code source des bibliothèques que l'on utilisait pour apprendre à bien coder. Je ne le faisais par exemple jamais quand j'utilisais Geany (un éditeur de texte qui ne gère pas les LSP), l'hégémonie des LSP ont rendu ça tellement plus accessible.

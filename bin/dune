@@ -1,11 +1,18 @@
 (executable
- (name gemblogger)
+ (name capsule)
  (libraries
-  logs
+  irmin
+  irmin-git
+  irmin-git.unix
   mehari
   mehari-lwt-unix
-  preface
+  logs
+  lwt
+  lwt.unix
+  ptime
+  ptime.clock
   yocaml
   yocaml_yaml
   yocaml_unix
-  yocaml_jingoo))
+  yocaml_jingoo
+  x509))
