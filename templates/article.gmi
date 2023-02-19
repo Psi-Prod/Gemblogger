@@ -5,6 +5,7 @@
 {%- set nb_authors = length (authors) %}
 
 * Date : {{ date.canonical }}
+{%- if updated %} (Mis-à-jour le {{ updated.canonical }}){%- endif %}
 * {% if nb_authors > 1 %}Auteurs{% else %}Auteur{% endif %} : {% for author in authors -%}
   {{ author.name }}
   {%- if not loop.last %}, {% endif %}

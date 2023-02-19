@@ -20,6 +20,7 @@ module Article = struct
   type t = {
     title : string;
     date : Date.t;
+    updated : Date.t option;
     tags : string list;
     description : string option;
     authors : Author.t list;
@@ -36,10 +37,11 @@ module Article = struct
       ~categories:
         (List.map (fun c -> Category.make ~category:c ()) article.tags)
 
-  let make title date description authors tags =
+  let make title date updated description authors tags =
     {
       title;
       date;
+      updated;
       description;
       authors;
       tags = List.map String.lowercase_ascii tags;
@@ -57,6 +59,8 @@ module Article = struct
                 <*> V.required_assoc
                       (Metadata.Date.from (module V))
                       "date" assoc
+                <*> V.(optional_assoc (Metadata.Date.from (module V)))
+                      "updated" assoc
                 <*> V.(optional_assoc string) "description" assoc
                 <*> V.(required_assoc (list_of (Author.from (module V))))
                       "authors" assoc
@@ -64,7 +68,11 @@ module Article = struct
                       "tags" assoc)
 
   let inject (type a) (module D : Key_value.DESCRIBABLE with type t = a)
-      { title; date; description; authors; tags } =
+      { title; date; updated; description; authors; tags } =
+    let updated =
+      Option.fold updated ~none:[] ~some:(fun d ->
+          [ ("updated", D.object_ $ Metadata.Date.inject (module D) d) ])
+    in
     let description =
       Option.fold description ~none:[] ~some:(fun d ->
           [ ("description", D.string d) ])
@@ -79,7 +87,7 @@ module Article = struct
             (List.map (fun a -> object_ $ Author.inject (module D) a) authors)
         );
       ]
-    @ description
+    @ updated @ description
 
   let compare_by_date a b = Date.compare a.date b.date
 end
