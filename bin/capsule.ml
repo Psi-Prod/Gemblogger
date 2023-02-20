@@ -161,7 +161,8 @@ let main () =
   let* repo = Database.Store.Repo.v config in
   let* store = Database.Store.main repo in
   let* certchains = Config.certs in
-  router store |> Mehari_lwt_unix.logger |> Mehari_lwt_unix.run_lwt ~certchains
+  router store |> Mehari_lwt_unix.logger
+  |> Mehari_lwt_unix.run_lwt ~v4:Config.addr ~certchains
 
 let () =
   Logs.set_level (Some Info);
