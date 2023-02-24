@@ -11,7 +11,7 @@
 
 # Heyplzlookat.me
 
-> Welcome to the Gemini space of Cactus Production. We are Tim and Artichaut a duo of developpers who creates fast and reliable softwares.
+> Welcome to the Gemini space of Cactus Production. We are Tim and Artichaut a duo of developpers who creates fast and reliable softwares and Programind our official sysadmin.
 
 > We post here our projects, some blog posts, devlogs and political takes in French.
 
