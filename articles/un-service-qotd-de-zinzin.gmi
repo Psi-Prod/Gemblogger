@@ -10,12 +10,11 @@ tags:
 - qotd
 ---
 
-Depuis que j'ai lu la série d'articles de Dinosaure qui explique comment déployer un service email à l'aide d'unikernels, je cogite pour essayer de trouver un cas d'usage qui pourait être intéressant d'expliquer ici. Toujours dans l'optique de se réapproprier les moyens de communication, nous allons donc implémenter une petite infrastructure autours du service Quote Of The Day.
+Depuis que j'ai lu la série d'articles de Dinosaure qui explique comment déployer un service email à l'aide d'unikernels, je cogite pour essayer de trouver un cas d'usage qui pourait être intéressant de présenter ici. Toujours dans l'optique de se réapproprier les moyens de communication, nous allons donc implémenter une petite infrastructure autours du service Quote Of The Day.
 
 L'idée de ce billet n'est pas de proposer un guide à suivre mais plutôt de détailler pas-à-pas un exemple de service composé d'unikernel Mirage OS en pur OCaml © et d'en profiter pour exposer quelques bouts de code.
 
-C'est la première fois que j'essaie d'écrire sur Mirage OS, si j'ai commis quelques imprécisions, faites-le moi savoir ! Le code complet présenté dans cet article est disponible ici :
-
+C'est la première fois que j'essaie d'écrire sur Mirage OS, si je commets quelques imprécisions, faites-le moi savoir ! Le code complet de l'unikernel présenté est disponible ici :
 => https://github.com/Psi-Prod/Guillemet/tree/master/server
 
 ## Introduction
@@ -32,7 +31,7 @@ QOTD est donc un protocol simplissime spécifié dans le RFC 865 (qui mesure à 
 
 ## L'infrastructure
 
-Dans ce billet, nous allons mettre en place une infrastructure de cette forme à l'aide d'unikernel :
+Voici un schéma qui montre l'infrastructure que nous allons mettre en place :
 
 ```schéma explicatif
  +--------------+     +-------------+     +-----+
@@ -56,7 +55,7 @@ Dans la figure ci-dessus, un serveur QOTD est synchronisé à un dépôt Git qui
 
 Utiliser un dépôt Git à la place d'une base de donnée plus traditionnelle évite de doter notre unikernel d'un filesystem. Cela permet également de converserver l'historique des changements en plus d'être facilement modifiable par un utilisateur extérieur à notre service.
 
-Ici, j'utilise un dépôt hébergé sur sourcehut mais il est bon à savoir qu'héberger un dépôt soi-même est parfaitement possible mais je ne le ferai pas pour des questions de simplicité. Sourcehut étant construit entièrement avec des logiciels libres et l'étant lui-même, c'est une dépendance que j'estime "saine". Si vous souhaitez héberger votre dépôt vous-même, des instructions sont disponibles ici :
+J'utilise ici un dépôt hébergé sur sourcehut pour des questions de simplicité mais il est bon à savoir qu'héberger un dépôt soi-même est parfaitement possible. Sourcehut étant construit entièrement avec des logiciels libres, c'est une dépendance que j'estime "saine". Si vous souhaitez héberger votre dépôt vous-même, des instructions sont disponibles ici :
 
 => https://blog.osau.re/articles/smtp_1.html#the-primary-dns-server-with-git
 
@@ -68,7 +67,7 @@ Commençons par implémenter "Guillemet", notre serveur Quotes Of The Day.
 
 ### Les citations
 
-Comme indiqué dans la spécification, les citations transmises ne doivent pas correspondre à un format en particulier. Il est cependant recommandé d'inclure uniquement des caractères ASCII affichables car les Américains ne se doutent pas qu'un Français qui écrit sans accent passe pour un demeuré aux yeux de ses pairs. Pour remédier à ce fâcheux problème et servir du français intelligible, nous allons proposer plusieurs stratégies pour garantir à l'utilisateur un maximum de flexibilité :
+Comme indiqué dans la spécification, les citations transmises ne doivent pas correspondre à un format en particulier. Il est cependant recommandé d'inclure uniquement des caractères ASCII affichables car les Américains ne se doutent pas qu'un Français qui écrit sans accent passe pour un demeuré aux yeux de ses pairs. Pour remédier à ce fâcheux problème (et servir du français intelligible), nous allons proposer plusieurs stratégies pour garantir à l'utilisateur un maximum de flexibilité :
 
 * Autoriser les caractères non ASCII ;
 * Les ignorer (la solution par défaut) ;
@@ -181,7 +180,7 @@ let listen_udp ~on_error ~port stack quote_of_the_day =
       | Error err -> on_error (`UDP err))
 ```
 
-Certains ont sûrement remarqué que je mélange opérateur monadique et opérateur de "binding". J'utilise les opérateurs quand je veux formater mon code de manière plus compacte et éviter d'introduire des variables intermédiaires insignifiantes. À l'inverse, je trouve que les opérateurs de binding ont l'avantage de mieux structurer le code.
+Certains ont sûrement remarqué que je mélange opérateur monadique et opérateur de "binding". J'utilise les opérateurs quand je souhaite formater mon code de manière plus compacte et pour éviter d'introduire des variables intermédiaires insignifiantes (pour _pattern match_ directement sur une valeur par exemple). À l'inverse, je trouve que les opérateurs de binding ont l'avantage de mieux structurer le code.
 
 Enfin, il suffit de fournir à la fonction `run`, un port sur lequel écouter, une stack TCP/IP et un générateur de citation pour lancer le serveur :
 
@@ -283,14 +282,14 @@ let rec sync store ctx =
         Log.warn (fun log -> log "Error while pulling repo: %s" msg);
         Lwt.return_unit
   in
-  let* () = Time.sleep_ns (Duration.of_sec 20) in
+  let* () = Time.sleep_ns (Duration.of_hour 12) in
   Queue.iter
     (fun key -> Log.info (fun l -> l "%a" Mirage_kv.Key.pp key))
     ctx.quotes;
   sync store ctx
 ```
 
-En cas de collision malheureuse entre un rafraîchissement de la base de donnée et une connexion d'un client, ce dernier risque d'avoir un laps de temps un peu long avant de recevoir une réponse. Grand bien nous fasse, notre service ne sera pas très fréquenté et cette situation devrait statistiquement se produire rarement.
+En cas de collision malheureuse entre un rafraîchissement de la base de donnée et une connexion d'un client, ce dernier risque de percevoir un petit délai avant de recevoir une réponse. Grand bien nous fasse, notre service ne sera pas très fréquenté et cette situation devrait statistiquement se produire rarement.
 
 On ajoute aussi une fonction pour remplir initialement la file de citations. Il est important de préciser que chaque citation sera stocké tel quel dans un fichier à la racine du dépôt, nous pouvons donc ignorer tous les dossiers :
 
@@ -355,7 +354,7 @@ Note: un service QOTD écoute par défaut sur le port 17. Or les ports compris e
 Profitons maintenant de notre dur labeur et lisons attentivement la première citation délivrée par notre serveur pour devenir de meilleurs hommes :
 
 ```shell
-$ telnet localhost 17 2> /dev/null | sed -n '4,6p'
+$ telnet new.heyplzlookat.me 17 2> /dev/null | sed -n '4,6p'
 Le cœur du capitalisme, c'est qu'il y a des propriétaires lucratifs de l'outil de travail et que les non-propriétaires sont réduits à se présenter sur un marché du travail comme demandeurs d'emploi.
 
 Bernard Friot
