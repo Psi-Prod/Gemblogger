@@ -1,0 +1,366 @@
+---
+title: Un service QOTD de zinzin (1/2)
+date: 2023-02-24
+authors:
+  - Tim
+tags:
+- ocaml
+- mirageos
+- unikernel
+- qotd
+---
+
+Depuis que j'ai lu la série d'articles de Dinosaure qui explique comment déployer un service email à l'aide d'unikernels, je cogite pour essayer de trouver un cas d'usage qui pourait être intéressant d'expliquer ici. Toujours dans l'optique de se réapproprier les moyens de communication, nous allons donc implémenter une petite infrastructure autours du service Quote Of The Day.
+
+L'idée de ce billet n'est pas de proposer un guide à suivre mais plutôt de détailler pas-à-pas un exemple de service composé d'unikernel Mirage OS en pur OCaml © et d'en profiter pour exposer quelques bouts de code.
+
+C'est la première fois que j'essaie d'écrire sur Mirage OS, si j'ai commis quelques imprécisions, faites-le moi savoir ! Le code complet présenté dans cet article est disponible ici :
+
+=> https://github.com/Psi-Prod/Guillemet/tree/master/server
+
+## Introduction
+
+### Quote of the day
+
+D'après Wikipédia :
+> L'application réseau Quote Of The Day (QOTD, citation du jour en français) délivre une citation aléatoire à travers une connexion réseau.
+
+QOTD est donc un protocol simplissime spécifié dans le RFC 865 (qui mesure à peine une page).
+
+=> https://www.rfc-editor.org/rfc/rfc865
+=> https://fr.wikipedia.org/wiki/Quote_Of_The_Day
+
+## L'infrastructure
+
+Dans ce billet, nous allons mettre en place une infrastructure de cette forme à l'aide d'unikernel :
+
+```schéma explicatif
+ +--------------+     +-------------+     +-----+
+ | Serveur QOTD |<----| Serveur Git |<--->| Moi |
+ +-----^--^-----+     +------^------+     +-----+
+       |  |                  |
+       |  +------------------+
+       |                     |
+       |        +----------------------------+
+       |        | Client QOTD/Serveur Gemini |
+       |        +------------^---------------+
+       |                     |
+ +-------------+     +---------------+
+ | Client QOTD |     | Client Gemini |
+ +-------------+     +---------------+
+```
+
+Dans la figure ci-dessus, un serveur QOTD est synchronisé à un dépôt Git qui fait office de base de donnée et l'alimente en citations. Un second serveur joue le rôle de "miroir" Gemini et se connecte à intervalles réguliers au serveur QOTD afin de fournir un historique des citations proposées (sous-forme d'un flux RSS ou Atom). Ce dernier permettra également aux clients Gemini de proposer des citations qui seront ensuite intégrées à la base de citations.
+
+### Pourquoir un dépôt Git
+
+Utiliser un dépôt Git à la place d'une base de donnée plus traditionnelle évite de doter notre unikernel d'un filesystem. Cela permet également de converserver l'historique des changements en plus d'être facilement modifiable par un utilisateur extérieur à notre service.
+
+Ici, j'utilise un dépôt hébergé sur sourcehut mais il est bon à savoir qu'héberger un dépôt soi-même est parfaitement possible mais je ne le ferai pas pour des questions de simplicité. Sourcehut étant construit entièrement avec des logiciels libres et l'étant lui-même, c'est une dépendance que j'estime "saine". Si vous souhaitez héberger votre dépôt vous-même, des instructions sont disponibles ici :
+
+=> https://blog.osau.re/articles/smtp_1.html#the-primary-dns-server-with-git
+
+=> https://sourcehut.org/
+
+## Guillemet
+
+Commençons par implémenter "Guillemet", notre serveur Quotes Of The Day.
+
+### Les citations
+
+Comme indiqué dans la spécification, les citations transmises ne doivent pas correspondre à un format en particulier. Il est cependant recommandé d'inclure uniquement des caractères ASCII affichables car les Américains ne se doutent pas qu'un Français qui écrit sans accent passe pour un demeuré aux yeux de ses pairs. Pour remédier à ce fâcheux problème et servir du français intelligible, nous allons proposer plusieurs stratégies pour garantir à l'utilisateur un maximum de flexibilité :
+
+* Autoriser les caractères non ASCII ;
+* Les ignorer (la solution par défaut) ;
+* Lever une erreur.
+
+De la même façon, il est possible au choix de troncaturer ou de lever une exception si la limite de 512 caractères est excédée :
+
+```ocaml
+module Quote : sig
+  type t
+
+  val make :
+    ?non_ascii:[ `Enable | `Ignore | `Raise ] ->
+    ?size_exceed:[ `Raise | `Truncate ] ->
+    string ->
+    t
+
+  val to_string : t -> string
+end = struct
+  type t = string
+
+  let print strategy s =
+    let buf = Buffer.create 512 in
+    String.iter
+      (fun chr ->
+        match (chr, strategy) with
+        | c, `Enable -> Buffer.add_char buf c
+        | ((' ' .. '~' | '\r' | '\n') as c), _ -> Buffer.add_char buf c
+        | _, `Ignore -> ()
+        | _, `Raise -> invalid_arg "Quote.make")
+      s;
+    Buffer.contents buf
+
+  let make ?(non_ascii = `Ignore) ?(size_exceed = `Truncate) s =
+    let len = String.length s in
+    let quote =
+      match size_exceed with
+      | `Raise when len > 512 -> invalid_arg "Quote.make"
+      | `Truncate when len > 512 -> String.sub s 0 512
+      | `Raise | `Truncate -> s
+      in
+    print non_ascii quote
+
+  let to_string s = s
+end
+```
+
+### Le serveur
+
+Pour notre serveur, nous avons besoin d'une implémentation d'une _stack_ TCP/IP supportant TCP et UDP :
+
+```ocaml
+module Make (S : Tcpip.Stack.V4V6) = struct
+  ...
+end
+```
+
+Implémentons d'abord quelques fonctions pour aider à logger les connexions :
+
+```ocaml
+let src = Logs.Src.create "guillemet-server"
+module Log = (val Logs.src_log src)
+
+let served quote =
+  let len = String.length quote in
+  let quote_view =
+    if len < 30 then quote
+    else String.sub quote 0 30 |> Printf.sprintf "%s [...]"
+  in
+  Log.info (fun log -> log "Served %S" quote_view)
+
+let warn_err = function
+  | `TCP err ->
+      Log.warn (fun log -> log "TCP error: %a" S.TCP.pp_write_error err)
+  | `UDP err -> Log.warn (fun log -> log "UDP error: %a" S.UDP.pp_error err)
+```
+
+Notons que la citation est troncaturée si elle fait plus de 30 caractères afin d'avoir une idée de ce qui est servi tout en ne spammant pas les logs.
+
+Il faut ensuite implémenter des handler pour les connexions entrantes. Comme décrit dans la spécification, une transaction se déroule en 3 étapes :
+
+1. Le client se connecte au port 17 par TCP (ou UDP).
+2. Le serveur envoie la citation du jour.
+3. Le serveur ferme la connexion.
+
+Ce qui nous donne le code suivant :
+
+```ocaml
+open Lwt.Infix
+open Lwt.Syntax
+
+let listen_tcp ~on_error ~port stack quote_of_the_day =
+  S.TCP.listen stack ~port (fun flow ->
+      let* qotd = quote_of_the_day () >|= Quote.to_string in
+      let* () =
+        Cstruct.of_string qotd |> S.TCP.write flow >|= function
+        | Ok () -> served qotd
+        | Error err -> on_error (`TCP err)
+      in
+      S.TCP.close flow)
+
+let listen_udp ~on_error ~port stack quote_of_the_day =
+  S.UDP.listen stack ~port (fun ~src ~dst:_ ~src_port _ ->
+      let* qotd = quote_of_the_day () in
+      let qotd_str = Quote.to_string qotd in
+      Cstruct.of_string qotd_str
+      |> S.UDP.write ~src_port:17 ~dst:src ~dst_port:src_port stack
+      >|= function
+      | Ok () -> served qotd_str
+      | Error err -> on_error (`UDP err))
+```
+
+Certains ont sûrement remarqué que je mélange opérateur monadique et opérateur de "binding". J'utilise les opérateurs quand je veux formater mon code de manière plus compacte et éviter d'introduire des variables intermédiaires insignifiantes. À l'inverse, je trouve que les opérateurs de binding ont l'avantage de mieux structurer le code.
+
+Enfin, il suffit de fournir à la fonction `run`, un port sur lequel écouter, une stack TCP/IP et un générateur de citation pour lancer le serveur :
+
+```ocaml
+let run ?(on_error = warn_err) ?(port = 17) stack qotd =
+  listen_tcp ~on_error ~port (S.tcp stack) qotd;
+  listen_udp ~on_error ~port (S.udp stack) qotd;
+  S.listen stack
+```
+
+### L'unikernel
+
+Maintenant que notre serveur est en place, il ne reste plus qu'à envelopper le tout dans un unikernel.
+
+Afin qu'une citation inédite soit proposée chaque jour que Dieu fait, il est nécessaire d'avoir une structure de donnée s'apparentant à une file. Ainsi, chaque citation sera servie puis replacée à la fin de la file pour garantir qu'au moins une citation soit servie chaque jour ! On utilisera le module `Queue` de la librairie standard d'OCaml qui implémente exactement le comportement que l'on souhaite. On mémorisera également la date du jour pour savoir quand servir une nouvelle citation (ça fait vraiment ton d'énoncé d'exercice de prépa MP2I d'employer "on").
+
+=> https://v2.ocaml.org/api/Queue.html
+
+```ocaml
+let src = Logs.Src.create "guillemet"
+module Log = (val Logs.src_log src)
+
+module Main (Pclock : Mirage_clock.PCLOCK) = struct
+  type t = { quotes : Quote.t Queue.t; mutable today : Ptime.date }
+
+  let create () =
+    {
+      quotes = Queue.create ();
+      today = Pclock.now_d_ps () |> Ptime.unsafe_of_d_ps |> Ptime.to_date;
+    }
+
+  let cycle queue =
+    match Queue.take_opt queue with
+    | None ->
+        Log.info (fun log ->
+            log "Quote queue is empty, an empty quote will be served");
+        Quote.make ""
+    | Some q ->
+        Queue.push q queue;
+        q
+
+  let serve_qotd ctx () =
+    let now = Pclock.now_d_ps () |> Ptime.unsafe_of_d_ps |> Ptime.to_date in
+    if ctx.today < now then (
+      ctx.today <- now;
+      cycle ctx.quotes)
+    else Queue.peek ctx.quotes
+end
+```
+
+Je dois avouer que la comparaison `t.today < now` est un peu bizarre mais c'est la solution la plus naturelle que j'ai trouvé.
+
+Il ne reste plus qu'à permettre à notre unikernel de se connecter à un dépôt Git distant pour récupérer la liste des citations et les ajouter à notre "quotes queue". Pour cela, nous allons définir une tâche de fond qui s'occupera de "pull" le dépôt toutes les 12 heures (un intervalle largement suffisant pour notre usage). En cas de modification ou de suppresion, il n'y qu'à filtrer la file :
+
+```ocaml
+let perform_changes store quotes changes =
+  let push_value key queue =
+    Store.exists store key >|= function
+    | Ok (Some `Value) -> Queue.push key queue
+    | Ok (Some `Dictionary) | _ -> ()
+  in
+  Lwt_list.fold_left_s
+    (fun queue -> function
+      | `Add key ->
+          let+ () = push_value key queue in
+          queue
+      | `Change key ->
+          Queue.fold
+            (fun queue quote ->
+              let* queue in
+              let+ () =
+                if Mirage_kv.Key.equal quote key then push_value key queue
+                else push_value quote queue
+              in
+              queue)
+            (Lwt.return (Queue.create ()))
+            queue
+      | `Remove key ->
+          Queue.fold
+            (fun queue quote ->
+              let* queue in
+              let+ () =
+                if Mirage_kv.Key.equal quote key then Lwt.return_unit
+                else push_value quote queue
+              in
+              queue)
+            (Lwt.return (Queue.create ()))
+            queue)
+    quotes changes
+
+let rec sync store ctx =
+  Log.info (fun log -> log "Start to pull repository");
+  let* () =
+    Git_kv.pull store >>= function
+    | Ok changes ->
+        let+ queue = perform_changes store ctx.quotes changes in
+        ctx.quotes <- queue
+    | Error (`Msg msg) ->
+        Log.warn (fun log -> log "Error while pulling repo: %s" msg);
+        Lwt.return_unit
+  in
+  let* () = Time.sleep_ns (Duration.of_sec 20) in
+  Queue.iter
+    (fun key -> Log.info (fun l -> l "%a" Mirage_kv.Key.pp key))
+    ctx.quotes;
+  sync store ctx
+```
+
+En cas de collision malheureuse entre un rafraîchissement de la base de donnée et une connexion d'un client, ce dernier risque d'avoir un laps de temps un peu long avant de recevoir une réponse. Grand bien nous fasse, notre service ne sera pas très fréquenté et cette situation devrait statistiquement se produire rarement.
+
+On ajoute aussi une fonction pour remplir initialement la file de citations. Il est important de préciser que chaque citation sera stocké tel quel dans un fichier à la racine du dépôt, nous pouvons donc ignorer tous les dossiers :
+
+```ocaml
+  let fill_queue store ctx =
+    Store.list store Mirage_kv.Key.empty >|= function
+    | Ok quotes ->
+        List.iter
+          (fun (key, typ) ->
+            match typ with
+            | `Value -> Queue.push key ctx.quotes
+            | `Dictionary -> ())
+          quotes
+    | Error err -> Log.warn (fun l -> l "%a" Store.pp_error err)
+```
+
+Tout ceci nous permet d'enfin écrire le point d'entrée de notre unikernel :
+
+```ocaml
+let start git_ctx _clock stack _default_time =
+  let* store = Git_kv.connect git_ctx (Key_gen.remote ()) in
+  let context = create () in
+  let* () = fill_queue store context in
+  let listen =
+    GuillemetServer.run ?port:(Key_gen.port ()) stack
+      (serve_qotd store context)
+  in
+  Lwt.both listen (sync store context)
+```
+
+### Déploiement
+
+Il est désormais tant de rajouter l'indispensable fichier `config.ml` afin de pouvoir ajuster certaines options à la compilation puis de tester notre unikernel ! Je n'exposerais pas ici son contenu car ce n'est pas très intéressant mais parmi les options configurables, on trouve :
+
+* `port` : le port sur lequel écouter (17 par défaut, conformément à la spécification) ;
+* `remote` : l'URL du dépôt Git distant (`git@remote:repo-name` par exemple) ;
+* `ssh-key` : une seed permettant de générer une clef privée ;
+* `ssh-authentificator` : le hash de la clef publique associée à l'utilisateur qui détient le dépôt Git dans notre cas.
+
+Des instructions détaillées expliquant quoi fournir précisement sont disponibles ici dans la section "Configuration" :
+=> https://github.com/roburio/unipi/
+
+En cas de problème, n'hésitez pas à m'envoyer un mail ou vous adressez aux mainteneurs. Ils semblent être très réactifs !
+=> https://github.com/roburio/unipi/issues/21
+
+Lançons les commandes suivantes pour déployer notre serveur QOTD, pour des questions de simplicité, nous allons compiler notre unikernel pour UNIX mais vous pouvez bien évidement cibler d'autres plateformes.
+
+```shell
+$ mirage configure -t unix
+  --remote xxx
+  --ssh-key xxx
+  --ssh-authenticator xxx
+$ make depends
+$ mirage build
+$ dist/guillemet
+2023-02-20 22:41:18 +01:00: INF [tcpip-stack-socket] Dual IPv4 and IPv6 socket stack: connect
+...
+```
+
+Note: un service QOTD écoute par défaut sur le port 17. Or les ports compris en 0 et 1023 sont réservés aux "Well-Known Services" ce qui signifie que notre serveur doit s'exécuter avec les privilèges de super utilisateur. Pour éviter tout problème de sécurité, il est préférable d'écouter sur d'autres ports.
+
+Profitons maintenant de notre dur labeur et lisons attentivement la première citation délivrée par notre serveur pour devenir de meilleurs hommes :
+
+```shell
+$ telnet localhost 17 2> /dev/null | sed -n '4,6p'
+Le cœur du capitalisme, c'est qu'il y a des propriétaires lucratifs de l'outil de travail et que les non-propriétaires sont réduits à se présenter sur un marché du travail comme demandeurs d'emploi.
+
+Bernard Friot
+```
+
+Intéressant ma foi.
+
+Dans notre prochaine article nous verrons comment mettre en place le second unikernel de notre architecture : le miroir Gemini.
