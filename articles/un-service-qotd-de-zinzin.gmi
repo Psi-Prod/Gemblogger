@@ -15,7 +15,7 @@ Depuis que j'ai lu la série d'articles de Dinosaure qui explique comment déplo
 L'idée de ce billet n'est pas de proposer un guide à suivre mais plutôt de détailler pas-à-pas un exemple de service composé d'unikernel Mirage OS en pur OCaml © et d'en profiter pour exposer quelques bouts de code.
 
 C'est la première fois que j'essaie d'écrire sur Mirage OS, si je commets quelques imprécisions, faites-le moi savoir ! Le code complet de l'unikernel présenté est disponible ici :
-=> https://github.com/Psi-Prod/Guillemet/tree/master/server
+=> https://github.com/Psi-Prod/Guillemet/
 
 ## Introduction
 
@@ -53,7 +53,7 @@ Dans la figure ci-dessus, un serveur QOTD est synchronisé à un dépôt Git qui
 
 ### Pourquoir un dépôt Git
 
-Utiliser un dépôt Git à la place d'une base de donnée plus traditionnelle évite de doter notre unikernel d'un filesystem. Cela permet également de converserver l'historique des changements en plus d'être facilement modifiable par un utilisateur extérieur à notre service.
+Utiliser un dépôt Git à la place d'une base de donnée plus traditionnelle évite de doter notre unikernel d'un filesystem. Cela permet également de conserver l'historique des changements en plus d'être facilement modifiable par un utilisateur extérieur à notre service.
 
 J'utilise ici un dépôt hébergé sur sourcehut pour des questions de simplicité mais il est bon à savoir qu'héberger un dépôt soi-même est parfaitement possible. Sourcehut étant construit entièrement avec des logiciels libres, c'est une dépendance que j'estime "saine". Si vous souhaitez héberger votre dépôt vous-même, des instructions sont disponibles ici :
 
