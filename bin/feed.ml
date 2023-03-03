@@ -1,6 +1,6 @@
 open Yocaml
 
-let domain = "gemini://heyplzlookat.me"
+let domain = "heyplzlookat.me"
 let feed_url = into domain "feed.xml"
 
 let articles_to_items articles =
