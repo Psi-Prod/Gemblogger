@@ -1,3 +1,3 @@
 # Capsule
 
-Our gemini capsule living at gemini://heyplzlookat.me.
+Our gemini capsule living at gemini://heyplzlookat.me/.
