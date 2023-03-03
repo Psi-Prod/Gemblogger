@@ -1,18 +1,11 @@
 (executable
  (name capsule)
  (libraries
-  irmin
-  irmin-git
-  irmin-git.unix
   mehari
   mehari-lwt-unix
   logs
   lwt
-  lwt.unix
-  ptime
-  ptime.clock
   yocaml
   yocaml_yaml
   yocaml_unix
-  yocaml_jingoo
-  x509))
+  yocaml_jingoo))
