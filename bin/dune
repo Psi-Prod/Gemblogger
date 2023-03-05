@@ -12,4 +12,5 @@
   yocaml_git
   yocaml_yaml
   yocaml_unix
-  yocaml_jingoo))
+  yocaml_jingoo
+  yocaml_syndication))

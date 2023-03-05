@@ -27,15 +27,41 @@ module Article = struct
   }
 
   let date { date; _ } = date
+
+  let ptime_of_date date =
+    let (year, month, day), time = Date.to_pair date in
+    let time = Option.fold time ~none:((0, 0, 0), 0) ~some:(fun x -> (x, 0)) in
+    Ptime.of_date_time ((year, Date.month_to_int month, day), time)
+    |> Option.get
+
+  let ptime { date; _ } = ptime_of_date date
   let tags { tags; _ } = tags
 
-  let to_rss_item url article =
-    let open Rss in
-    Item.make ~title:article.title ~link:url ~pub_date:article.date
-      ~description:(Option.value ~default:"" article.description)
-      ~guid:(Guid.link url) ()
-      ~categories:
-        (List.map (fun c -> Category.make ~category:c ()) article.tags)
+  let to_atom_entry url article =
+    let summary =
+      Option.map
+        (fun d : Syndic.Atom.text_construct -> Text d)
+        article.description
+    in
+    let authors =
+      match article.authors with
+      | [] -> assert false
+      | x :: xs -> (Syndic.Atom.author x, List.map Syndic.Atom.author xs)
+    in
+    let published = ptime article in
+    let categories =
+      List.map
+        (fun tag ->
+          let scheme =
+            Printf.sprintf "heyplzlookat.me/tag/%s" tag |> Uri.of_string
+          in
+          Syndic.Atom.category tag ~scheme)
+        article.tags
+    in
+    Syndic.Atom.entry ~title:(Text article.title) ~id:(Uri.of_string url)
+      ~published
+      ~updated:(Option.fold ~none:published ~some:ptime_of_date article.updated)
+      ?summary ~categories ~authors ()
 
   let make title date updated description authors tags =
     {

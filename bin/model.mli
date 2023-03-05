@@ -7,8 +7,9 @@ module Article : sig
   type t
 
   val date : t -> Date.t
+  val ptime : t -> Ptime.t
   val tags : t -> string list
-  val to_rss_item : string -> t -> Rss.Item.t
+  val to_atom_entry : string -> t -> Syndic.Atom.entry
   val compare_by_date : t -> t -> int
 
   include Metadata.INJECTABLE with type t := t

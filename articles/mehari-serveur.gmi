@@ -7,7 +7,7 @@ tags:
 - devlog
 - ocaml
 - profane
-- mirage
+- mirageos
 - serveur
 - tls
 - mehari

@@ -1,6 +1,6 @@
 # Heyplzlookatme's Gemlog
 
-=> /feed.xml RSS feed
+=> /atom.xml Atom feed
 => /browse-tag.gmi Browe our text by tags
 
 ## Logs

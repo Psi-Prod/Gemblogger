@@ -2,7 +2,6 @@ open Yocaml
 module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
-(* let target = "_site/" *)
 let images_target target = "images" |> into target
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
@@ -13,7 +12,7 @@ let tags_index target = "browse-tag.gmi" |> into target
 let article_target target file = Model.article_path file |> into target
 let binary_update = Build.watch Sys.argv.(0)
 let gemlog target = "gemlog.gmi" |> into target
-let rss_feed target = "feed.xml" |> into target
+let atom_feed target = "atom.xml" |> into target
 let tag_file target tag = Model.tag_path tag |> into target
 let tag_template = template "tag"
 
@@ -66,8 +65,9 @@ let generate_feed target =
   let* articles_arrow =
     Collection.Articles.get_all (module Metaformat) "articles"
   in
-  create_file (rss_feed target)
-    (binary_update >>> articles_arrow >>^ Feed.make >>^ Rss.Channel.to_rss)
+  create_file (atom_feed target)
+    ( binary_update >>> articles_arrow >>^ Feed.make >>^ fun f ->
+      Format.asprintf "%a" Feed.pp f )
 
 let generate_tags target =
   let* deps, tags = Collection.Tags.compute (module Metaformat) "articles" in
