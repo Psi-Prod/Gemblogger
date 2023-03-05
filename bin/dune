@@ -1,11 +1,15 @@
 (executable
  (name capsule)
  (libraries
+  git-unix
   mehari
   mehari-lwt-unix
   logs
   lwt
+  razzia
+  razzia-unix
   yocaml
+  yocaml_git
   yocaml_yaml
   yocaml_unix
   yocaml_jingoo))
