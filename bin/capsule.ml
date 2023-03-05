@@ -139,6 +139,8 @@ let build_and_push remote author email hook =
   in
   Lwt_main.run (run ())
 
+let build dir = Yocaml_unix.execute (program ~target:dir)
+
 let watch dir =
   let run () =
     let* certchains =
@@ -149,7 +151,6 @@ let watch dir =
     |> Mehari_lwt_unix.logger
     |> Mehari_lwt_unix.run_lwt ~certchains
   in
-  Yocaml_unix.execute (program ~target:dir);
   Lwt_main.run (run ())
 
 let watch_cmd =
@@ -168,6 +169,21 @@ let watch_cmd =
   in
   let info = Cmd.info "watch" ~doc in
   Cmd.v info Term.(const watch $ dir_arg)
+
+let build_cmd =
+  let open Cmdliner in
+  let doc = Format.asprintf "Build the blog into the specified directory" in
+  let default_dir = "_site" in
+  let dir_arg =
+    let doc =
+      Format.asprintf "Specify where we build the website (default: %S)"
+        default_dir
+    in
+    let arg = Arg.info ~doc [ "destination" ] in
+    Arg.(value & opt string default_dir & arg)
+  in
+  let info = Cmd.info "build" ~doc in
+  Cmd.v info Term.(const build $ dir_arg)
 
 let push_cmd =
   let open Cmdliner in
@@ -205,7 +221,7 @@ let push_cmd =
 let cmd =
   let open Cmdliner in
   let default_info = Cmd.info Sys.argv.(0) in
-  Cmd.group default_info [ watch_cmd; push_cmd ]
+  Cmd.group default_info [ build_cmd; watch_cmd; push_cmd ]
 
 let () =
   Logs.set_level (Some Info);
