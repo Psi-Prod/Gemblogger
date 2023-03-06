@@ -37,7 +37,7 @@ let make ((), articles) =
     (articles_to_items articles)
 
 let pp ppf feed =
-  Format.fprintf ppf "<?xml version=\"UTF-8\" encoding=\"1.0\"?>%s"
+  Format.fprintf ppf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>%s"
     (Syndic.Atom.to_xml feed
     |> Syndic.XML.to_string ~ns_prefix:(function
          | "http://www.w3.org/2005/Atom" -> Some ""
