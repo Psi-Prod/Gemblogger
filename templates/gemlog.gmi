@@ -1,6 +1,7 @@
 # Heyplzlookatme's Gemlog
 
 => /atom.xml Atom feed
+=> /articles/comments.xml Comments feed
 => /browse-tag.gmi Browe our text by tags
 
 ## Logs
