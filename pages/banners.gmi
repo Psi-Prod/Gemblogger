@@ -5,6 +5,7 @@
 => /images/alien.png Alien
 => /images/grands-hommes.png Grands hommes
 => /images/casquettes.png Casquettes
+=> /images/mehari.png Mehari
 => /images/xtraslim.png Xtra slim
 => /images/jap-camel.png 日本駱駝
 => /images/presentation.png Présentation

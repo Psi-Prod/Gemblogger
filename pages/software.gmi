@@ -1,4 +1,4 @@
-```softwares page's banner
+```software page's banner
                     _           ____
                  ___))         [  | \___
                  ) //o          | |     \
@@ -17,7 +17,7 @@
 ==============================================================
 ```
 
-# Softwares
+# Software
 
 ## Mehari
 

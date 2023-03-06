@@ -18,7 +18,7 @@
 ## Links
 
 => /gemlog.gmi 📝 Gemlog
-=> /softwares.gmi 💻 Softwares
+=> /software.gmi 💻 Our software
 => /banners.gmi 🖼️ Our banners
 
 => /misc.gmi 🗑 Misc
