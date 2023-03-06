@@ -1,0 +1,12 @@
+# Banners
+
+=> /images/alien.png Alien
+=> /images/grands-hommes.png Grands hommes
+=> /images/casquettes.png Casquettes
+=> /images/xtraslim.png Xtra slim
+=> /images/jap-camel.png 日本駱駝
+=> /images/presentation.png Présentation
+=> /images/happi.png Happi
+=> /images/fesserie.png Fesserie
+=> /images/lemonde.png Le Monde
+=> /images/computer.png Computer

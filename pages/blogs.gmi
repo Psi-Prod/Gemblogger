@@ -11,9 +11,28 @@
 ^--^---'--^    `-'`---^-^--^--^---'--'
 ```
 
-# Some interesting blogs
+# Some blogs we read
+
+## On geminispace
 
 => gemini://perso.pw/blog/
 => gemini://foo.zone/
 => gemini://gemini.cyberbot.space/
 => gemini://blog.kdx.re/
+=> gemini://gmi.bacardi55.io/
+
+## On web
+
+### About OCaml
+
+=> https://blog.osau.re/
+=> https://hannes.nqsb.io/
+=> https://xhtmlboi.github.io/
+=> https://mirageos.org/blog
+=> http://gallium.inria.fr/blog/
+
+### Other stuff
+
+=> https://drewdevault.com/
+=> https://fasterthanli.me/
+=> https://www.journaldulapin.com/

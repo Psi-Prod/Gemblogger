@@ -11,7 +11,7 @@
 
 # Heyplzlookat.me
 
-> Welcome to the Gemini space of Cactus Production. We are Tim and Artichaut a duo of developpers who creates fast and reliable softwares and Programind our official sysadmin.
+> Welcome to the Gemini space of Cactus Production. We are Tim and Artichaut a duo of developpers who creates fast and reliable softwares helped by Programind our official sysadmin.
 
 > We post here our projects, some blog posts, devlogs and political takes in French.
 
@@ -19,15 +19,16 @@
 
 => /gemlog.gmi 📝 Gemlog
 => /softwares.gmi 💻 Softwares
-=> /misc.gmi 🗑 Misc
+=> /banners.gmi 🖼️ Our banners
 
+=> /misc.gmi 🗑 Misc
 => /garden.gmi 🌳 Our garden
 => /relay.gmi 📑 Cool articles
 => /blogs.gmi 📚 Some blogs we read
 
 ## External links
 
-=> https://github.com/Psi-Prod Github
+=> https://github.com/Psi-Prod Our Github page
 => https://docs.heyplzlookat.me Documentation of our softwares
 => https://ib.heyplzlookat.me French imageboard
 

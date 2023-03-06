@@ -19,4 +19,18 @@
 
 # Softwares
 
-TODO
+## Mehari
+
+Mehari is our pure OCaml Gemini server. It runs this site and supports various features such as:
+
+* MIME type inference
+* Static files serving
+* Rate limiting
+* Virtual hosting using Server Name Indication (SNI)
+* CGI
+* Long running TCP connection for response body streaming.
+
+It is also cross-platform and supports Eio with OCaml >= 5.0.0 as well as Mirage OS and UNIX.
+
+=> https://github.com/Psi-Prod/Mehari
+=> https://docs.heyplzlookat.me/mehari/
