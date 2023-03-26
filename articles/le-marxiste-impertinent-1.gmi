@@ -1,5 +1,5 @@
 ---
-title: Le marxiste impertinent – Numéro 1
+title: "Le marxiste impertinent #1"
 date: 2023-03-23
 authors:
   - Les marxistes impertinents
@@ -18,7 +18,7 @@ Examinons de plus près l'article de la chaîne France 3 Bourgogne Franche Comte
 
 Comment ne pas avoir les larmes aux yeux à la vue de ces panneaux publicitaires JCDCeaux, qui ornaient jadis gaiement nos villes, gisant éventrés au sol ?
 
-https://france3-regions.francetvinfo.fr/image/HGSFN1JL8fUEoOILM6hb8RH5S90/800x450/filters:format(webp)/regions/2023/03/21/641982134ed97_whatsapp-image-2023-03-21-at-11-02-33.jpeg
+=> /images/desolation_urbaine.png © Nicolas Da Silva / FTV
 
 Mais qui sont donc les destructeurs de biens publics si chers à la collectivité ?
 
@@ -40,9 +40,11 @@ Le réveil impromptu d'une classe que les patrons s'évertuent chaque jour à hu
 
 > Les prochaines réformes devront s'appuyer sur une méthode différente
 
-Il est vrai qu'après ce passage en force, le corps social en a gros sur la patate et que Geoffroy Roux de Bézieux — la particule a son importance — doit traverser une grande période de tensions artérielles. Il faudrait selon lui préconiser l'emploi de méthodes plus brutales que l'endormissement générale à l'avenir. D'autant plus quand le réveil brutale des masses laborieuses apportent avec lui son lot de questionnements et qui étaient jusqu'alors laissés en suspend par l'idéologie néolibérale omniprésente :
+Il est vrai qu'après ce passage en force, le corps social en a gros sur la patate et que Geoffroy Roux de Bézieux — la particule a son importance — doit traverser une grande période de tensions artérielles. Il faudrait selon lui préconiser l'emploi de méthodes plus violentes que l'endormissement général à l'avenir. D'autant plus quand le réveil brutal des masses laborieuses apportent avec lui son lot de questionnements et qui étaient jusqu'alors laissés en suspend par l'idéologie néolibérale omniprésente :
 
 > Avec les [la réforme] des retraites tout est en train de dégringoler en avalanche. C'est d'ailleurs une bénédiction, d'un coup se rouvrent toutes les questions forclosent. Le travail, organisé par qui ? Au profit de qui ? Avec quel sens ? [...] Et c'est d'un coup le sens entier de notre forme de vie sociale qui est mis en question.
+
+=> https://www.youtube.com/watch?v=N9_031lS5s0
 
 L'abrutissement général a manifestement atteint ses limites et on se demande alors quelle sale coup Geoffroy Roux de Bézieux et ses petits amis les propriétaires lucratifs ont derrière la tête.
 
@@ -62,7 +64,7 @@ Les salles de jeux intra entreprises n'ont apparemment pas provoqué la mise en 
 
 Les hommes du capitalisme s'accoutrent alors de leur plus bel apparat et se déguisent en poulet pour défendre leur idée de la production qui bat visiblement de l'aile :
 
-=> https://img.lemde.fr/2023/03/18/0/0/1200/493/556/0/75/0/7d193aa_1679182503246-ezgif-com-gif-maker.jpg Un patron expliquant calmement que les salariés ne doivent pas prendre pour acquises les « conditions exceptionnelles qui leur ont été faites »
+=> /images/poulet.jpg Un patron expliquant calmement que les salariés ne doivent pas prendre pour acquises les « conditions exceptionnelles qui leur ont été faites »
 
 La cerise sur le gâteau doit probablement être les dires du Conseil du patronat du Québec, rapportés tels quels sans une once de critique :
 
@@ -72,6 +74,6 @@ Un bel aveu de faiblesse qui nous laisse comme une poule qui a trouvé un coutea
 
 ## Terrorisme burlesque
 
-Il est temps de remettre aux goûts du jour la recette ancestrale de la propagande par le fait si chères à nos amis les anarchistes des années 30 et contribuer à la panique bourgeoise (pour ne pas citer Louis Boyard). Entartez dès à présent un patron — ou tout autre sbire parasite dominant le rapport de production — :
+Il est temps de remettre aux goûts du jour la recette ancestrale de la propagande par le fait et contribuer à la panique bourgeoise (pour ne pas citer Louis Boyard). Entartez dès à présent un patron — ou tout autre sbire parasite dominant le rapport de production — :
 
 => https://www.youtube.com/watch?v=EOLZs7rZxNc Trois conseils de Noël Godin, entarteur professionnel
