@@ -1,7 +1,7 @@
 # Banners
 
 => /images/xaviers-camel.png Le chameau attitré de Xavier
-=> /images/shinji.png
+=> /images/shinji.png Shinji
 => /images/alien.png Alien
 => /images/grands-hommes.png Grands hommes
 => /images/casquettes.png Casquettes
