@@ -1,0 +1,133 @@
+---
+title: Entre tradition et modernité, le Sharp 601SH vaut-il encore le coup en 2023 ?
+date: 2023-04-05
+authors:
+  - Léo
+tags:
+- sharp
+- 601sh
+- téléphone
+---
+
+Cela fait plusieurs années que j'utilise toujours le même téléphone, à savoir un iPhone SE (1ʳᵉ génération) et il commence aujourd'hui à sérieusement ramer et la batterie à mourir.
+Il aurait été sûrement préférable de simplement réinstaller iOS et changer la batterie pour pas trop cher, mais j'avais très envie d'un nouveau modèle (car je suis un enfant mental).
+Au début évidemment j'ai pensé à prendre un modèle plus récent (genre iPhone 13 ou je ne sais quoi) mais pour avoir été un débile fanatique de la marque, leurs dernières sorties m'ont vraiment déçu. De façon peut être un peu caricatural, seul le prix changeait et le nom du processeur s'incrémentait. De plus, le design est toujours le même depuis la sortie de l'iPhone X (en 2017 !) et depuis la concurrence a largement rattrapé la marque à la pomme.
+Mon regard s'est donc naturellement posé sur le Galaxy Z Flip de Samsung, qui me paraissait vraiment réussi (au moins sur le papier), le concept comme le design (l'OS au mieux, je m'en fiche un peu).
+Mon regard s'en est naturellement détourné quand j'ai vu son prix, neuf comme occasion, qui est assez indécent (les iPhones aussi ceci dit).
+En économisant suffisamment avec la bourse et l'été 2023, j'aurais peut-être pu me permettre l'achat d'un tel appareil, mais j'ai eu la flemme d'attendre aussi longtemps et de dépenser autant pour un bout de plastique.
+
+Cela dit, j'ai découvert (relativement récemment, cette année) les ガラケー !
+"garakei" est la contraction entre "keitai" et Galápagos, nom donné à ces téléphones qui se sont uniquement développés sur le sol japonais et qui ont donc un style bien à eux (ils auraient maintenant bien du mal à se commercialiser en dehors du pays).
+Ça a ses avantages comme ses inconvénients, qui sont la difficulté à importer ce genre de modèles sans débourser une certaine somme et la compatibilité avec les réseaux téléphoniques étranger.
+Aujourd'hui s'ajoute aussi l'âge de ces téléphones qui commencent à sérieusement dater (mais pas tous, lire suite).
+
+## Modèles que j'ai bien aimé
+
+Pour le nom des modèles, F c'est pour Fujitsu, SH pour Sharp. Les noms qui suivent le modèle XX-YYY c'est chez DoCoMo et chez SoftBank c'est dans le style YYYXX, dans les deux cas XX, c'est pour la marque, YYY le numéro du modèle.
+
+### F-06D
+
+=> /images/f-06d.jpg Magnifique ( ´ ▽ ` ).｡ｏ♡
+
+J'ai d'abord fait une fixette sur le F-06D puisque c'est le premier qui sort lorsqu'on cherche sur Youtube ce genre de contenu (le "girls edition" ou un truc du genre). Ce coloris-là n'est pas trop mon genre mais il existe en blanc et en or rose. Le problème avec cet appareil est son âge (2011, 2012 pour le "Happy pink") : il n'y a pas de bluetooth, ne supporte que jusqu'à la 3G (FOMA) avec un protocole spécial "i-mode", propriétaire, qui est évidemment obsolète (en France, il le fut l'année où l'édition rose du téléphone est sortie) et la connectique n'est pas en USB mais en "Foma" (pas le protocole de communication). Il est SIM-locké comme énormément de téléphones de cette époque (après ils ont passé une loi obligeant à fournir un service de déblocage) donc il faudra passer par une Hypersim ou une merde du genre.
+Le système d'exploitation est Symbian avec des applications en plus fournies par DoCoMo (OPPs), je ne pense pas qu'on puisse y installer d'autres applications. Mais les emotes sont très mignonnes.
+Malgré un design qui m'a beaucoup plu (notamment l'écran à l'arrière qui s'incruste dans la bande noire), il est très limité et je n'avais pas prévu de m'acheter un dumbphone.
+
+### SH-02B Marimekko
+
+=> /images/sh-02b.jpg Très mignon (´ ω `♡)
+
+Le SH-02B, c'est purement pour son apparence qu'il m'a également tapé dans l'œil. 
+Les LEDs à l'arrière sont aussi très jolies.
+C'est aussi Symbian qui tourne dessus et on retrouve à peu près les mêmes soucis qu'avec le F-06D. SIM-locké.
+Mais impossible de le trouver neuf (je voulais un téléphone neuf) et ceux d'occasion étaient pas mal amochés.
+
+### SH-06A Evangelion
+
+=> /images/sh-06a.jpg wew lad
+
+Le SH-06A tout seul n'est pas incroyable mais en édition Evangelion... Avec fond d'écran Ayanami...
+Mais il a un prix non négligeable si neuf (chez Kyoex notamment) et pas trop trop cher d'occasion mais quand même.
+Il est SIM-locké (comme ceux au-dessus), toujours les mêmes soucis qu'au-dessus.
+Conclusion je ne l'ai pas acheté. Peut-être un jour si je deviens riche et célèbre.
+
+### 601SH
+
+=> /images/601sh.jpg Parfait !!! (✯◡✯)
+
+Divulgachâge : c'est le modèle que j'ai choisi ; sur Android certes, mais design impeccable, coloris qui sont tous très jolis (sauf le doré un peu kitsch).
+Contrairement aux deux autres il date de 2016 donc peut se connecter en 4G et SIM-unlocké (pas par défaut, il y a une procédure qui nécessite d'être au Japon pour demander à Sharp de débloquer).
+2016 n'est pas forcément qu'un avantage puisqu'il est bloqué sur Android 5, une majorité d'application ne pourra pas être installée.
+Il n'y a pas de boutons pour gérer le volume ce qui est également un problème, mais j'ai écouté mon cœur et ignoré ce souci.
+Aussi il est apparemment waterproof et son clavier est tactile (puisque l'écran ne l'est pas).
+
+## Import
+
+Pour l'import depuis le Japon, ça a l'air d'être un sacré trou de lapin que j'ai pas cherché à creuser tant que ça donc je vais citer les trucs un peu mainstream sur lesquels je suis tombé :
+* Buyee, ça a l'air d'être le proxy le plus connu (mais l'un des plus chers aussi) ;
+* Zenmarket, la même sauce que Buyee afaik (peut-être un peu moins cher je sais pas) ;
+* Ebay, mais je sais pas trop quoi en penser ;
+* et Kyoex, très cher mais vers qui je vais me tourner.
+
+Kazuto Tominaga (le gérant de Kyoex) était le seul à vendre ce 601SH neuf, ainsi que pour nombre d'autres modèles qui sont pour la plupart surtout disponibles d'occasion complètement défoncés.
+Malgré des prix qui peuvent paraître un peu abusés, la livraison est gratuite (ce qui est un avantage conséquent par rapport à Buyee et cie).
+
+Après une suite de mails avec le gérant j'ai pu obtenir une réduction sur le téléphone à l'origine coûtant $345, je n'ai eu à payer "que" $295 (297,29€ au moment de la transaction, via PayPal), puisqu'il n'avait plus de modèle vert mais souhaitait que j'achète chez lui quand même.
+J'ai choisi le modèle blanc/argenté (qui s'avère plus joli que sur les photos) plutôt que le noir parce que j'aimais bien le contraste entre l'écran et le clavier qu'on a pas avec le SH-01J (son équivalent DoCoMo).
+
+Après un peu plus d'une semaine de livraison (retardée à cause de Chronopost, quel étonnement), j'ai eu 38€ de frais de douane surprise, M. Tominaga n'ayant selon ses dires pas prévu que les douaniers voient clair dans son jeu (avoir mis "GIFT" sur le paquet).
+Ayant eu une réduction sur le produit je n'ai pas cherché à me faire rembourser ces 38€, tant pis.
+
+## Test de la machine
+
+=> /images/601sh_handson.jpg Avec le fond d'écran qui fait la différence
+
+Grâce à M. Tominaga, ma carte SIM n'a eu aucun souci à se faire reconnaître et il y a tout de suite eu écrit "Orange F" dans la barre de status.
+Le seul souci résidait dans la 4G inutilisable par les autres applications, j'ai donc eu a entrer l'APN manuellement mais c'est très simple et rapide à faire.
+
+Le WiFi marche très bien, mais je n'ai pas encore testé avec une borne qui nécessite de se connecter via une page web, mais j'imagine qu'il suffirait d'aller sur captive.apple.com ou un truc du genre du moment qu'on a pas touché au DNS (je n'ai pas encore trouvé l'option dans les paramètres mais je n'en ai pas vraiment besoin).
+
+Mes AirPods marchent très bien avec, ça me suffit pour dire que je suis satisfait du Bluetooth du téléphone.
+J'ai aussi installé l'application Auxio via F-Droid.
+
+L'écran n'étant pas tactile, c'est le clavier qui va servir à cliquer dans les applications ne prenant pas en charge les touches ou permettent simplement là où c'est utile le pointeur (comme le navigateur web, par exemple).
+L'application qui s'occupe de ça s'appelle Touch Cruiser EX, un nom un peu pompeux pour ce petit curseur.
+C'est suffisamment précis pour une utilisation plus ou moins confortable.
+Ça s'utilise comme un touchpad d'ordinateur portable plutôt qu'un téléphone tactile.
+
+Il y a une application calendrier intégrée qui est simple à utiliser avec le clavier mais je n'ai toujours pas compris comment synchroniser un calendrier via un lien (ce qui m'est nécessaire pour savoir où aller à la fac).
+
+Si j'habitais au Japon, j'aurais pu utiliser l'application StationTV qui permet de recevoir le 1seg (ISDB-T), malheureusement le standard est la DVB-T(2) en France.
+
+Le Yahoo!地図 inclu ne fonctionne pas en dehors du Japon et ça ne m'étonnerai pas qu'il ne fonctionne pas non plus là-bas.
+Google Maps est très très lent (voire inutilisable) dans ses versions les plus récentes qui sont compatibles Android 5, mais la version 8 est très charmante (j'ai même les horaires de tram).
+Pour passer outre la pop-up demandant de mettre à jour l'application, j'ai utilisé "APK Editor" pour changer la version de l'application sur la plus récente.
+
+Il y a deux applications pour les mails qui sont très bien, l'une surtout pour les SMS et l'autre "PC Mail" pour les mails via les internets, la première étant suffisante pour les bandeurs des années 2000 tels que moi.
+
+On a une application メーカーサービズ（SHSHOW) avec des emojis très mignon à inclure dans les mails, des jeux qui sont compatibles avec le clavier du téléphone, des sonneries, des fond d'écrans...
+Étonnant que ça soit encore up aujourd'hui mais très sympa.
+
+Pour la traduction du téléphone en anglais, c'est bien fait mais il reste encore pas mal de texte ici et là non traduit. C'est le plus souvent des trucs relativement inutiles donc on s'en fiche mais ça reste à noter.
+Il n'y a évidemment que deux langues disponibles.
+
+À propos du rooting/modding, rien sur ce modèle et ça n'est pas étonnant, je suis tombé sur un fil de 2017 sur 5channel mais ils ne faisaient que se chamailler donc rien d'intéressant sur ce sujet.
+Si un jour l'envie me prend je pourrai me lancer sur cette voie mais ça n'est pas pour aujourd'hui.
+Il faut cependant noter qu'`adb reboot bootloader` et `fastboot` ne font que relancer le téléphone et `adb reboot recovery` affiche le petit droïde allongé avec un triangle rouge pendant moins d'une demi-seconde avant de redémarrer normalement ; après quelques recherches Sharp apparemment retirerait tout bonnement la recovery.
+Mon appareil est vulnérable à Dirty COW (testé approuvé) mais je n'ai pas encore cherché à outrepasser SELinux ni Miyabi (LSM de Sharp), pour pouvoir débloquer l'eMMC.
+
+Il y a une sorte de Siri alternative (oui oui) appelée エモパー (Emopar) :
+> EMOPA stands for Emotional Partner
+> With the EMOPA system, the phone has its own emotions and will assist you with reminders and suggestions
+Pourquoi pas après tout mais l'activer nécessite de se trouver au Japon pour la localisation et aucun moyen de passer cette étape, dommage :(
+Il y a trois voix disponible :
+=> /audio/emoko.mp3 えもこ (Emoko) la voix féminine
+=> /audio/sakuo.mp3 さくお (Sakuo) la voix masculine
+=> /audio/tsubuta.mp3 つぶた (Tsubuta) la voix "cochon"
+Cependant, j'ai Emoko qui me dit combien il me reste de batterie en débranchant l'appareil du chargeur.
+
+Pour le waterproof, je préfère ne pas essayer tout de suite vous en conviendrez mais j'ai pu voir une fine bande rouge en plastique qui se loge autour de la batterie, donc prendre garde à bien fermer le couvercle au risque de voir de l'eau s'infiltrer là où il ne faut pas. Cependant pas d'inquiétude il y a un avertissement à chaque démarrage de l'appareil.
+
+## Conclusion
+
+Malgré son OS un peu trop vieux, oui le 601SH vaut le coup (et le coût ? ça je saurais pas dire). Il y a des compromis à faire mais qui comparés à la /beauté/ nostalgique ou presque du téléphone ne sont finalement rien, non ?

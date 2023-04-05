@@ -3,6 +3,7 @@ module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
 let images_target target = "images" |> into target
+let audio_target target = "audio" |> into target
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
 let layout_template = template "layout"
@@ -19,6 +20,10 @@ let tag_template = template "tag"
 let move_images target =
   process_files [ "images" ] File.is_image
     (Build.copy_file ~into:(images_target target))
+
+let move_audio target =
+  process_files [ "audio" ] File.is_audio
+    (Build.copy_file ~into:(audio_target target))
 
 let move_index target =
   process_files [ "pages" ] File.is_index (Build.copy_file ~into:target)
