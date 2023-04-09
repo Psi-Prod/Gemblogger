@@ -1,0 +1,87 @@
+---
+title: "L'hégemonie Heyplzlookat.me"
+date: 2023-04-10
+authors:
+  - Tim
+description: La nouvelle stack pur OCaml du site enfin dévoilée au grand jour
+tags:
+  - meta
+  - unikernel
+  - mirageos
+  - workflow
+---
+
+Il y a deux mois, on vous présentait la manière avec laquelle le blog était généré. Cette stack comportait encore trop de défauts à notre goût : si Léo ou moi publiait un article, un de nous deux était obligé de pull manuellement sur le serveur, ce qui s'est très vite révélé ennuyeux.
+
+J'ai donc commencé par séparer notre générateur de blog du serveur qui l'héberge. Ainsi, notre blogger YOcaml (Capsule) pousse directement le contenu généré sur un dépôt Git grâce au plugin `yocaml_git` écrit par Dinosaure. Puis notre serveur Gemini (Vicer) n'a ensuite qu'à servir ce contenu depuis le dépôt tout en ajoutant quelques fonctionnalités dynamiques (comme notre système de commentaire, tant apprécié de la communauté Heyplzlookatme).
+
+Nous n'avons rien inventé avec Vicer et nous nous sommes contentés de singer le fonctionnement de l'unikernel Unipi (écrit par les membres du groupuscule Robur) en appliquant cette recette à Gemini et en l'adaptant à nos besoins, la partie renouvellement automatique des certificats TLS fournis par Let's Encrypt en moins. De la même façon qu'Unipi, un hook secret permet de resynchroniser le contenu du dépôt git distant avec son remote. Ce dernier est "requesté" directement par notre blogger à chaque push.
+
+=> https://github.com/Psi-Prod/Vicer
+=> https://github.com/roburio/unipi
+=> https://github.com/Psi-Prod/Capsule/
+
+Grâce à cette séparation entre builder et hébergeur, notre blog est désormais un unikernel MirageOS à part entière.
+
+### Plus de sources d'informations, par pitié
+
+Xhtmlboi ayant mergé mon patch intégrant la génération de flux Atom directement au sein du plugin `yocaml_syndication`, nous avons fait la migration vers un flux Atom qui semble plus utilisé sur le Geminispace.
+
+=> /atom.xml
+=> https://github.com/xhtmlboi/yocaml/pull/43
+
+De plus, un nouveau flux listant les nouveaux commentaires parus est disponible (parce qu'à moins de regarder chaque jour, personne n'est informé lorsqu'un nouveau commentaire est écrit).
+
+=> /articles/comments.xml
+
+J'ai aussi retiré le scheme `gemini` de l'URL indiquant où le feed peut être récupérer pour permettre aux agrégateurs supportant seulement HTTP de le lire avec un proxy. Voici le lien pour ceux qui le souhaitent :
+
+=> https://heyplzlookat.me/atom.xml
+
+## Contenu
+
+Nous avons par ailleurs mis-à-jour et amélioré le contenu un peu partout sur le site.
+
+### Des bannières
+
+Les désormais très célèbres bannières Heyplzlookatme sont maintenant répertoriées dans leur propre dossier (notamment celle de Mehari qui a fait le tour de GitHub).
+
+=> /banners.gmi
+=> /images/mehari.png
+
+Faites-nous parvenir vos idées pour les prochaines réalisations !
+
+### Logiciels
+
+Nous avons également entamé la nouvelle page "Software" que l'on complètera au fur et à mesure avec une présentation de tous les logiciels estampillés Cactus production.
+
+=> /software.gmi
+
+### Partages
+
+20 ans après tout le monde, je me suis enfin mis à utiliser RSS et je lis dorénavant quotidiennement les postes d'une trentaine de blogs (principalement quand c'est la rouille à la fac). Cette veille me permet de mariner dans un jus "hacker" (au sens MIT) que je trouve très fertile pour émuler sa créativité.
+
+J'ai donc étoffé et continuerai à mettre à jour la page "Some blogs we read". Elle comporte à présent plusieurs liens vers des blogs publiant sur OCaml et MirageOS (2023 Cactus production encourage la promotion des unikernels) mais pas que.
+
+N'hésitez pas à nous envoyer par mail vos blogs préférés !
+
+=> /blogs.gmi
+
+## Le futur de Heyplzlookatme
+
+Maintenant que le site correspond à nos attentes en termes de workflow, nous pouvons nous focaliser sur ce qui nous plaît en matière de contenu. Je vais pouvoir goûter à de saines nuits de sommeil.
+
+> Communist Computer God Gang
+>
+> Kouahni le riche planteur, [28/02/2023 10:33]
+> les gars je suis trop excité
+> Kouahni le riche planteur, [28/02/2023 10:33]
+> j'arrive plus à dormir
+> Kouahni le riche planteur, [28/02/2023 10:33]
+> tant que j'ai pas l'infrastructure parfaite sur internet
+> Léo, [28/02/2023 11:14]
+> mdr
+> Radio la fève, [28/02/2023 12:37]
+> mdr
+
+La prochaine étape sera de transformer notre proxy Gemini2HTTP/S en un unikernel.
