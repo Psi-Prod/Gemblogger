@@ -85,3 +85,9 @@ Maintenant que le site correspond à nos attentes en termes de workflow, nous po
 > mdr
 
 La prochaine étape sera de transformer notre proxy Gemini2HTTP/S en un unikernel.
+
+# Un déploiement en toute sérénité sur 3 jours (update)
+
+Après quelques soucis la nouvelle infrastructure a été déployé sans emcombres. Nous avons récupéré et poussé sur un dépôt les commentaires sous les articles que nous nous étions envoyé en cachette en message privée donc il se peut que certains qui ont échappé à notre vigilance sont peut-être passés à la trappe. Désolé à nos lecteurs les plus fidèles.
+
+=> /images/comms_heyplzlookatme.jpg Les commentaires heyplzlookatme
