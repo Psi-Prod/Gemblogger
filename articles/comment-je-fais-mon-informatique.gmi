@@ -1,6 +1,7 @@
 ---
 title: Comment je fais mon informatique
 date: 2023-01-05
+updated: 2023-04-12
 authors:
   - Tim
 tags:
@@ -59,7 +60,7 @@ Sans surprise, j'utilise Odoc qui génère de la documentation depuis les commen
 
 ## La bibliothèque standard
 
-Le choix de la bibliothèque standard alternative ne fait pas consensus au sein de la communauté. La bibliothèque standard est plutôt pauvre (bien que les choses commencent à changer avec l'ajout du module `In_channel` dans OCaml 4.14 par exemple) car elle ne servait historiquement qu'à implémenter le compilateur. Je n'utilise cependant aucune des alternatives proposées par la communauté car je n'en ressens pas le besoin. Je dois confesser que se fut compliqué au début d'avoir une dizaine de dépendances pour un projet en OCaml alors que la bibliothèque standard suffirait dans un équivalent en Python, mais je me suis habitué.
+Le choix de la bibliothèque standard alternative ne fait pas consensus au sein de la communauté. La bibliothèque standard est plutôt pauvre (bien qu'elle contienne quelques modules d'une grande qualité comme `Format`, `Buffer` et `Bigarray` et que les choses commencent à changer avec l'ajout du module `In_channel` dans OCaml 4.14 par exemple) car elle ne servait historiquement qu'à implémenter le compilateur. Je n'utilise cependant aucune des alternatives proposées par la communauté car je n'en ressens pas le besoin. Je dois confesser que se fut compliqué au début d'avoir une dizaine de dépendances pour un projet en OCaml alors que la bibliothèque standard suffirait dans un équivalent en Python, mais je me suis habitué.
 
 => http://ocamlverse.net/content/standard_libraries.html
 
