@@ -1,0 +1,107 @@
+---
+title: Critique de la raison pure
+date: 2023-05-03
+authors:
+  - Tim
+tags:
+- ocaml
+---
+
+En ce moment, c'est la mode de donner son avis sur OCaml. Du monde s'y essaie et critique forcément des points plus ou moins pertinents. Je vais tenter de discuter et répondre aux critiques adressées au langage dans ce blog post :
+=> https://borretti.me/article/two-years-ocaml
+
+C'est un avis que je trouve intéressant étant donné que l'auteur indique avoir, tout comme moi, deux ans d'expérience avec OCaml mais aussi et surtout car l'auteur ne parle pas français et ne peut donc pas répondre à mes tacles (dsl).
+
+Je vais d'abord évoquer les critiques que je juge mineures, puis discuter de celles visant le système de module. Pour chaque point mentionné, je posterai le lien de la section de l'article correspondante et la commenterai.
+
+# Critiques mineures
+
+## If sans else
+
+=> https://borretti.me/article/two-years-ocaml#semicolons
+
+```ocaml
+let foo () =
+  if cond then
+    do_something ();
+    do_something ()
+  else
+    do_something_else ()
+```
+
+Le fait que ce bout de code ne marche pas comme escompté est lié à la possibilité d'écrire un if de type unit sans branche else :
+
+```ocaml
+if cond then
+  print_endline "bar";
+do_something ()
+```
+
+Cette forme génère donc une ambiguïté avec un if else complet classique si l'expression qui suit le if est un enchaînement de _statement_ qui n'est pas entouré de parenthèse.
+
+Ça ne me choque pas d'avoir ce sucre syntaxique pour cette forme, très pratique quand on travaille avec des tableaux, dans un langage en partie impératif comme OCaml. Utiliser les délimiteurs begin/end dans la branche du if me paraît être le bon compromis à un `let _ = ... in ...` :
+
+```ocaml
+  if cond then begin
+    do_something ();
+    do_something ()
+  end else
+    do_something_else ()
+
+```
+
+## Incohérence dans la syntaxe
+
+=> https://borretti.me/article/two-years-ocaml#inconsistency
+
+La distinction syntaxique expression/type ne relève pas d'une incohérence pour moi mais plutôt d'un choix qui permet de distinguer au premier coup d'œil un type ou une expression (ce qui est particulièrement utile quand on utilise des modules). En admettant cette symétrie (val/let, sig/struct, etc), il n'y donc pas vraiment d'incohérence à ce que je sache.
+
+# Système de modules
+
+## Comparaison avec les type classes
+
+=> https://borretti.me/article/two-years-ocaml#modules
+
+Le point clef de l'article est la critique du système de module sur lequel l'auteur fait pour moi fausse route.
+
+Lorsque l'on compare strictement les foncteurs et les type classes, ces dernières semblent bien plus pratiques à utiliser sur le papier. En effet, dans des cas simples, les type classes offrent des solutions élégantes et laisse le compilateur s'occuper des boilerplates. Certes les modules sont une (la seule ?) façon de faire du polymorphisme ad-hoc en OCaml, mais j'appréhende plutôt les foncteurs comme un outil de métaprogrammation pour faire de la génération de code qu'une manière de faire du polymorphisme stricto sensu.
+
+Par exemple, Mirage OS fait particulièrement bien usage des signatures de module pour s'abstraire du runtime en permettant de faire des logiciels _platform-agnostic_. Et cela en imposant le fait de devoir paramétriser un foncteur contenant le programme principal par des modules encapsulant des fonctions qui effectuent des effets de bord, puis en les remplaçant à la compilation par des implémentations concrètes adaptées au système visé.
+
+```ocaml
+module Main (Pclock : Mirage_clock.PCLOCK) (Stack : Tcpip.Stack.V4V6) = struct
+  ...
+end
+```
+Extrait de code typique d'un unikernel conçu avec Mirage OS
+
+De cette façon, il est plus simple de construire un logiciel en empilant des modules brique par brique qu'en faisant appel aux type classes d'Haskell.
+
+## Égalité
+
+=> https://borretti.me/article/two-years-ocaml#equality
+
+Je suis d'accord avec l'auteur, même s'il faut noter que la question de l'égalité reste cohérente si l'on se restreint à la bibliothèque standard d'OCaml. En effet, même si elle ne fait aucune mention explicite de la signature suivante :
+
+```ocaml
+module type COMPARABLE = sig
+  type t
+  val comparable : t -> t -> int
+end
+```
+
+La plupart des modules l'implémentent implicitement en définissant un type `t` et une fonction de comparaison spécialisée. De plus, les quelques foncteurs que la stdlib fournis (Map et Set) utilisent une signature équivalente sous un autre nom (`OrderedType`) et demeurent donc compatibles.
+
+De toute façon, les bibliothèques standards alternatives (containers, core) tirent pleinement parti du système de module en implémentant des signatures communes.
+
+## Ppx
+
+=> https://borretti.me/article/two-years-ocaml#ppx
+
+L'instanciation des foncteurs se fait au runtime et il est donc impossible de profiter des capacités des PPX dans ce cas mais je pense que cette critique est issue de la frustration de l'auteur qui n'a pas pris le problème dans le bon sens (mais qui a finalement trouvé la solution à son problème et l'a indiqué dans sa réponse dans le sujet Stackoverflow).
+
+=> https://stackoverflow.com/questions/70816473/how-to-apply-deriving-show-to-a-type-from-module-parameter-of-my-functor
+
+# Fin
+
+À bientôt pour un prochain article où j'arrêterai de critiquer les autres et donnerai mon propre avis désastreux sur OCaml.
