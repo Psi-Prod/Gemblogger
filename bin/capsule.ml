@@ -4,6 +4,7 @@ open Lwt.Syntax
 
 let program ~target =
   let open Yocaml.Syntax in
+  let* () = Task.move_banners target in
   let* () = Task.move_images target in
   let* () = Task.move_audio target in
   let* () = Task.move_index target in

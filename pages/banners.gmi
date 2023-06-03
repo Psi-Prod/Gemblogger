@@ -1,15 +1,15 @@
 # Banners
 
-=> /images/xaviers-camel.png Le chameau attitré de Xavier
-=> /images/shinji.png Shinji
-=> /images/alien.png Alien
-=> /images/grands-hommes.png Grands hommes
-=> /images/casquettes.png Casquettes
-=> /images/mehari.png Mehari
-=> /images/xtraslim.png Xtra slim
-=> /images/jap-camel.png 日本駱駝
-=> /images/presentation.png Présentation
-=> /images/happi.png Happi
-=> /images/fesserie.png Fesserie
-=> /images/lemonde.png Le Monde
-=> /images/computer.png Computer
+=> /banners/xaviers-camel.png Le chameau attitré de Xavier
+=> /banners/shinji.png Shinji
+=> /banners/alien.png Alien
+=> /banners/grands-hommes.png Grands hommes
+=> /banners/casquettes.png Casquettes
+=> /banners/mehari.png Mehari
+=> /banners/xtraslim.png Xtra slim
+=> /banners/jap-camel.png 日本駱駝
+=> /banners/presentation.png Présentation
+=> /banners/happi.png Happi
+=> /banners/fesserie.png Fesserie
+=> /banners/lemonde.png Le Monde
+=> /banners/computer.png Computer

@@ -1,3 +1,4 @@
+val move_banners : string -> unit Yocaml.Effect.t
 val move_images : string -> unit Yocaml.Effect.t
 val move_audio : string -> unit Yocaml.Effect.t
 val move_index : string -> unit Yocaml.Effect.t

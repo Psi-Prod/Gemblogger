@@ -2,6 +2,7 @@ open Yocaml
 module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
+let banners_target target = "banners" |> into target
 let images_target target = "images" |> into target
 let audio_target target = "audio" |> into target
 let template file = add_extension file "gmi" |> into "templates"
@@ -16,6 +17,10 @@ let gemlog target = "gemlog.gmi" |> into target
 let atom_feed target = "atom.xml" |> into target
 let tag_file target tag = Model.tag_path tag |> into target
 let tag_template = template "tag"
+
+let move_banners target =
+  process_files [ "banners" ] File.is_image
+    (Build.copy_file ~into:(banners_target target))
 
 let move_images target =
   process_files [ "images" ] File.is_image
