@@ -9,7 +9,7 @@ tags:
 - bvets
 ---
 
-BVE est un simulateur de train, équivalent japonais d'OpenRails, disponible à l'adresse
+BVE est un simulateur de train, équivalent japonais d'OpenRails, disponible à l'adresse suivante :
 => https://bvets.net
 À l'inverse d'OR où la grande majorité des routes et matériel roulant sont occidentaux, ici c'est quasi exclusivement japonais.
 

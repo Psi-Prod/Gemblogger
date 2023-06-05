@@ -184,7 +184,7 @@ Après une semaine d'attente impatiente, Dinosaure est sorti de sa longue réfle
 > dinosaure — 2022/11/29 13:54
 > I finally found why your `listen` does not work. With `mirage-tcpip`, you must allocate a `Stack.t` (not only a `Stack.TCP.t`) and call the `Stack.listen` then. `Stack.TCP.listen` just adds internally a notification to `listen` but it does not really `listen()`
 > I made a little example for you here:
-=> https://paste.osau.re/Ytm?hl=ocaml#eyJhbGciOiJBMTI4Q0JDIiwiZXh0Ijp0cnVlLCJrIjoiREN6bVhZMm5jQTBQdXFCMGdTNktzUSIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0=
+=> https://paste.osau.re/Ytm?hl=ocaml#eyJhbGciOiJBMTI4Q0JDIiwiZXh0Ijp0cnVlLCJrIjoiREN6bVhZMm5jQTBQdXFCMGdTNktzUSIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0In0= Exemple de Dinosaure
 
 Bien évidemment, son petit exemple est parfait.
 On remplace tout comme il faut, et là encore un problème : le client envoie un "hello" mais le serveur, au lieu d'envoyer le sien, envoie un paquet FIN et la connexion se termine là-dessus.

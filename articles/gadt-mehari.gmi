@@ -105,5 +105,5 @@ Les GADTs sont donc utiles lorsque l'on veut donner des informations de types pl
 => https://blog.mads-hartmann.com/ocaml/2015/01/05/gadt-ocaml.html
 => https://blog.osau.re/articles/gadt_and_state_machine.html
 => https://blog.janestreet.com/why-gadts-matter-for-performance/
-=> https://github.com/ocsigen/lwt/blob/master/src/core/lwt.ml#L392 Même Lwt
+=> https://github.com/ocsigen/lwt/blob/master/src/core/lwt.ml#L392
 => https://xvw.lol/longs/introduction_gadt.html (Malheureusement plus disponnible :( )
