@@ -1,12 +1,12 @@
 # Banners
 
-=> /banners/xaviers-camel.png Le chameau attitré de Xavier
+=> /banners/xavier.png Le chameau attitré de Xavier
 => /banners/shinji.png Shinji
 => /banners/alien.png Alien
 => /banners/grands-hommes.png Grands hommes
 => /banners/casquettes.png Casquettes
 => /banners/mehari.png Mehari
-=> /banners/xtraslim.png Xtra slim
+=> /banners/xtra-slim.png Xtra slim
 => /banners/jap-camel.png 日本駱駝
 => /banners/presentation.png Présentation
 => /banners/happi.png Happi
