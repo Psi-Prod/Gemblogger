@@ -2,9 +2,10 @@ open Yocaml
 module Metaformat = Yocaml_yaml
 module Template = Yocaml_jingoo
 
-let banners_target target = "banners" |> into target
-let images_target target = "images" |> into target
-let audio_target target = "audio" |> into target
+let banners_target target = into target "banners"
+let images_target target = into target "images"
+let audio_target target = into target "audio"
+let video_target target = into target "video"
 let template file = add_extension file "gmi" |> into "templates"
 let article_template = template "article"
 let layout_template = template "layout"
@@ -29,6 +30,10 @@ let move_images target =
 let move_audio target =
   process_files [ "audio" ] File.is_audio
     (Build.copy_file ~into:(audio_target target))
+
+let move_video target =
+  process_files [ "video" ] File.is_video
+    (Build.copy_file ~into:(video_target target))
 
 let move_index target =
   process_files [ "pages" ] File.is_index (Build.copy_file ~into:target)

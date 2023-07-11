@@ -7,6 +7,7 @@ let program ~target =
   let* () = Task.move_banners target in
   let* () = Task.move_images target in
   let* () = Task.move_audio target in
+  let* () = Task.move_video target in
   let* () = Task.move_index target in
   let* () = Task.process_articles target in
   let* () = Task.process_pages target in
