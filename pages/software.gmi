@@ -34,3 +34,15 @@ It is also cross-platform and supports Eio with OCaml >= 5.0.0 as well as Mirage
 
 => https://github.com/Psi-Prod/Mehari
 => https://docs.heyplzlookat.me/mehari/
+
+## Proximité
+
+Proximité is our HTTP2Gemini proxy. It aims to be our main online visibility and you should be able to copy and paste a Gemini URL pointing to heyplzlookat.me just by changing its scheme from gemini to https. It also offers some cool features like inlining image, audio and video.
+
+To connect to another host, use the following template URL:
+
+=> /gemini/hostname/path
+
+Anecdotally, you can supply which port to connect with port URL get option (defaults to 1965).
+
+=> https://github.com/Psi-Prod/Proximite-2
