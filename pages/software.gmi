@@ -37,7 +37,7 @@ It is also cross-platform and supports Eio with OCaml >= 5.0.0 as well as Mirage
 
 ## Proximité
 
-Proximité is our HTTP2Gemini proxy. It aims to be our main online visibility and you should be able to copy and paste a Gemini URL pointing to heyplzlookat.me just by changing its scheme from gemini to https. It also offers some cool features like inlining image, audio and video.
+Proximité is our HTTP2Gemini proxy. It aims to be our main online visibility and you should be able to obtain proxied content simple by copying an URL pointing to heyplzlookat.me and changing its scheme from gemini to https. It also offers some cool features like image, audio and video inlining.
 
 To connect to another host, use the following template URL:
 
