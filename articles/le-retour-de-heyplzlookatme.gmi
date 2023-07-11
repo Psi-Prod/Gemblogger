@@ -40,7 +40,7 @@ Sérieusement Léo ??
 
 Anecdotiquement, on a ajouté un paramètre d'URL GET `port` pour établir une connexion sur un port autre que 1965.
 
-=> https://host/path?port=2000
+=> https://heyplzlookatme/gemini/host/path?port=2000
 
 Enfin, il y a maintenant en pied de page une de nos bannières (malheureusement encore trop sous-estimées) et un volet dépliant pour avoir des informations supplémentaires sur la réponse Gemini proxied.
 
