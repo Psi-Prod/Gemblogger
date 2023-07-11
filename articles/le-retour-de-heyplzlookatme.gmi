@@ -1,0 +1,57 @@
+---
+title: Le retour de Heyplzlookatme
+date: 2023-07-11
+authors:
+  - Tim
+description: C'est bon, la stack heyplzlookatme est enfin achevée
+tags:
+- meta
+---
+
+## Proximite 2
+
+Le talon d'Achille de la stack heyplzlookatme était le proxy HTTP2Gemini qui n'était pas encore un unikernel (on utilisait mehari-eio, c'est dire) et qui n'était clairement pas à la hauteur de nos ambitions. C'est maintenant chose faite.
+
+### Quoi de neuf
+
+Les redirections Gemini fonctionnent désormais et effectuent réellement une redirection HTTP au lieu d'afficher lamentablement un lien sur une page statique vide.
+
+On a également peaufiné le proxy avec deux trois fonctionnalités chouettes comme les images et l'audio qui sont dorénavant _inline_. Essayez en relisant ces articles (vous serez charmés par l'intégration première classe des fichiers MP3, images HD ou autres vidéos HDR) :
+
+=> /articles/le-marxiste-impertinent-hs-1.gmi
+=> /articles/telephone-601sh.gmi
+
+=> /video/dinguerie.mp4
+
+On a aussi amélioré la structure du site avec tout un tas de balises HTML5 plus appropriées car je me suis aperçu que Léo n'avait visiblement pas compris le sens du terme _semantic markup_ :
+
+```Code HTML trouvé dans la précédente version du proxy
+<body>
+    <div id="maincontainer">
+        <div id="header">
+            ...
+        </div>
+        ...
+    </div>
+</body>
+```
+
+Sérieusement Léo ??
+
+Anecdotiquement, on a ajouté un paramètre d'URL GET `port` pour établir une connexion sur un port autre que 1965.
+
+=> https://host/path?port=2000
+
+Enfin, il y a maintenant en pied de page une de nos bannières (malheureusement encore trop sous-estimées) et un volet dépliant pour avoir des informations supplémentaires sur la réponse Gemini proxied.
+
+## Vicer
+
+J'ai profité de cette période productive pour régler quelques vieux bugs dans Vicer (notre serveur gemini). Les fichiers dont le nom contient des caractères non-ascii sont à présent servis. L'occasion idéale pour relire tous les articles avec l'étiquette bâton :
+
+=> /tags/bâton.gmi
+
+J'ai en outre réglé le support d'unicode dans les commentaires. Il y avait auparavant un problème d'encodage avec les caractères UTF-8 (encore eux) qui étaient remplacés par des "�" (en plus de faire planter Vicer lorsque l'un d'eux était présent dans un commentaire fraîchement posté).
+
+## Il manque plus que le contenu
+
+Maintenant que l'on a amélioré nos conditions matérielles d'existence sur internet, on devrait être en mesure de peupler le site avec plus de contenu (en plus c'est les vacances).
