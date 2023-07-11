@@ -8,9 +8,9 @@ tags:
 - meta
 ---
 
-## Proximite 2
+## Proximité 2
 
-Le talon d'Achille de la stack heyplzlookatme était le proxy HTTP2Gemini qui n'était pas encore un unikernel (on utilisait mehari-eio, c'est dire) et qui n'était clairement pas à la hauteur de nos ambitions. C'est maintenant chose faite.
+Le talon d'Achille de la stack heyplzlookatme était le proxy HTTP2Gemini qui n'était pas encore un unikernel (on utilisait mehari-eio, c'est dire comment c'était guetto) et qui n'était clairement pas à la hauteur de nos ambitions. C'est maintenant chose faite.
 
 ### Quoi de neuf
 
