@@ -132,12 +132,12 @@ let src = Logs.Src.create "guillemet-server"
 module Log = (val Logs.src_log src)
 
 let served quote =
-  let len = String.length quote in
-  let quote_view =
-    if len < 30 then quote
-    else String.sub quote 0 30 |> Printf.sprintf "%s [...]"
-  in
-  Log.info (fun log -> log "Served %S" quote_view)
+  Log.info (fun log ->
+    let quote_view =
+      if String.length quote < 30 then quote
+      else String.sub quote 0 30 ^ " [...]"
+    in
+    log "Served %S" quote_view)
 
 let warn_err = function
   | `TCP err ->
@@ -335,7 +335,7 @@ Des instructions détaillées expliquant quoi fournir précisement sont disponib
 En cas de problème, n'hésitez pas à m'envoyer un mail ou vous adressez aux mainteneurs. Ils semblent être très réactifs !
 => https://github.com/roburio/unipi/issues/21
 
-Lançons les commandes suivantes pour déployer notre serveur QOTD, pour des questions de simplicité, nous allons compiler notre unikernel pour UNIX mais vous pouvez bien évidement cibler d'autres plateformes.
+Lançons les commandes suivantes pour déployer notre serveur QOTD. Pour des questions de simplicité, nous allons compiler notre unikernel pour UNIX mais vous pouvez bien évidement cibler d'autres plateformes.
 
 ```shell
 $ mirage configure -t unix
@@ -349,7 +349,7 @@ $ dist/guillemet
 ...
 ```
 
-Note: un service QOTD écoute par défaut sur le port 17. Or les ports compris en 0 et 1023 sont réservés aux "Well-Known Services" ce qui signifie que notre serveur doit s'exécuter avec les privilèges de super utilisateur. Pour éviter tout problème de sécurité, il est préférable d'écouter sur d'autres ports.
+Note: un service QOTD écoute par défaut sur le port 17. Or les ports compris en 0 et 1023 sont réservés aux « Well-Known Services » ce qui signifie que notre serveur doit s'exécuter avec les privilèges de super utilisateur. Pour éviter tout problème de sécurité, il est préférable d'écouter sur d'autres ports.
 
 Profitons maintenant de notre dur labeur et lisons attentivement la première citation délivrée par notre serveur pour devenir de meilleurs hommes :
 

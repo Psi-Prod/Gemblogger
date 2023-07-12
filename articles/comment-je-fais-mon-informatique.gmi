@@ -1,7 +1,7 @@
 ---
 title: Comment je fais mon informatique
 date: 2023-01-05
-updated: 2023-04-12
+updated: 2023-07-12
 authors:
   - Tim
 tags:
@@ -20,7 +20,11 @@ J'utilise VSCodium qui est une version de VSCode purgée de la télémétrie que
 
 J'ai installé l'extension OCaml Platform qui intègre le support du LSP OCaml et qui est très bien faite. Tous les langages de l'écosystème possèdent de la coloration syntaxique : des stanzas de Dune au langage de Menhir.
 
-Les seuls problèmes récurrents que je lui trouve est qu'elle souligne en rouge l'intégralité des implémentations de module qui ne correspondent pas au type de leur interface, ce qui rend les choses rapidement illisibles au moindre changement et qu'il faille recharger l'extension assez souvent pour qu'elle marche (ce qui se fait de façon très pratique avec VSCodium : Ctrl+Shift+P puis écrire "OCaml: Restart Language Server").
+Les seuls problèmes récurrents que je lui trouve est qu'elle souligne en rouge l'intégralité des implémentations de module qui ne correspondent pas au type de leur interface, ce qui rend les choses rapidement illisibles au moindre changement.
+
+=> /images/lsp-chiant.png Fuck off
+
+Il faut aussi parfois recharger l'extension pour qu'elle marche (ce qui se fait de façon très pratique avec VSCodium : Ctrl+Shift+P puis écrire "OCaml: Restart Language Server").
 
 => https://open-vsx.org/extension/ocamllabs/ocaml-platform
 => https://github.com/ocaml/ocaml-lsp

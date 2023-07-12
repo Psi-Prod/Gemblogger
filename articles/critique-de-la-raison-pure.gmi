@@ -66,7 +66,7 @@ Le point clef de l'article est la critique du système de module sur lequel l'au
 
 Lorsque l'on compare strictement les foncteurs et les type classes, ces dernières semblent bien plus pratiques à utiliser sur le papier. En effet, dans des cas simples, les type classes offrent des solutions élégantes et laisse le compilateur s'occuper des boilerplates. Certes, l'absence de polymorphisme ad-hoc dans OCaml est regrettable (https://arxiv.org/pdf/1512.01895.pdf bientôt, nous espérons), mais je pense qu'il faut plutôt appréhender les foncteurs comme un outil de métaprogrammation pour faire de la génération de code plutôt qu'une manière de faire du polymorphisme stricto sensu.
 
-Par exemple, Mirage OS fait particulièrement bien usage des signatures de module pour s'abstraire du runtime en permettant de faire des logiciels _platform-agnostic_. Et cela en imposant le fait de devoir paramétriser un foncteur contenant le programme principal par des modules encapsulant des fonctions qui effectuent des effets de bord, puis en les remplaçant à la compilation par des implémentations concrètes adaptées au système visé.
+Par exemple, Mirage OS fait particulièrement bien usage des signatures de module pour s'abstraire du runtime en permettant de faire des logiciels « platform-agnostic ». Et cela en imposant le fait de devoir paramétriser un foncteur contenant le programme principal par des modules encapsulant des fonctions qui effectuent des effets de bord, puis en les remplaçant à la compilation par des implémentations concrètes adaptées au système visé.
 
 ```ocaml
 module Main (Pclock : Mirage_clock.PCLOCK) (Stack : Tcpip.Stack.V4V6) = struct

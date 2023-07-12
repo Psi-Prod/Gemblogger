@@ -47,7 +47,7 @@ Nous avons par ailleurs mis-à-jour et amélioré le contenu un peu partout sur 
 Les désormais très célèbres bannières Heyplzlookatme sont maintenant répertoriées dans leur propre dossier (notamment celle de Mehari qui a fait le tour de GitHub).
 
 => /banners.gmi
-=> /banners/mehari.png
+=> /banners/mehari.png La bannière de Mehari
 
 Faites-nous parvenir vos idées pour les prochaines réalisations !
 

@@ -15,7 +15,7 @@ tags:
 ### Gemtext
 
 Tim :
-> La philosophie du format définit par Gemini, le Gemtext, est parfaite. La promesse d'avoir seulement à parser les 3 premiers caractères pour connaître le "type" de ligne est tenue et l'on peut très bien se passer de regex. Le seul petit bémol est l'absence de balise _inline_ pour souligner des termes techniques ou encore des morceaux de code. Ces derniers manquent cruellement lorsqu'on écrit des articles avec un peu de code, mais ne sont de toute façon pas fidèle à la philosophie "des 3 premiers caractères". Ce défaut est comblé par le fait que ce soit désormais une sorte de convention parmi les auteurs d'utiliser des `doubles backquotes`.
+> La philosophie du format définit par Gemini, le Gemtext, est parfaite. La promesse d'avoir seulement à parser les 3 premiers caractères pour connaître le "type" de ligne est tenue et l'on peut très bien se passer de regex. Le seul petit bémol est l'absence de balise « inline » pour souligner des termes techniques ou encore des morceaux de code. Ces derniers manquent cruellement lorsqu'on écrit des articles avec un peu de code, mais ne sont de toute façon pas fidèle à la philosophie "des 3 premiers caractères". Ce défaut est comblé par le fait que ce soit désormais une sorte de convention parmi les auteurs d'utiliser des `doubles backquotes`.
 
 ### Codes ANSI
 

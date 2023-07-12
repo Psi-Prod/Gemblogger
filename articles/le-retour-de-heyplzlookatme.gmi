@@ -5,7 +5,11 @@ authors:
   - Tim
 description: C'est bon, la stack heyplzlookatme est enfin achevée
 tags:
-- meta
+  - meta
+  - proxy
+  - gemini
+  - http
+  - unikernel
 ---
 
 ## Proximité 2
@@ -16,14 +20,14 @@ Le talon d'Achille de la stack heyplzlookatme était le proxy HTTP2Gemini qui n'
 
 Les redirections Gemini fonctionnent désormais et effectuent réellement une redirection HTTP au lieu d'afficher lamentablement un lien sur une page statique vide.
 
-On a également peaufiné le proxy avec deux trois fonctionnalités chouettes comme les images et l'audio qui sont dorénavant _inline_. Essayez en relisant ces articles (vous serez charmés par l'intégration première classe des fichiers MP3, images HD ou autres vidéos HDR) :
+On a également peaufiné le proxy avec deux trois fonctionnalités chouettes comme les images et l'audio qui sont dorénavant inlines. Essayez en relisant ces articles (vous serez charmés par l'intégration première classe des fichiers MP3, images HD ou autres vidéos HDR) :
 
 => /articles/le-marxiste-impertinent-hs-1.gmi
 => /articles/telephone-601sh.gmi
 
 => /video/dinguerie.mp4
 
-On a aussi amélioré la structure du site avec tout un tas de balises HTML5 plus appropriées car je me suis aperçu que Léo n'avait visiblement pas compris le sens du terme _semantic markup_ :
+On a aussi amélioré la structure du site avec tout un tas de balises HTML5 plus appropriées car je me suis aperçu que Léo n'avait visiblement pas compris le sens du terme « semantic markup » :
 
 ```Code HTML trouvé dans la précédente version du proxy
 <body>
