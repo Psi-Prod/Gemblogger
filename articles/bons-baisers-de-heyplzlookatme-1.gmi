@@ -3,6 +3,7 @@ title: "Bons baisers de heyplzlookatme #1"
 date: 2023-07-12
 authors:
   - Tim
+description: Un nouveau format en béton
 tags:
 - bons-baisers
 ---
