@@ -3,7 +3,7 @@
 {%- set nb_tags = length (articles) -%}
 
 # {{ tag }} ({{ nb_tags }}
-{%- if nb_tags > 1 %} entries{%- else %} entry{%- endif %})
+{%- if nb_tags > 1 %} entrées{%- else %} entrée{%- endif %})
 
 {% for article in articles -%}
 => /{{ article.url }} {{ article.date.canonical }} {{ article.title }}
@@ -11,7 +11,7 @@
 {% endif %}
 {%- endfor %}
 
-## All tags
+## Toutes les étiquettes
 
 {% for tag in tags -%}
 => /{{ tag.link  }} {{ tag.name }} {{ tag.number }}

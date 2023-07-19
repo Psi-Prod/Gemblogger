@@ -2,7 +2,7 @@
 
 => /atom.xml 📬 Fil Atom
 => /articles/comments.xml 💬 Fil des commentaires
-=> /browse-tag.gmi 🏷 Filtrer les posts par tags
+=> /browse-tag.gmi 🏷 Filtrer les posts par étiquette
 
 ## Entrées
 

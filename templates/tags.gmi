@@ -1,4 +1,4 @@
-# Browse text by tags
+# Filtrer les posts par étiquette
 
 {% for tag in tags -%}
 => /{{ tag.link  }} {{ tag.name }} {{ tag.number }}
