@@ -1,10 +1,10 @@
-# Heyplzlookatme's Gemlog
+# Gemlog Heyplzlookatme
 
-=> /atom.xml Atom feed
-=> /articles/comments.xml Comments feed
-=> /browse-tag.gmi Browe our text by tags
+=> /atom.xml 📬 Fil Atom
+=> /articles/comments.xml 💬 Fil des commentaires
+=> /browse-tag.gmi 🏷 Filtrer les posts par tags
 
-## Logs
+## Entrées
 
 {%- autoescape false %}
 

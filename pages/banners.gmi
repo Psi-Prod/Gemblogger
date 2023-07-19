@@ -1,4 +1,4 @@
-# Banners
+# Bannières
 
 => /banners/xavier.png Le chameau attitré de Xavier
 => /banners/shinji.png Shinji

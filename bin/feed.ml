@@ -26,19 +26,21 @@ let make ((), articles) =
     | [] -> Ptime.epoch
     | (a, _) :: _ -> Model.Article.ptime a
   in
-  Yocaml_syndication.Atom.make ~title:(Text "Heyplzlookatme's gemlog")
+  Yocaml_syndication.Atom.make ~title:(Text "Fil Heyplzlookatme")
     ~subtitle:
       (Text
-         "We post here our projects, some blog posts, devlogs and political \
-          takes in French.")
+         "Nous postons ici des avis et commentaires politiques désastreux, des \
+          devlog OCaml et d'autres trucs qui nous intéressent de près ou de \
+          loin")
     ~id:(Uri.of_string feed_url) ~authors:[ leo; tim ] ~updated
-    ~links:[ Syndic.Atom.link ~hreflang:"en" (Uri.of_string domain) ]
+    ~links:[ Syndic.Atom.link ~hreflang:"fr" (Uri.of_string domain) ]
     ~icon:icon_url
     (articles_to_items articles)
 
 let pp ppf feed =
-  Format.fprintf ppf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>%s"
-    (Syndic.Atom.to_xml feed
-    |> Syndic.XML.to_string ~ns_prefix:(function
-         | "http://www.w3.org/2005/Atom" -> Some ""
-         | _ -> Some "http://www.w3.org/2005/Atom"))
+  Syndic.Atom.to_xml feed
+  |> Syndic.XML.to_string ~ns_prefix:(function
+       | "http://www.w3.org/2005/Atom" -> Some ""
+       | _ -> Some "http://www.w3.org/2005/Atom")
+  |> String.cat {|<?xml version="1.0" encoding="UTF-8"?>|}
+  |> Format.pp_print_string ppf

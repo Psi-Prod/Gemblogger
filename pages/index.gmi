@@ -15,32 +15,31 @@ _O|/O___O|/O_OO|/O__O|/O__O|/O__________________________O|/O__________
 
 # Heyplzlookat.me
 
-> Welcome to the Gemini space of Cactus Production. We are Tim and Artichaut a duo of developpers who creates fast and reliable softwares helped by Programind our official sysadmin.
+> Bienvenue sur notre blog ! Nous sommes Tim et Léo et nous postons ici des avis et commentaires politiques désastreux, des devlog OCaml et d'autres trucs qui nous intéressent de près ou de loin.
 
-> We post here our projects, some blog posts, devlogs and political takes in French.
+## Liens
 
-## Links
-
-=> /gemlog.gmi 📝 Gemlog
-=> /software.gmi 💻 Our software
-=> /banners.gmi 🖼️ Our banners
+=> /gemlog.gmi 📝 Articles
+=> /software.gmi 💻 Logiciels
+=> /banners.gmi 🖼️ Bannières
+=> /about.gmi ☕ About (in english)
 
 => /misc.gmi 🗑 Misc
-=> /garden.gmi 🌳 Our garden
-=> /relay.gmi 📑 Cool articles
-=> /blogs.gmi 📚 Some blogs we read
+=> /garden.gmi 🌳 Jardin
+=> /relay.gmi 📑 Articles cools
+=> /blogs.gmi 📚 Les blogs que nous lisons
 
-## External links
+## Autres liens
 
-=> https://github.com/Psi-Prod Our Github page
-=> https://docs.heyplzlookat.me Documentation of our softwares
-=> https://ib.heyplzlookat.me French imageboard
+=> https://github.com/Psi-Prod Notre Github
+=> https://docs.heyplzlookat.me Documentation de nos logiciels
+=> https://ib.heyplzlookat.me Notre imageboard
 
-## Contact us
+## Contactez-nous
 
 => mailto:tim.arnouts@proton.me
-=> mailto:programind.bot@gmail.com
 => mailto:lelolartichaut@laposte.net
+=> mailto:programind.bot@gmail.com
 
 (\__/)
 (='.'=)

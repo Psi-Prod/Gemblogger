@@ -11,9 +11,9 @@
 ^--^---'--^    `-'`---^-^--^--^---'--'
 ```
 
-# Some blogs we read
+# Les blogs que nous lisons
 
-## On geminispace
+## Sur le Geminispace
 
 => gemini://perso.pw/blog/
 => gemini://foo.zone/
@@ -21,9 +21,9 @@
 => gemini://blog.kdx.re/
 => gemini://gmi.bacardi55.io/
 
-## On web
+## Sur le Web
 
-### About OCaml
+### À propos d'OCaml
 
 => https://blog.osau.re/
 => https://hannes.nqsb.io/
@@ -31,8 +31,8 @@
 => https://mirageos.org/blog
 => http://gallium.inria.fr/blog/
 
-### Other stuff
+### Autres
 
-=> https://drewdevault.com/
+=> https://333333.icu/
 => https://fasterthanli.me/
 => https://www.journaldulapin.com/
