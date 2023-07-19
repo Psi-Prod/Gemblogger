@@ -9,7 +9,7 @@ tags:
 - mehari
 ---
 
-En travaillant sur Mehari, notre bibliothèque implémentant le protocole Gemini côté serveur, j'ai été confronté à un problème lorsque j'ai dû réfléchir à comment représenter le status d'une réponse. En effet, il est possible de joindre ou non un _body_ à la réponse en fonction de son status. De manière générale, le message complémentaire présent dans le _header_ (le champ "META") dépend du status de la réponse. Ainsi, en cas de succès, le _header_ doit contenir le _mime type_ associé au body joint ; en cas de timeout, le nombre de secondes restantes avant une nouvelle requête ; en cas d'erreur, un message informatif, etc.
+En travaillant sur Mehari, notre bibliothèque implémentant le protocole Gemini côté serveur, j'ai été confronté à un problème lorsque j'ai dû réfléchir à comment représenter le status d'une réponse. En effet, il est possible de joindre ou non un _body_ à la réponse en fonction de son status. De manière générale, le message complémentaire présent dans le _header_ (le champ "META") dépend du status de la réponse. Ainsi, en cas de succès, le _header_ doit contenir le type MIME associé au body joint ; en cas de timeout, le nombre de secondes restantes avant une nouvelle requête ; en cas d'erreur, un message informatif, etc.
 
 ## Une première approche
 
