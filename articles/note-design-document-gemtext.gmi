@@ -16,7 +16,7 @@ Les navigateurs Gemini ultra-modernes qui implémentent un système d'onglet uti
 
 > Il faut éviter de placer un titre de premier niveau insignifiant avant plusieurs autres et opter à la place pour un premier titre distinguable et clair
 
-Peut-être que certains objecteront qu'Heyplzlookat.me lui-même dérogeait auparavant à cette maxime en dépit de toute morale en affichant un titre de premier niveau insignifiant dans la version initiale du site. Cette période sombre est désormais bien révolue et les visiteurs de Heyplzlookat.me peuvent désormais mieux identifier leurs onglets sans écumer de rage la bave aux lèvres. Joie.
+Peut-être que certains objecteront qu'heyplzlookatme lui-même dérogeait auparavant à cette maxime en dépit de toute morale en affichant un titre de premier niveau insignifiant dans la version initiale du site. Cette période sombre est désormais bien révolue et les visiteurs d'heyplzlookatme peuvent désormais mieux identifier leurs onglets sans écumer de rage la bave aux lèvres. Joie.
 
 ## Header et footer
 
