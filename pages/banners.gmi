@@ -1,5 +1,6 @@
 # Bannières
 
+=> /banners/leo-et-tim.png Léo et Tim
 => /banners/xavier.png Le chameau attitré de Xavier
 => /banners/shinji.png Shinji
 => /banners/alien.png Alien
